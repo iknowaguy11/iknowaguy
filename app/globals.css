@@ -2,14 +2,57 @@
 @tailwind components;
 @tailwind utilities;
 
-.homelinks{
+.homelinks {
   @apply hover:text-red-200
 }
-a:hover{
+
+a:hover {
   @apply hover:text-appGreen cursor-pointer
 }
-button:hover{
+
+.serch:hover {
+  @apply hover:text-gray-800 cursor-pointer
+}
+
+button:hover {
   @apply cursor-pointer
 }
 
+.sliderimages {
+  @apply aspect-[4/3] object-cover h-[100dvh] w-[100dvw]
+}
 
+@media only screen and (max-width: 600px) {
+  .btns {
+    display: none;
+  }
+}
+
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .logSign {
+    display: none;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .logSign {
+    display: none;
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .logSign {
+    display: none;
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  .logSign {
+    display: none;
+  }
+}

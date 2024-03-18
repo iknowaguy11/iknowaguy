@@ -22,6 +22,9 @@ const config: Config = {
       },
       ringColor:{
         appGreen:"#81c577"
+      },
+      borderColor:{
+        appGreen:"#81c577"
       }
       
     },

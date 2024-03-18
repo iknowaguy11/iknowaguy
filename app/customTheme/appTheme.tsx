@@ -1,6 +1,6 @@
 import { CustomFlowbiteTheme } from 'flowbite-react';
 
-//for jub difinition on the categories
+//for job difinition on the categories
 export const customTheme: CustomFlowbiteTheme['badge'] = {
     root:{
         color:{
@@ -26,7 +26,7 @@ export const customTheme: CustomFlowbiteTheme['badge'] = {
   export const customsubmitTheme: CustomFlowbiteTheme['button'] = {
     color:{
         appsuccess:"text-white bg-appGreen border border-transparent enabled:hover:bg-appGreen focus:ring-4 focus:ring-green-300 dark:bg-appGreen dark:enabled:hover:bg-black dark:focus:ring-appGreen",
-        success:"text-white bg-appGreen border border-transparent enabled:hover:bg-appGreen focus:ring-4 focus:ring-green-300 dark:bg-appGreen dark:enabled:hover:bg-black dark:focus:ring-appGreen"
+        success:"text-white bg-appGreen border border-transparent enabled:hover:bg-appGreen focus:ring-4 focus:ring-green-300 dark:bg-appGreen dark:enabled:hover:bg-black dark:focus:ring-appGreen focus:border-appGreen"
     }
   };
 
@@ -38,3 +38,27 @@ export const customTheme: CustomFlowbiteTheme['badge'] = {
         }
     }
   };
+  export const customInputBoxTheme: CustomFlowbiteTheme['textInput'] = {
+ 
+        field:{ 
+            input: {
+                colors: {focuscolor:"bg-gray-50 border-gray-300 text-gray-900 focus:ring-appGreen focus:ring-appGreen dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:ring-appGreen dark:focus:ring-appGreen focus:border-appGreen"}
+            }
+        }
+    
+  };
+
+  export const customselectTheme: CustomFlowbiteTheme['select'] = {
+ 
+    //come theme here
+    field:{
+        select:{
+            colors:{
+                success:"bg-gray-50 border-gray-300 text-gray-900 focus:ring-appGreen focus:ring-appGreen dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:ring-appGreen dark:focus:ring-appGreen focus:border-appGreen"
+            },
+            withShadow:{
+                on:"shadow-sm dark:shadow-sm-light"
+            }
+        }
+    }
+};
