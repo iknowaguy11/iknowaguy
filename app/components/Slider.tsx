@@ -10,8 +10,11 @@ import construction from '../../public/5.jpg';
 import homegarden from '../../public/homegarden.jpg';
 import { HiSearch } from 'react-icons/hi';
 import { customInputBoxTheme, customselectTheme } from '../customTheme/appTheme';
+import Searchresults from './Searchresults';
+import { Dispatch, useState } from 'react';
 
 export function Slider() {
+    const [typedValue,SetFilter]=useState<string|any>("");
     return (
         <div className="relative content-center">
             <Card className="z-10 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-fit max-h-fit" horizontal>
@@ -42,13 +45,14 @@ export function Slider() {
                             <div className="mb-2 block">
                                 <Label htmlFor="email4" value="Search for a Service" />
                             </div>
-                            <TextInput theme={customInputBoxTheme} color={"focuscolor"} id="email4" type="email" icon={HiSearch} placeholder="service" required />
+                            <TextInput theme={customInputBoxTheme} onChange={(e)=>SetFilter((e.target.value).toLocaleLowerCase())} value={typedValue} color={"focuscolor"} id="email4" type="email" icon={HiSearch} placeholder="service" required />
                         </div>
                         <div className="xl:lg:w-1/2 sm:w-full">
                         <div className="mb-2 block">
                             <Label htmlFor="countries" value="Select your location" />
                         </div>
                         <Select className="max-w-md" id="countries" theme={customselectTheme} color={"success"} required>
+                            <option>All</option>
                             <option>Kwazulu Natal</option>
                             <option>Limpopo</option>
                             <option>Gauteng</option>
@@ -62,6 +66,9 @@ export function Slider() {
                         
                     </div>
                 </div>
+
+                {/*search results*/}
+                <Searchresults typedValue={typedValue} SetFilter={SetFilter}/>
                 
             </Card>
             <Carousel className='h-[100dvh] w-[100dvw]' pauseOnHover>

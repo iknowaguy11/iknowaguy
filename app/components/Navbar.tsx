@@ -1,7 +1,6 @@
 
 'use client';
 import logoApp from '../../public/logoinknow.png';
-import caponlycrop from '../../public/caponlycrop.png';
 import Image from 'next/image'
 import { Avatar, Button, Dropdown, Navbar } from 'flowbite-react';
 import Link from 'next/link';
@@ -15,7 +14,10 @@ export function AppNavbar() {
           <Image
             src={logoApp}
             alt="Picture of the author"
-            className="mr-3 h-10 w-44 sm:h-9"
+            className="mr-3 w-auto sm:h-9"
+            width={176}
+            height={40}
+            priority
           />
 
         </Navbar.Brand>
@@ -28,7 +30,7 @@ export function AppNavbar() {
             arrowIcon={false}
             inline
             label={
-              <Avatar alt="User settings" img={"./caponlycrop.png"} rounded />
+              <Avatar alt="User settings" img={"/caponlycrop.png"} rounded />
             }
           >
             <Dropdown.Header>

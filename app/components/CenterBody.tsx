@@ -5,7 +5,6 @@ import Post from '../../public/Post.png';
 import Quotes from '../../public/Quotes.png';
 import Accept from '../../public/Accept.png';
 import Rate from '../../public/Rate.png';
-import living from '../../public/livingroom.jpg';
 import Bedroom from '../../public/Bedroom.jpg';
 import Bathroom from '../../public/Bathroom.jpg';
 import Kitchen from '../../public/Kitchen.jpg';
@@ -17,7 +16,7 @@ import KidsRoom from '../../public/Kids-Room.jpg';
 import caponlycrop from '../../public/caponlycrop.png';
 import { IProjects, IhowItwors, Iinspirations } from "../Interfaces/appInterfaces";
 import { customTheme, customsubmitTheme } from "../customTheme/appTheme";
-import { HiCheck, HiClock, HiShare } from 'react-icons/hi';
+import { HiShare } from 'react-icons/hi';
 import { useRouter } from "next/navigation";
 
 
@@ -42,14 +41,14 @@ let howitworks: IhowItwors[] = [{
 ];
 
 const projects: IProjects[] = [
-    { id: 'qwqwsewd', owner: 'Rebone Mandy', category:"Plumping",email: 'mandy@gmail.com', description: "This project has to start ASAP make a me a better offer by bidding.", budget: 1230.90 },
-    { id: 'jdxkekk', owner: 'Rebone Mandy', category:"Electrician",email: 'mandy@gmail.com', description: "This project has to start ASAP make a me a better offer by bidding.", budget: 4230.99 },
-    { id: 'wuvjtbv', owner: 'Rebone Mandy',category:"Gardener", email: 'mandy@gmail.com', description: "This project has to start ASAP make a me a better offer by bidding.", budget: 7210.00 },
-    { id: 'rufjyrtg', owner: 'Khensani Masango',category:"Plumping", email: 'mandy@gmail.com', description: "This project has to start ASAP make a me a better offer by bidding.", budget: 4530.45 },
-    { id: 'uoimlxxb', owner: 'Hendric Dasil', category:"Interior Docor", email: 'mandy@gmail.com', description: "This project has to start ASAP make a me a better offer by bidding.", budget: 80230.00 }
+    { id: 'qwqwsewd', owner: 'Rebone Mandy', category: "Plumping", email: 'mandy@gmail.com', description: "This project has to start ASAP make a me a better offer by bidding.", budget: 1230.90 },
+    { id: 'jdxkekk', owner: 'Rebone Mandy', category: "Electrician", email: 'mandy@gmail.com', description: "This project has to start ASAP make a me a better offer by bidding.", budget: 4230.99 },
+    { id: 'wuvjtbv', owner: 'Rebone Mandy', category: "Gardener", email: 'mandy@gmail.com', description: "This project has to start ASAP make a me a better offer by bidding.", budget: 7210.00 },
+    { id: 'rufjyrtg', owner: 'Khensani Masango', category: "Plumping", email: 'mandy@gmail.com', description: "This project has to start ASAP make a me a better offer by bidding.", budget: 4530.45 },
+    { id: 'uoimlxxb', owner: 'Hendric Dasil', category: "Interior Docor", email: 'mandy@gmail.com', description: "This project has to start ASAP make a me a better offer by bidding.", budget: 80230.00 }
 ]
 
-const inspirations:Iinspirations[]=[
+const inspirations: Iinspirations[] = [
     { id: 'difuf', tittle: 'Bedroom', imgsr: Bedroom, caption: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500.", sharelink: "https://www.iknowaguysa.co.za/get-inspired/" },
     { id: 'fkgh', tittle: 'Bathroom', imgsr: Bathroom, caption: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500.", sharelink: "https://www.iknowaguysa.co.za/get-inspired/" },
     { id: 'vjdc', tittle: 'Kitchen', imgsr: Kitchen, caption: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500.", sharelink: "https://www.iknowaguysa.co.za/get-inspired/" },
@@ -61,7 +60,7 @@ const inspirations:Iinspirations[]=[
 ]
 
 const CenterBody = () => {
-    const router= useRouter();
+    const router = useRouter();
     return (
         <main>
             {/*section 1*/}
@@ -77,7 +76,10 @@ const CenterBody = () => {
                     {
                         howitworks?.map((item, index) => (
                             <Card key={index} className="max-w-sm flex flex-col justify-center items-center gap-3">
-                                <Image className='h-12 w-12 aspect-[4/3] object-cover self-center' src={item.imgsr} alt="..." />
+                                <Image className='aspect-[4/3] object-cover self-center'
+                                    width={48}
+                                    height={48}
+                                    src={item.imgsr} alt="..." />
                                 <p className="font-normal text-gray-700 dark:text-gray-400 text-center">
                                     {item.tittle}</p>
                             </Card>
@@ -102,16 +104,16 @@ const CenterBody = () => {
                                                 <div className="shrink-0">
                                                     <Image
                                                         alt="client(s)"
-                                                        height="32"
+                                                        height={32}
                                                         src={caponlycrop}
-                                                        width="32"
+                                                        width={32}
                                                         className="rounded-full"
                                                     />
                                                 </div>
                                                 <div className="min-w-0 flex-1">
                                                     <p className="truncate text-sm font-medium text-gray-900 dark:text-white">{item.owner}</p>
                                                     <p className="truncate text-sm text-gray-500 dark:text-gray-400">{item.email}</p>
-                                                    <p className=" text-sm text-gray-500 dark:text-gray-400">category: {}</p>
+                                                    <p className=" text-sm text-gray-500 dark:text-gray-400">category: {item.category}</p>
                                                 </div>
                                                 <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
                                                     R{item.budget.toFixed(2)}
@@ -127,6 +129,7 @@ const CenterBody = () => {
                     }
 
                 </div>
+                <Button theme={customsubmitTheme} color="appsuccess" size="md">See more projects</Button>
 
             </div>
             {/*section 4*/}
@@ -134,28 +137,29 @@ const CenterBody = () => {
                 <h1 className="text-4xl">Get Inspired</h1>
                 <p className="text-gray-600 ml-5 mr-5">Find your inspiration and make it a reality</p>
                 <div className="flex-row justify-between m-4 grid gap-3 sm:grid-cols-2 md:grid-cols-2 xm:grid-cols-1 lg:grid-cols-4 xl:grid-cols-4 xs:grid-cols-1 justify-items-center mt-5 bg-slate-50 overflow-hidden p-2 rounded-md">
-                    {inspirations?.map((item)=>(
+                    {inspirations?.map((item) => (
                         <div
-                        className="max-w-sm relative overflow-hidden rounded-md hover:cursor-pointer"
-                    >
-                        <Badge onClick={()=>router.push(item.sharelink)} theme={customTheme} color={"success"} className="absolute z-10 w-fit top-0 m-1 hover:cursor-pointer" icon={HiShare}>share</Badge>
-                        <Image
-                            src={item.imgsr}
-                            alt="inspiration"
-                            className="aspect-[4/3] object-cover"
-                        />
-                        <div className="flex-wrap absolute z-10 bottom-0 bg-opacity-75 bg-black p-3">
-                            <h5 className="text-2xl font-bold tracking-tight text-white dark:text-white">
-                                {item.tittle}
-                            </h5>
-                            <p className="font-normal text-stone-100 dark:text-stone-100">
-                               {item.caption}
-                            </p>
+                            className="max-w-sm relative overflow-hidden rounded-md hover:cursor-pointer"
+                        >
+                            <Badge onClick={() => router.push(item.sharelink)} theme={customTheme} color={"success"} className="absolute z-10 w-fit top-0 m-1 hover:cursor-pointer" icon={HiShare}>share</Badge>
+                            <Image
+                                src={item.imgsr}
+                                alt="inspiration"
+                                className="aspect-[4/3] object-cover"
+                            />
+                            <div className="flex-wrap absolute z-10 bottom-0 bg-opacity-75 bg-black p-3">
+                                <h5 className="text-2xl font-bold tracking-tight text-white dark:text-white">
+                                    {item.tittle}
+                                </h5>
+                                <p className="font-normal text-stone-100 dark:text-stone-100">
+                                    {item.caption}
+                                </p>
 
+
+                            </div>
                         </div>
-                    </div>
                     ))}
-                    
+
 
                 </div>
 

@@ -21,10 +21,24 @@ export interface IProjects{
     description:string,
     budget:number
 }
+export interface Iservices{
+    serviceType:string
+}
 export interface Iinspirations{
     id:string,
     tittle:string,
     imgsr:StaticImageData,
     caption:string,
     sharelink:string
+}
+export interface Icontractors{
+    id:string,
+    company:string,
+    imgsr:StaticImageData,
+    encouragingWords:string,
+    rating:number,
+    jobcategory:string[],
+    experience:number,
+    phone:string,
+    address:string
 }
