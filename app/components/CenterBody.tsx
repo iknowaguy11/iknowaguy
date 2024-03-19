@@ -42,11 +42,11 @@ let howitworks: IhowItwors[] = [{
 ];
 
 const projects: IProjects[] = [
-    { id: 'qwqwsewd', owner: 'Rebone Mandy', email: 'mandy@gmail.com', description: "This project has to start ASAP make a me a better offer by bidding.", budget: 1230.90 },
-    { id: 'jdxkekk', owner: 'Rebone Mandy', email: 'mandy@gmail.com', description: "This project has to start ASAP make a me a better offer by bidding.", budget: 4230.99 },
-    { id: 'wuvjtbv', owner: 'Rebone Mandy', email: 'mandy@gmail.com', description: "This project has to start ASAP make a me a better offer by bidding.", budget: 7210.00 },
-    { id: 'rufjyrtg', owner: 'Khensani Masango', email: 'mandy@gmail.com', description: "This project has to start ASAP make a me a better offer by bidding.", budget: 4530.45 },
-    { id: 'uoimlxxb', owner: 'Hendric Dasil', email: 'mandy@gmail.com', description: "This project has to start ASAP make a me a better offer by bidding.", budget: 80230.00 }
+    { id: 'qwqwsewd', owner: 'Rebone Mandy', category:"Plumping",email: 'mandy@gmail.com', description: "This project has to start ASAP make a me a better offer by bidding.", budget: 1230.90 },
+    { id: 'jdxkekk', owner: 'Rebone Mandy', category:"Electrician",email: 'mandy@gmail.com', description: "This project has to start ASAP make a me a better offer by bidding.", budget: 4230.99 },
+    { id: 'wuvjtbv', owner: 'Rebone Mandy',category:"Gardener", email: 'mandy@gmail.com', description: "This project has to start ASAP make a me a better offer by bidding.", budget: 7210.00 },
+    { id: 'rufjyrtg', owner: 'Khensani Masango',category:"Plumping", email: 'mandy@gmail.com', description: "This project has to start ASAP make a me a better offer by bidding.", budget: 4530.45 },
+    { id: 'uoimlxxb', owner: 'Hendric Dasil', category:"Interior Docor", email: 'mandy@gmail.com', description: "This project has to start ASAP make a me a better offer by bidding.", budget: 80230.00 }
 ]
 
 const inspirations:Iinspirations[]=[
@@ -109,9 +109,9 @@ const CenterBody = () => {
                                                     />
                                                 </div>
                                                 <div className="min-w-0 flex-1">
-                                                    <p className="truncate text-sm font-medium text-gray-900 dark:text-white">Bonnie Green</p>
-                                                    <p className="truncate text-sm text-gray-500 dark:text-gray-400">email@windster.com</p>
-                                                    <p className=" text-sm text-gray-500 dark:text-gray-400">category: Plumping</p>
+                                                    <p className="truncate text-sm font-medium text-gray-900 dark:text-white">{item.owner}</p>
+                                                    <p className="truncate text-sm text-gray-500 dark:text-gray-400">{item.email}</p>
+                                                    <p className=" text-sm text-gray-500 dark:text-gray-400">category: {}</p>
                                                 </div>
                                                 <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
                                                     R{item.budget.toFixed(2)}

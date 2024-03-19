@@ -16,6 +16,7 @@ export interface IhowItwors{
 export interface IProjects{
     id:string,
     owner:string,
+    category:string,
     email:string,
     description:string,
     budget:number
