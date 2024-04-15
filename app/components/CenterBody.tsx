@@ -15,9 +15,10 @@ import Diningroom from '../../public/Dining-room.jpg';
 import KidsRoom from '../../public/Kids-Room.jpg';
 import caponlycrop from '../../public/caponlycrop.png';
 import { IProjects, IhowItwors, Iinspirations } from "../Interfaces/appInterfaces";
-import { customTheme, customsubmitTheme } from "../customTheme/appTheme";
+import { LongLorems, ShortLorems, customTheme, customsubmitTheme } from "../customTheme/appTheme";
 import { HiShare } from 'react-icons/hi';
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 
 
@@ -40,12 +41,12 @@ let howitworks: IhowItwors[] = [{
 
 ];
 
-const projects: IProjects[] = [
-    { id: 'qwqwsewd', owner: 'Rebone Mandy', category: "Plumping", email: 'mandy@gmail.com', description: "This project has to start ASAP make a me a better offer by bidding.", budget: 1230.90 },
-    { id: 'jdxkekk', owner: 'Rebone Mandy', category: "Electrician", email: 'mandy@gmail.com', description: "This project has to start ASAP make a me a better offer by bidding.", budget: 4230.99 },
-    { id: 'wuvjtbv', owner: 'Rebone Mandy', category: "Gardener", email: 'mandy@gmail.com', description: "This project has to start ASAP make a me a better offer by bidding.", budget: 7210.00 },
-    { id: 'rufjyrtg', owner: 'Khensani Masango', category: "Plumping", email: 'mandy@gmail.com', description: "This project has to start ASAP make a me a better offer by bidding.", budget: 4530.45 },
-    { id: 'uoimlxxb', owner: 'Hendric Dasil', category: "Interior Docor", email: 'mandy@gmail.com', description: "This project has to start ASAP make a me a better offer by bidding.", budget: 80230.00 }
+export const projects: IProjects[] = [
+    { id: 'qwqwsewd', owner: 'Rebone Mandy', category: "Plumping", email: 'mandy@gmail.com',phone:'076 124 6500',addrs:"Gauteng East Gate",postTime:"2 hours ago", description: LongLorems, budget: 1230.90,myOffer:800.00,bestOffer:600.00,Status:"Active",winnerId:"noId" },
+    { id: 'jdxkekk', owner: 'Rebone Mandy', category: "Electrician", email: 'mandy@gmail.com',phone:'076 124 6500',addrs:"Limpopo Seshego",postTime:"2 hours ago", description: ShortLorems, budget: 4230.99,myOffer:3000.00,bestOffer:2500.00,Status:"Closed",winnerId:"competitorId" },
+    { id: 'wuvjtbv', owner: 'Rebone Mandy', category: "Gardener", email: 'mandy@gmail.com',phone:'076 124 6500',addrs:"Cape Town",postTime:"1 hours ago", description: ShortLorems, budget: 7210.00,myOffer:7000.00,bestOffer:7100.00,Status:"Closed",winnerId:"myId" },
+    { id: 'rufjyrtg', owner: 'Khensani Masango', category: "Plumping", email: 'mandy@gmail.com',phone:'076 124 6500',addrs:"Gauteng Pretoria",postTime:"20 min ago", description: LongLorems, budget: 4530.45,myOffer:3000.00,bestOffer:3000.00,Status:"Closed",winnerId:"competitorId" },
+    { id: 'uoimlxxb', owner: 'Hendric Dasil', category: "Interior Docor", email: 'mandy@gmail.com',phone:'076 124 6500',addrs:"KwaZulu Natal Durban",postTime:"21 min ago", description: ShortLorems, budget: 80230.00,myOffer:70100.00,bestOffer:70100.00,Status:"Closed",winnerId:"myId" }
 ]
 
 const inspirations: Iinspirations[] = [
@@ -67,18 +68,25 @@ const CenterBody = () => {
             <div className="flex flex-col justify-center items-center gap-2 p-6">
                 <h1 className="text-4xl">What is IKAG</h1>
                 <p className="text-gray-600 ml-5 mr-5">I Know A Guy is a user-driven platform on which home-owners can find trusted, reliable home care contractors. Whether you are looking for a handyman for small jobs around the house or a builder for a big renovation project, you will find them on I Know A Guy. Unlike other business directories, the listings on I Know A Guy are Recommended by people who have interacted with those contractors, people who have used their services and can vouch that you will receive good service from them.</p>
+                <p className="text-gray-600 ml-5 mr-5">There are two ways in which you can use I Know A Guy to find contractors. Firstly, you can <a onClick={()=>{
+            const element = document.getElementById('searchBox');
+            element?.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+          }} className="text-appGreen">Find Contractors</a> by location and type of service you require and select one from our user-generated list. 
+
+
+Alternatively, you can <Link href={'/postproject'} className="text-appGreen">Post A Project</Link>. When posting a project, you will be required to provide specific information about the work you need done. Once you have done that, a maximum of 5 contractors will then submit quotes to you by email. The more detailed the information you provide about your project, the more accurately the contractors will be able to quote you. When the contractor you appoint has completed the work, you can share your experience with other users on I Know A Guy by rating and reviewing the contractor. </p>
             </div>
             {/*section 2*/}
-            <div className="flex flex-col justify-center items-center gap-2 p-6">
+            <div id="whatIsIkg" className="flex flex-col justify-center items-center gap-2 p-6">
                 <h1 className="text-4xl">How It Works</h1>
 
-                <div className="flex-row justify-evenly m-4 grid gap-3 sm:grid-cols-4 md:grid-cols-4 xm:grid-cols-1 xs:grid-cols-1 justify-items-center mt-5 bg-slate-50 overflow-hidden p-2 rounded-md">
+                <div id='HowItWorks' className="flex-row justify-evenly m-4 grid gap-3 sm:grid-cols-4 md:grid-cols-4 xm:grid-cols-1 xs:grid-cols-1 justify-items-center mt-5 bg-slate-50 overflow-hidden p-2 rounded-md">
                     {
                         howitworks?.map((item, index) => (
                             <Card key={index} className="max-w-sm flex flex-col justify-center items-center gap-3">
-                                <Image className='aspect-[4/3] object-cover self-center'
-                                    width={48}
-                                    height={48}
+                                <Image className='aspect-[4/3] object-contain self-center'
+                                    width={50}
+                                    height={50}
                                     src={item.imgsr} alt="..." />
                                 <p className="font-normal text-gray-700 dark:text-gray-400 text-center">
                                     {item.tittle}</p>
@@ -90,8 +98,8 @@ const CenterBody = () => {
 
             </div>
             {/*section 3*/}
-            <div className="flex flex-col justify-center items-center gap-2 p-6">
-                <Button theme={customsubmitTheme} size={"md"} type="submit" color="appsuccess">Post A Project</Button>
+            <div id="jobSection" className="flex flex-col justify-center items-center gap-2 p-6">
+                <Button onClick={()=>router.push("/postproject")} theme={customsubmitTheme} size={"md"} type="submit" color="appsuccess">Post A Project</Button>
                 <h1 className="text-4xl m-3">Current Projects</h1>
                 <div className="flex-row justify-between m-4 grid gap-3 sm:grid-cols-2 md:grid-cols-2 xm:grid-cols-1 lg:grid-cols-4 xl:grid-cols-4 xs:grid-cols-1 justify-items-center mt-5 bg-slate-50 overflow-hidden p-2 rounded-md">
                     {
@@ -129,32 +137,32 @@ const CenterBody = () => {
                     }
 
                 </div>
-                <Button theme={customsubmitTheme} color="appsuccess" size="md">See more projects</Button>
+                <Button onClick={()=>router.push("/jobs")} theme={customsubmitTheme} color="appsuccess" size="md">See more projects</Button>
 
             </div>
             {/*section 4*/}
-            <div className="flex flex-col justify-center items-center gap-2 p-6">
+            <div id='inspirations' className="flex flex-col justify-center items-center gap-2 p-6">
                 <h1 className="text-4xl">Get Inspired</h1>
                 <p className="text-gray-600 ml-5 mr-5">Find your inspiration and make it a reality</p>
                 <div className="flex-row justify-between m-4 grid gap-3 sm:grid-cols-2 md:grid-cols-2 xm:grid-cols-1 lg:grid-cols-4 xl:grid-cols-4 xs:grid-cols-1 justify-items-center mt-5 bg-slate-50 overflow-hidden p-2 rounded-md">
                     {inspirations?.map((item) => (
                         <div
-                            className="max-w-sm relative overflow-hidden rounded-md hover:cursor-pointer"
+                             key={item.id} className="max-w-sm relative overflow-hidden rounded-md hover:cursor-pointer"
                         >
                             <Badge onClick={() => router.push(item.sharelink)} theme={customTheme} color={"success"} className="absolute z-10 w-fit top-0 m-1 hover:cursor-pointer" icon={HiShare}>share</Badge>
                             <Image
+                            onClick={()=>router.push("inspirations/"+item.tittle)}
                                 src={item.imgsr}
                                 alt="inspiration"
                                 className="aspect-[4/3] object-cover"
                             />
                             <div className="flex-wrap absolute z-10 bottom-0 bg-opacity-75 bg-black p-3">
-                                <h5 className="text-2xl font-bold tracking-tight text-white dark:text-white">
+                                <h5 onClick={()=>router.push("inspirations/"+item.tittle)} className="text-2xl font-bold tracking-tight text-white dark:text-white hover:text-appGreen">
                                     {item.tittle}
                                 </h5>
                                 <p className="font-normal text-stone-100 dark:text-stone-100">
                                     {item.caption}
                                 </p>
-
 
                             </div>
                         </div>

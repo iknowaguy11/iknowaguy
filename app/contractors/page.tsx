@@ -1,10 +1,11 @@
 import { ContactorTemplate } from "../components/ContactorTemplate";
+import { NewContractorTemplate } from "../components/NewContractorTemplate";
 import { contractors } from "./[...slug]/page";
 
 const Allcontractors = () => {
     return ( 
         <div className='flex justify-center items-center mt-28 mb-10'>
-            <ContactorTemplate contractors={contractors} params={[]}/>
+            <NewContractorTemplate contractors={contractors} params={[]}/>
         </div>
      );
 }

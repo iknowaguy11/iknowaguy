@@ -7,8 +7,13 @@ import { customCheckboxTheme, customInputBoxTheme, customsubmitTheme } from '../
 
 export default function Recommend() {
     return (
-        <div className='flex justify-center items-center'>
-            <Card className='flex max-w-md gap-4 flex-grow mt-28 mb-10'>
+        <div className='divRecommend flex justify-center items-center'>
+            <div className='grid lg:grid-cols-2 xl:lg:grid-cols-2 md:lg:grid-cols-1 sm:lg:grid-cols-1 justify-center'>
+            <div className='pl-2 mt-32'>
+                <h2 className='text-4xl text-white'>Recommend A “Guy”</h2>
+                <p className='text-lg text-white text-wrap'>Do you know of a good, reliable tradesman or home care professional who does great work? Please tell us about him/her so that others can also benefit from the great service they provide.</p>
+            </div>
+             <Card className='flex max-w-md gap-4 flex-grow mt-28 mb-10 ml-2'>
             <form className="flex max-w-md flex-col gap-4 flex-grow">
                 <div>
                     <div className="mb-2 block">
@@ -63,10 +68,8 @@ export default function Recommend() {
                 </div>
                 <Button theme={customsubmitTheme} type="submit" color="appsuccess">Recommend</Button>
             </form>
-            </Card>
-           
-
+            </Card> 
+            </div>       
         </div>
-
     );
 }

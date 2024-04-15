@@ -12,14 +12,27 @@ import { HiSearch } from 'react-icons/hi';
 import { customInputBoxTheme, customselectTheme } from '../customTheme/appTheme';
 import Searchresults from './Searchresults';
 import { Dispatch, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export function Slider() {
     const [typedValue,SetFilter]=useState<string|any>("");
+    const [selectedValue,SetSelected]=useState<string>("all");
+    const router=useRouter();
+    const performSeach=()=>{
+        if(selectedValue.toLocaleLowerCase().trim()=="all" && typedValue.trim()=="")
+        {
+            router.push('/contractors');
+        }
+        if((selectedValue.toLocaleLowerCase().trim()=="all"||selectedValue.toLocaleLowerCase().trim()!="all") && typedValue.trim()!="")
+        {
+            router.push(`/contractors/${typedValue.toLowerCase()}/${selectedValue}`);
+        }
+    }
     return (
-        <div className="relative content-center">
-            <Card className="z-10 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-fit max-h-fit" horizontal>
-                <h5 className="text-3xl tracking-tight leading-6 text-gray-900 dark:text-white">
-                    Find reliable contructors for your home
+        <div id='searchBox' className="relative content-center">
+            <Card className="z-10 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-fit min-w-fit max-h-fit" horizontal>
+                <h5 className="text-3xl tracking-tight leading-8 text-gray-900 dark:text-white lg:text-nowrap xl:text-nowrap md:text-wrap sm:text-wrap">
+                Find Trusted, Reliable Contractors For Your Home
                 </h5>
                 {/* <div className="flex flex-wrap gap-2">
                     <Image
@@ -51,7 +64,7 @@ export function Slider() {
                         <div className="mb-2 block">
                             <Label htmlFor="countries" value="Select your location" />
                         </div>
-                        <Select className="max-w-md" id="countries" theme={customselectTheme} color={"success"} required>
+                        <Select className="max-w-md" id="countries" theme={customselectTheme} onChange={(e)=>SetSelected(e.target.value)} color={"success"} required>
                             <option>All</option>
                             <option>Kwazulu Natal</option>
                             <option>Limpopo</option>
@@ -60,8 +73,9 @@ export function Slider() {
                             <option>Western cape</option>
                         </Select>
                         </div>
-                        <div className='flex flex-col justify-end mt-2 sm:mt-2 md:mt-2 lg:mt-0 xl:mt-0'>
-                        <Button className='serch bg-appGreen text-white' size="md" as="a" color="light">search</Button>
+                        <div className='flex flex-col w-20 justify-end mt-2 sm:mt-2 md:mt-2 lg:mt-0 xl:mt-0'>
+                        <Button className='serch bg-appGreen text-white lg:min-w-44 xl:min-w-44 md:w-fit sm:w-fit' size="md" as="a" color="light"
+                        onClick={()=>performSeach()}>search</Button>
                         </div>
                         
                     </div>

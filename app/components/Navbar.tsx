@@ -5,8 +5,10 @@ import Image from 'next/image'
 import { Avatar, Button, Dropdown, Navbar } from 'flowbite-react';
 import Link from 'next/link';
 import { customsubmitTheme } from '../customTheme/appTheme';
+import { useRouter } from 'next/navigation';
 
 export function AppNavbar() {
+  const router=useRouter();
   return (
     <header className="bg-white fixed top-0 w-full z-20">
       <Navbar fluid rounded>
@@ -23,8 +25,8 @@ export function AppNavbar() {
         </Navbar.Brand>
         <div className="flex md:order-2 gap-2">
           <div className='btns flex flex-row gap-1'>
-            <Button theme={customsubmitTheme} size={"xs"} color='appsuccess'>Login</Button>
-            <Button theme={customsubmitTheme} size={"xs"} color='appsuccess'>Sig nup</Button>
+            <Button onClick={()=>router.push('login')} theme={customsubmitTheme} size={"xs"} color='appsuccess'>Login</Button>
+            <Button theme={customsubmitTheme} size={"xs"} color='appsuccess'>Signup</Button>
           </div>
           <Dropdown
             arrowIcon={false}
@@ -34,7 +36,7 @@ export function AppNavbar() {
             }
           >
             <Dropdown.Header>
-              <span className="block text-sm">Bonnie Green</span>
+              <span  className="block text-sm"><Link href={'/profile'}>Bonnie Green</Link></span>
               <span className="block truncate text-sm font-medium">name@iknowaguy.com</span>
             </Dropdown.Header>
             <Dropdown.Item>Sign out</Dropdown.Item>
@@ -43,16 +45,35 @@ export function AppNavbar() {
 
         </div>
         <Navbar.Collapse>
-          <Navbar.Link as={Link} href="/">
-            Home
+          <Navbar.Link onClick={()=>{
+            const element = document.getElementById('whatIsIkg');
+            element?.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+          }}>
+          What Is IKAG
           </Navbar.Link>
-          <Navbar.Link href="#" className=''>Jobs</Navbar.Link>
-          <Navbar.Link href="#">Post a Project</Navbar.Link>
-          <Navbar.Link href="/recommend" as={Link}>Recommend "a guy"</Navbar.Link>
-          <Navbar.Link href="#">Contact</Navbar.Link>
+          <Navbar.Link onClick={()=>{
+            const element = document.getElementById('HowItWorks');
+            element?.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+          }}>
+            How It Works
+          </Navbar.Link>
+          <Navbar.Link onClick={()=>{
+            const element = document.getElementById('jobSection');
+            element?.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+          }} >Current Projects</Navbar.Link>
+          <Navbar.Link as={Link} href="/postproject">Post A Project</Navbar.Link>
+          <Navbar.Link as={Link} href="/recommend">Recommend "A Guy"</Navbar.Link>
+          <Navbar.Link onClick={()=>{
+            const element = document.getElementById('inspirations');
+            element?.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+          }} >Get Inspired</Navbar.Link>
+          <Navbar.Link onClick={()=>{
+            const element = document.getElementById('bottom');
+            element?.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+          }} >Contact</Navbar.Link>
           <div className='logSign'>
           <Button className='m-2' theme={customsubmitTheme} size={"xs"} color='appsuccess'>Login</Button>
-          <Button className='m-2' theme={customsubmitTheme} size={"xs"} color='appsuccess'>Sig nup</Button>
+          <Button className='m-2' theme={customsubmitTheme} size={"xs"} color='appsuccess'>Signup</Button>
           </div>
         </Navbar.Collapse>
       </Navbar>

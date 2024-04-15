@@ -2,15 +2,16 @@ import { Badge } from "flowbite-react";
 import { Iservices } from "../Interfaces/appInterfaces";
 import { customTheme } from "../customTheme/appTheme";
 import { HiCheck } from 'react-icons/hi';
-import { Dispatch } from "react";
 
 const Services:Iservices[]=[
 {serviceType:'Plumping'},
 {serviceType:'Electrician'},
 {serviceType:'Carpenter'},
-{serviceType:'Home Exterior'},
-{serviceType:'Interior Decor'},
-{serviceType:'Landscape'}
+{serviceType:'Internal house Decor'},
+{serviceType:'Exterior house Decor'},
+{serviceType:'Landscape'},
+{serviceType:'Gardening'},
+
 ]
 
 const Searchresults = ({ typedValue,SetFilter }: { typedValue: string,SetFilter:any }) => {

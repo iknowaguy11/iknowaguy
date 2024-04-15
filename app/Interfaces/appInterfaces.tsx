@@ -18,8 +18,15 @@ export interface IProjects{
     owner:string,
     category:string,
     email:string,
+    phone:string,
+    addrs:string,
+    postTime:string,
     description:string,
-    budget:number
+    budget:number,
+    myOffer:number,
+    bestOffer:number,
+    Status:string,
+    winnerId:string
 }
 export interface Iservices{
     serviceType:string
