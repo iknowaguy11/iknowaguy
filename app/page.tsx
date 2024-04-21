@@ -1,3 +1,4 @@
+'use client';
 import Image from "next/image";
 import logoApp from '../public/caponlycrop.png';
 import { Slider } from "./components/Slider";

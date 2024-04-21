@@ -1,3 +1,4 @@
+'use client';
 import { Icontractors } from "@/app/Interfaces/appInterfaces";
 import { ContactorTemplate } from "@/app/components/ContactorTemplate";
 import caponlycrop from '../../../public/caponlycrop.png';

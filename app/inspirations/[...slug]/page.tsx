@@ -1,3 +1,4 @@
+'use client';
 import EmblaCarousel from "@/app/components/EmblaCarousel";
 import { EmblaOptionsType } from 'embla-carousel';
 import { StaticImageData } from "next/image";

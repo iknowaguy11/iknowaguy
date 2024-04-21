@@ -1,3 +1,4 @@
+'use client';
 import { ContactorTemplate } from "../components/ContactorTemplate";
 import { NewContractorTemplate } from "../components/NewContractorTemplate";
 import { contractors } from "./[...slug]/page";

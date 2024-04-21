@@ -1,3 +1,4 @@
+'use client';
 import { Button } from "flowbite-react";
 import { customsubmitTheme } from "../customTheme/appTheme";
 import gif1 from '../../public/giphy1.gif';
