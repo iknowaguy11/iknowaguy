@@ -13,7 +13,7 @@ import { getAuth } from 'firebase/auth';
 
 export function AppNavbar() {
   const router=useRouter();
-  const{isLoggedIn,setLoggedIn}=useContext(AppContext);
+  const{isLoggedIn,setLoggedIn,ukey}=useContext(AppContext);
   const auth = getAuth(app);
   return (
     <header className="bg-white fixed top-0 w-full z-20">
@@ -30,11 +30,8 @@ export function AppNavbar() {
 
         </Navbar.Brand>
         <div className="flex md:order-2 gap-2">
-          <div className='btns flex flex-row gap-1'>
-            <Button onClick={()=>router.push('login')} theme={customsubmitTheme} size={"xs"} color='appsuccess'>Login</Button>
-            <Button onClick={()=>router.push("register")} theme={customsubmitTheme} size={"xs"} color='appsuccess'>Sign Up</Button>
-          </div>
-          {isLoggedIn &&
+          
+          {isLoggedIn ?
           <Dropdown
           arrowIcon={false}
           inline
@@ -48,10 +45,16 @@ export function AppNavbar() {
           </Dropdown.Header>
           <Dropdown.Item onClick={()=>{
             auth.signOut();
+            window.sessionStorage.setItem("ukey","");
             setLoggedIn(false);
             router.replace("/");
           }}>Sign out</Dropdown.Item>
         </Dropdown>
+        :
+        <div className='btns flex flex-row gap-1'>
+            <Button onClick={()=>router.push('login')} theme={customsubmitTheme} size={"xs"} color='appsuccess'>Login</Button>
+            <Button onClick={()=>router.push("register")} theme={customsubmitTheme} size={"xs"} color='appsuccess'>Sign Up</Button>
+          </div>
         }
           <Navbar.Toggle />
 

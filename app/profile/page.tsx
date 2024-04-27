@@ -1,7 +1,6 @@
 'use client';
 import Image from "next/image";
 import { Button,Label, TextInput, Card, Tooltip, Badge } from 'flowbite-react';
-import Link from 'next/link';
 import { customInputBoxTheme, customsubmitTheme } from '../customTheme/appTheme';
 import logoApp from '../../public/Naledi.png';
 import iknown from '../../public/logoinknow.png';

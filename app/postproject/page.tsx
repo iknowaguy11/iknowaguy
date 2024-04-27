@@ -58,7 +58,7 @@ const Postproject = () => {
                                 <Checkbox id="agree" theme={customCheckboxTheme} color="success" />
                                 <Label htmlFor="agree" className="flex">
                                     I agree with the&nbsp;
-                                    <Link href="#" className="text-appGreen hover:underline dark:text-appGreen">
+                                    <Link href="terms-and-conditions" className="text-appGreen hover:underline dark:text-appGreen">
                                         terms and conditions
                                     </Link>
                                 </Label>

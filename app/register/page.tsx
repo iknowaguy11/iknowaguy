@@ -4,7 +4,10 @@ import { customsubmitTheme } from "../customTheme/appTheme";
 import gif1 from '../../public/giphy1.gif';
 import gif2 from '../../public/giphy4.gif';
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 const Register = () => {
+
+    const router=useRouter();
     return (
         <div className="w-full mt-20 mb-8 flex items-center justify-center h-dvh">
             <div className="container mx-auto border shadow rounded gap-2 w-fit p-2">
@@ -22,7 +25,7 @@ const Register = () => {
                             />
                             <h3 className="text-lg font-semibold">Home Owner</h3>
                             <p className="text-gray-600 font-light text-wrap">Post a project, find Contractors and hire your favorite to work.</p>
-                            <Button size={"sm"} className="" theme={customsubmitTheme} type="button" color="appsuccess">Sign Up</Button>
+                            <Button onClick={()=>router.push("home-owner-registration")} size={"sm"} className="" theme={customsubmitTheme} type="button" color="appsuccess">Sign Up</Button>
                         </div>
                     </div>
                     {/* <h2 className="text-3xl text-appGreen font-extrabold text-center">Or</h2> */}
@@ -38,7 +41,7 @@ const Register = () => {
                             />
                             <h3 className="text-lg font-semibold">Contractor</h3>
                             <p className="text-gray-600 font-light text-wrap">Create a professional profile and bid on job requests</p>
-                            <Button size={"sm"} className="" theme={customsubmitTheme} type="button" color="appsuccess">Sign Up</Button>
+                            <Button onClick={()=>router.push("contractor-registration")} size={"sm"} className="" theme={customsubmitTheme} type="button" color="appsuccess">Sign Up</Button>
                         </div>
                     </div>
                 </div>

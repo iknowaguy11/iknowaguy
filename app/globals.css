@@ -11,7 +11,7 @@ a:hover {
 }
 
 .serch:hover {
-  @apply hover:text-gray-800 cursor-pointer
+  @apply hover:text-white cursor-pointer
 }
 
 button:hover {

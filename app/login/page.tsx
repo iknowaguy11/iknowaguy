@@ -11,6 +11,7 @@ import { app } from "../DB/firebaseConnection";
 import { useRouter } from "next/navigation";
 import { failureMessage, successMessage } from "../notifications/successError";
 import { AppContext } from "../Context/appContext";
+import { QuotaExceededError } from "../Interfaces/appInterfaces";
 
 export default function Login() {
     const{setLoggedIn}=useContext(AppContext);
@@ -25,13 +26,20 @@ export default function Login() {
                 const auth = getAuth(app);
             setloading(true);
             let resp=await signInWithEmailAndPassword(auth,username.trim(),password);
-            if(resp.user.uid!==""){
+            if(resp?.user?.uid!==""){
                 setloading(false);
                 SetUserName("");
                 setPassword("");
-                successMessage("Succesful login in...");
-                setLoggedIn(true);
-                router.replace("/");
+                try {
+                    window.sessionStorage.setItem("ukey",resp?.user?.uid?.trim());
+                    successMessage("Succesful login in...");
+                    setLoggedIn(true);
+                    router.replace("/");
+                } catch (error:QuotaExceededError|any) {
+                    failureMessage(String(error.message));
+                    console.log(error);
+                }
+                
             }else{
                 setloading(false);
                 failureMessage(String("No user found"));

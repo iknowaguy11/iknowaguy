@@ -49,3 +49,30 @@ export interface Icontractors{
     phone:string,
     address:string
 }
+
+export interface ITowns {
+    area: string,
+    prov:string,
+}
+
+export interface IProvince{
+    Id:string,
+    province:string,
+    Towns:ITowns[],
+}
+
+export interface IActualTasks {
+    category: string,
+    task:string,
+}
+
+export interface IServices{
+    Id:string,
+    ServiceType:string,
+    actualTask:IActualTasks[],
+}
+
+export type QuotaExceededError={
+    message:"Sorry",
+
+}
