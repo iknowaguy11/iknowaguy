@@ -9,14 +9,19 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/react-detect-offline": "^2.4.5",
+    "@types/react-timeago": "^4.1.7",
     "@types/uuid": "^9.0.8",
     "antd": "^5.16.2",
     "embla-carousel-react": "^8.0.1",
     "firebase": "^10.11.0",
     "flowbite-react": "^0.7.2",
+    "moment": "^2.30.1",
     "next": "14.1.3",
     "react": "^18",
+    "react-detect-offline": "^2.4.5",
     "react-dom": "^18",
+    "react-timeago": "^7.2.0",
     "uuid": "^9.0.1"
   },
   "devDependencies": {

@@ -1,16 +1,16 @@
 
 'use client';
 
-import { Carousel, Card, Button, Label, Select, Dropdown } from 'flowbite-react';
+import { Carousel, Card, Button, Dropdown } from 'flowbite-react';
 import Image from 'next/image';
 import plumber from '../../public/1.jpg';
 import electrican from '../../public/3.jpg';
 import gardener from '../../public/4.jpg';
 import construction from '../../public/5.jpg';
 import homegarden from '../../public/homegarden.jpg';
-import { customselectTheme } from '../customTheme/appTheme';
 import Searchresults from './Searchresults';
 import { useState } from 'react';
+import { HiSearch } from 'react-icons/hi';
 import { useRouter } from 'next/navigation';
 import { useFetchProvinces, useFetchServices } from '../_hooks/useFetch';
 import { IActualTasks, ITowns } from '../Interfaces/appInterfaces';
@@ -130,7 +130,9 @@ export function Slider() {
 
                     </div>
                     <Button className='serch mt-3 bg-appGreen text-white' size="md" as="a" color="light"
-                        onClick={() => performSeach()}>search</Button>
+                        onClick={() => performSeach()}>
+                            <HiSearch className="mr-2 h-5 w-5" />
+                            search</Button>
                 </div>
 
                 {/*search results*/}
@@ -138,11 +140,11 @@ export function Slider() {
 
             </Card>
             <Carousel className='h-[100dvh] w-[100dvw]' pauseOnHover>
-                <Image className='sliderimages' src={construction} alt="..." />
-                <Image className='sliderimages' src={electrican} alt="..." />
-                <Image className='sliderimages' src={gardener} alt="..." />
-                <Image className='sliderimages' src={plumber} alt="..." />
-                <Image className='sliderimages' src={homegarden} alt="..." />
+                <Image className='sliderimages' src={construction} priority alt="..." />
+                <Image className='sliderimages' src={electrican} priority alt="..." />
+                <Image className='sliderimages' src={gardener} priority alt="..." />
+                <Image className='sliderimages' src={plumber} priority alt="..." />
+                <Image className='sliderimages' src={homegarden} priority alt="..." />
             </Carousel>
         </div>
     );

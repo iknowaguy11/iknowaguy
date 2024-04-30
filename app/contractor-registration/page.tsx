@@ -1,8 +1,8 @@
 'use client';
-
+import { Offline, Online } from "react-detect-offline";
 import { Button, Checkbox, Label, TextInput, Badge, Card, Select, Avatar, FileInput, Alert } from 'flowbite-react';
 import Link from 'next/link';
-import { HiTrash } from 'react-icons/hi';
+import { HiTrash,HiInformationCircle } from 'react-icons/hi';
 import { customCheckboxTheme, customInputBoxTheme, customselectTheme, customsubmitTheme } from '../customTheme/appTheme';
 import { useFetchProvinces, useFetchServices } from "../_hooks/useFetch";
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
@@ -167,6 +167,7 @@ const ContractorRegistration = () => {
             }
         } catch (error: any) {
             failureMessage(error?.message);
+            Setprocessing(false);
         }
     }
 
@@ -309,10 +310,15 @@ const ContractorRegistration = () => {
                                 </Link>
                             </Label>
                         </div>
-                        {Visibility ? <Button isProcessing={isprocessing} theme={customsubmitTheme} type="submit" color="appsuccess">Register</Button>
+                        {Visibility ? <Online><Button isProcessing={isprocessing} disabled={isprocessing} theme={customsubmitTheme} type="submit" color="appsuccess">Register</Button></Online>
                             : <Alert color="warning" rounded>
                                 <span className="font-medium">Wellcome!</span> Thank You For Registering With Us.
                             </Alert>}
+                            <Offline>
+                        <Alert color="warning" icon={HiInformationCircle}>
+                            <span className="font-medium">Info alert!</span> We Could Not Detect Internet Connection.
+                            <p className="text-xs text-gray-500">Please toogle or troubleshoot your internet connection.</p>
+                        </Alert></Offline>
                     </form>
                 </Card>
             </div>

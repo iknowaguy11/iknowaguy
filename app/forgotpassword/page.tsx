@@ -1,34 +1,33 @@
 
 "use client";
-
-import { Button, FooterDivider, Label, TextInput } from "flowbite-react";
+import { Offline, Online } from "react-detect-offline";
+import { Alert, Button, FooterDivider, Label, TextInput } from "flowbite-react";
 import Link from "next/link";
 import { customInputBoxTheme, customsubmitTheme } from "../customTheme/appTheme";
-import { HiMail } from "react-icons/hi";
+import { HiInformationCircle, HiMail } from "react-icons/hi";
 import { useState } from "react";
-
 import { sendPasswordResetEmail, getAuth } from "firebase/auth";
 import { failureMessage, successMessage } from "../notifications/successError";
 import { app } from "../DB/firebaseConnection";
 
 export default function ForgotPassword() {
 
-    const[email,setEmail]=useState("");
-    const[loading,setloading]=useState(false);
-    const SendResetLink=()=>{
-        if(email!==""){
-           
+    const [email, setEmail] = useState("");
+    const [loading, setloading] = useState(false);
+    const SendResetLink = () => {
+        if (email !== "") {
+
             const auth = getAuth(app);
             setloading(true);
-        sendPasswordResetEmail(auth,email.trim()).then(() => {
-            successMessage('Password reset link has been sent to :' +email);
-            setloading(false);
-            setEmail("");
-        }).catch((err) => {  
-            failureMessage(String(err));
-            setloading(false);
-        });
-        }else{
+            sendPasswordResetEmail(auth, email.trim()).then(() => {
+                successMessage('Password reset link has been sent to :' + email);
+                setloading(false);
+                setEmail("");
+            }).catch((err) => {
+                failureMessage(String(err));
+                setloading(false);
+            });
+        } else {
             failureMessage("Email is required");
             setloading(false);
         }
@@ -43,18 +42,20 @@ export default function ForgotPassword() {
                         <div className="mb-2 block">
                             <Label htmlFor="email1" value="Your Email" />
                         </div>
-                        <TextInput value={email} onChange={(e)=>setEmail(e.target.value)} theme={customInputBoxTheme} color={"focuscolor"} icon={HiMail} id="email1" type="email" placeholder="name@mailprovider.com" required />
+                        <TextInput value={email} onChange={(e) => setEmail(e.target.value)} theme={customInputBoxTheme} color={"focuscolor"} icon={HiMail} id="email1" type="email" placeholder="name@mailprovider.com" required />
                     </div>
-                    
-                    <Button isProcessing={loading} onClick={()=>SendResetLink()}  theme={customsubmitTheme} type="button" color="appsuccess">Sent Password Reset</Button>
+                    <Online><Button isProcessing={loading} disabled={loading} onClick={() => SendResetLink()} theme={customsubmitTheme} type="button" color="appsuccess">Sent Password Reset</Button></Online>
+                    <Offline>
+                        <Alert color="warning" icon={HiInformationCircle}>
+                            <span className="font-medium">Info alert!</span> We Could Not Detect Internet Connection.
+                            <p className="text-xs text-gray-500">Please toogle or troubleshoot your internet connection.</p>
+                        </Alert></Offline>
                     <FooterDivider></FooterDivider>
                     <div className="flex justify-end gap-2">
-                    <p>Already have an account?</p> <Link className="text-appGreen" href={"login"}> Login</Link>
+                        <p>Already have an account?</p> <Link className="text-appGreen" href={"login"}> Login</Link>
                     </div>
-
                 </form>
             </div>
         </div>
-
     );
 }

@@ -14,12 +14,12 @@ import HouseExterior from '../../public/House-Exterior.jpg';
 import Diningroom from '../../public/Dining-room.jpg';
 import KidsRoom from '../../public/Kids-Room.jpg';
 import caponlycrop from '../../public/caponlycrop.png';
-import { IProjects, IhowItwors, Iinspirations } from "../Interfaces/appInterfaces";
-import { LongLorems, ShortLorems, customTheme, customsubmitTheme } from "../customTheme/appTheme";
+import { IhowItwors, Iinspirations } from "../Interfaces/appInterfaces";
+import {  customTheme, customsubmitTheme } from "../customTheme/appTheme";
 import { HiShare } from 'react-icons/hi';
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-
+import { useFetchUserProjects } from "../_hooks/useFetch";
 
 
 let howitworks: IhowItwors[] = [{
@@ -41,13 +41,6 @@ let howitworks: IhowItwors[] = [{
 
 ];
 
-export const projects: IProjects[] = [
-    { id: 'qwqwsewd', owner: 'Rebone Mandy', category: "Plumping", email: 'mandy@gmail.com',phone:'076 124 6500',addrs:"Gauteng East Gate",postTime:"2 hours ago", description: LongLorems, budget: 1230.90,myOffer:800.00,bestOffer:600.00,Status:"Active",winnerId:"noId" },
-    { id: 'jdxkekk', owner: 'Rebone Mandy', category: "Electrician", email: 'mandy@gmail.com',phone:'076 124 6500',addrs:"Limpopo Seshego",postTime:"2 hours ago", description: ShortLorems, budget: 4230.99,myOffer:3000.00,bestOffer:2500.00,Status:"Closed",winnerId:"competitorId" },
-    { id: 'wuvjtbv', owner: 'Rebone Mandy', category: "Gardener", email: 'mandy@gmail.com',phone:'076 124 6500',addrs:"Cape Town",postTime:"1 hours ago", description: ShortLorems, budget: 7210.00,myOffer:7000.00,bestOffer:7100.00,Status:"Closed",winnerId:"myId" },
-    { id: 'rufjyrtg', owner: 'Khensani Masango', category: "Plumping", email: 'mandy@gmail.com',phone:'076 124 6500',addrs:"Gauteng Pretoria",postTime:"20 min ago", description: LongLorems, budget: 4530.45,myOffer:3000.00,bestOffer:3000.00,Status:"Closed",winnerId:"competitorId" },
-    { id: 'uoimlxxb', owner: 'Hendric Dasil', category: "Interior Docor", email: 'mandy@gmail.com',phone:'076 124 6500',addrs:"KwaZulu Natal Durban",postTime:"21 min ago", description: ShortLorems, budget: 80230.00,myOffer:70100.00,bestOffer:70100.00,Status:"Closed",winnerId:"myId" }
-]
 
 const inspirations: Iinspirations[] = [
     { id: 'difuf', tittle: 'Bedroom', imgsr: Bedroom, caption: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500.", sharelink: "https://www.iknowaguysa.co.za/get-inspired/" },
@@ -62,6 +55,7 @@ const inspirations: Iinspirations[] = [
 
 const CenterBody = () => {
     const router = useRouter();
+    const { UserProjects } = useFetchUserProjects("");
     return (
         <main>
             {/*section 1*/}
@@ -84,9 +78,9 @@ Alternatively, you can <Link href={'/postproject'} className="text-appGreen">Pos
                     {
                         howitworks?.map((item, index) => (
                             <Card key={index} className="max-w-sm flex flex-col justify-center items-center gap-3">
-                                <Image className='aspect-[4/3] object-contain self-center'
-                                    width={50}
-                                    height={50}
+                                <Image className='aspect-[4/3] object-contain self-center w-auto h-auto'
+                                    width={46}
+                                    height={46}
                                     src={item.imgsr} alt="..." />
                                 <p className="font-normal text-gray-700 dark:text-gray-400 text-center">
                                     {item.tittle}</p>
@@ -103,28 +97,28 @@ Alternatively, you can <Link href={'/postproject'} className="text-appGreen">Pos
                 <h1 className="text-4xl m-3">Current Projects</h1>
                 <div className="flex-row justify-between m-4 grid gap-3 sm:grid-cols-2 md:grid-cols-2 xm:grid-cols-1 lg:grid-cols-4 xl:grid-cols-4 xs:grid-cols-1 justify-items-center mt-5 bg-slate-50 overflow-hidden p-2 rounded-md">
                     {
-                        projects?.map((item, index) =>
+                        UserProjects?.map((item, index) =>
                             Number(index) < 4 ?
                                 (
-                                    <Card key={item.id}>
+                                    <Card key={item.ProjectId}>
                                         <div className="py-3 sm:py-4">
                                             <div className="flex items-center space-x-4">
                                                 <div className="shrink-0">
                                                     <Image
                                                         alt="client(s)"
-                                                        height={32}
                                                         src={caponlycrop}
-                                                        width={32}
-                                                        className="rounded-full"
+                                                        blurDataURL={"https://firebasestorage.googleapis.com/v0/b/inknowaguy.appspot.com/o/caponlycrop.png?alt=media&token=99e3aa53-2ec1-4b25-96c0-53ee0d03a8a5"}
+                                                        height={32}
+                                                        className="rounded-full aspect-[4/3] object-contain w-auto h-auto"
                                                     />
                                                 </div>
                                                 <div className="min-w-0 flex-1">
                                                     <p className="truncate text-sm font-medium text-gray-900 dark:text-white">{item.owner}</p>
                                                     <p className="truncate text-sm text-gray-500 dark:text-gray-400">{item.email}</p>
-                                                    <p className=" text-sm text-gray-500 dark:text-gray-400">category: {item.category}</p>
+                                                    <p className=" text-sm text-gray-500 dark:text-gray-400">category: {item.task}</p>
                                                 </div>
                                                 <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                                                    R{item.budget.toFixed(2)}
+                                                    R{parseFloat(item.budget).toFixed(2)}
                                                 </div>
                                             </div>
                                         </div>

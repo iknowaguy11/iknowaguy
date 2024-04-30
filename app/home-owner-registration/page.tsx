@@ -1,26 +1,35 @@
 'use client';
-
-import { Button, Checkbox, Label, TextInput, Badge, Card, Select, Avatar, FileInput } from 'flowbite-react';
+import { Offline, Online } from "react-detect-offline";
+import { Button, Checkbox, Label, TextInput, Card, Avatar, Alert } from 'flowbite-react';
 import Link from 'next/link';
-import { HiTrash } from 'react-icons/hi';
-import { customCheckboxTheme, customInputBoxTheme, customselectTheme, customsubmitTheme } from '../customTheme/appTheme';
-import { useFetchProvinces, useFetchServices } from "../_hooks/useFetch";
-import { useRef, useState } from "react";
+import { customCheckboxTheme, customInputBoxTheme, customsubmitTheme } from '../customTheme/appTheme';
+import { FormEvent, useRef, useState } from "react";
+import { useRouter } from 'next/navigation';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { v4 } from "uuid";
+import { HiInformationCircle } from 'react-icons/hi';
+import { db, storage } from '../DB/firebaseConnection';
+import { failureMessage, successMessage } from '../notifications/successError';
+import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
 
 const HomeOwnerRegistration = () => {
-    const { ProvinceData, DataError, isLoading } = useFetchProvinces();
-    const { ServiceData, serviceError, isLoadingservies } = useFetchServices();
-    const [selectedServices, SetSelectedServices] = useState<string[]>([]);
-    const AppendSelectedServices = (value: string) => {
-        if (!selectedServices.includes(value) && selectedServices.length < 15) {
-            const updatedSelectedServices = [...selectedServices, value];
-            SetSelectedServices(updatedSelectedServices);
-        }
-    }
-    const RemoveServices = (value: string) => {
-        const updatedServices = selectedServices.filter((item) => item !== value);
-        SetSelectedServices(updatedServices);
-    }
+
+    let image_url: string;
+    const router = useRouter();
+    const [avatarImage, setAvatarImage] = useState<any>(null);
+    const [Imageupload, setImageupload] = useState<File | null>(null);
+    const [firstName, setFristName] = useState<string>("");
+    const [LastName, setLastName] = useState<string>("");
+    const [HomeownerEmail, setHomeOwnerEmail] = useState<string>("");
+    const [HomeOwnerpassword, setpassword] = useState<string>("");
+    const [ConfirmPassword, setConfirmPassword] = useState<string>("");
+    const [phone, setPhone] = useState<string>("");
+    const [tncs, setTnCs] = useState<boolean>(false);
+    const [isprocessing, Setprocessing] = useState<boolean>(false);
+    const [Visibility, setVisibility] = useState<boolean>(true);
+    var imgfilename: string;
+
     const fileInputRef = useRef<any>(null);
 
     const handleImageChange = (e: any) => {
@@ -37,6 +46,7 @@ const HomeOwnerRegistration = () => {
                 // Set the image source to the selected file
                 const imageDataUrl = event.target.result;
                 setAvatarImage(imageDataUrl);
+                setImageupload(file);
             };
             reader.readAsDataURL(file);
         }
@@ -47,13 +57,106 @@ const HomeOwnerRegistration = () => {
         fileInputRef.current.click();
     };
 
-    const [avatarImage, setAvatarImage] = useState(null);
+
+    const RegisterMember = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        Setprocessing(true);
+        await uploadProfileImage();
+        if (image_url !== null && image_url?.includes("http")) {
+            if (IsError()) return;
+            AddFirestoreData();
+        } else {
+            Setprocessing(false);
+            failureMessage("Opps... we had an issue while uploading your media files. (Try again)");
+        }
+    }
+    const uploadProfileImage = async () => {
+        if (Imageupload == null) return;
+        imgfilename = Imageupload?.name + v4();
+        var filepath = `ProfileImages/${imgfilename}`;
+        const imageRef = ref(storage, filepath);
+        try {
+            await uploadBytes(imageRef, Imageupload);
+            image_url = await getDownloadURL(ref(storage, filepath));
+        } catch (err: any) {
+            failureMessage(err?.message);
+        }
+    }
+    const AddFirestoreData = async () => {
+        try {
+            const auth = getAuth();
+            const profileData = {
+                companyName: firstName,
+                companyEmail: HomeownerEmail.toLowerCase(),
+                phone,
+                Address: "",
+                profileImage: image_url,
+                certificate: "",
+                imgfilename,
+                pdffilename: "",
+                isactive: "yes",
+                membership: "homeowner",
+                Services: [],
+                tncs: tncs ? "agreed" : "not agreed but registered"
+            }
+            let resp = await createUserWithEmailAndPassword(auth, HomeownerEmail.trim(), HomeOwnerpassword);
+            if (resp?.user?.uid !== undefined && resp?.user?.uid !== null) {
+                setDoc(doc(db, 'Users', resp?.user?.uid.trim()), profileData).then(() => {
+                    Setprocessing(false);
+                    successMessage("Sucessfully registered");
+                    setVisibility(false);
+                    setTimeout(VisibileRegisterButton, 4000);
+                }).catch((err: any) => {
+                    Setprocessing(false);
+                    failureMessage(err?.message);
+                });
+            }
+        } catch (error: any) {
+            Setprocessing(false);
+            failureMessage(error?.message);
+        }
+    }
+
+    const IsError = () => {
+        let found: Boolean;
+        found = false;
+        if (HomeownerEmail == "" || HomeOwnerpassword == "" ||
+            firstName == "" || LastName == "" || ConfirmPassword == "" ||
+            phone == "" || image_url == "" || imgfilename == "") {
+            found = true;
+            Setprocessing(false);
+            failureMessage("Please correct your form entry.");
+        }
+        if (!tncs) {
+            found = true;
+            Setprocessing(false);
+            failureMessage("Please agree to the terms and conditions.");
+        };
+        return found;
+    }
+
+    const VisibileRegisterButton = () => {
+        cleanUp();
+        setVisibility(true);
+        router.replace('login');
+    }
+
+    const cleanUp = () => {
+        setFristName("");
+        setLastName("");
+        setPhone("");
+        setpassword("");
+        setConfirmPassword("");
+        image_url = "";
+        imgfilename = "";
+        setTnCs(false);
+    }
 
     return (
         <div className="w-full gap-4">
             <div className="h-full flex justify-center bg-opacity-75 bg-black">
                 <Card className='flex max-w-lg flex-grow rounded top-0 mt-20 mb-3 ml-1 mr-1'>
-                    <form className="flex max-w-lg flex-col gap-4 flex-grow">
+                    <form onSubmit={(e) => RegisterMember(e)} className="flex max-w-lg flex-col gap-4 flex-grow">
                         <div>
                             <input
                                 type="file"
@@ -64,7 +167,7 @@ const HomeOwnerRegistration = () => {
                             />
                             <Avatar size={"lg"} className='hover:cursor-pointer' onClick={OpenImagePicker} img={avatarImage == null ? "" : avatarImage}>
                                 <div className="space-y-1 font-medium dark:text-white">
-                                    <div>Your Facial image</div>
+                                    <div>Your Facial Image</div>
                                 </div>
                             </Avatar>
                         </div>
@@ -72,52 +175,60 @@ const HomeOwnerRegistration = () => {
                             <div className="mb-2 block">
                                 <Label htmlFor="name" value="First Name *" />
                             </div>
-                            <TextInput theme={customInputBoxTheme} color={"focuscolor"} id="name" type="text" placeholder="First Name" required shadow />
+                            <TextInput onChange={(e) => setFristName(e.target.value)} value={firstName} theme={customInputBoxTheme} color={"focuscolor"} id="name" type="text" placeholder="First Name" required shadow />
                         </div>
                         <div>
                             <div className="mb-2 block">
                                 <Label htmlFor="lstN" value="Last Name *" />
                             </div>
-                            <TextInput theme={customInputBoxTheme} color={"focuscolor"} id="lstN" type="text" placeholder="Last Name" required shadow />
+                            <TextInput onChange={(e) => setLastName(e.target.value)} value={LastName} theme={customInputBoxTheme} color={"focuscolor"} id="lstN" type="text" placeholder="Last Name" required shadow />
                         </div>
                         <div>
                             <div className="mb-2 block">
                                 <Label htmlFor="emailclient" value="Your Email *" />
                             </div>
-                            <TextInput theme={customInputBoxTheme} color={"focuscolor"} id="emailclient" type="email" placeholder="Your Email" required shadow />
+                            <TextInput onChange={(e) => setHomeOwnerEmail(e.target.value)} value={HomeownerEmail} theme={customInputBoxTheme} color={"focuscolor"} id="emailclient" type="email" placeholder="Your Email" required shadow />
                         </div>
 
                         <div>
                             <div className="mb-2 block">
                                 <Label htmlFor="pass" value="Your Password *" />
                             </div>
-                            <TextInput theme={customInputBoxTheme} color={"focuscolor"} id="pass" type="password" placeholder="Your Password" required shadow />
+                            <TextInput onChange={(e) => setpassword(e.target.value)} value={HomeOwnerpassword} theme={customInputBoxTheme} color={"focuscolor"} id="pass" type="password" placeholder="Your Password" required shadow />
                         </div>
 
                         <div>
                             <div className="mb-2 block">
                                 <Label htmlFor="Cpass" value="Confirm Your Password *" />
                             </div>
-                            <TextInput theme={customInputBoxTheme} color={"focuscolor"} id="Cpass" type="password" placeholder="Confirm Your Password" required shadow />
+                            <TextInput onChange={(e) => setConfirmPassword(e.target.value)} value={ConfirmPassword} theme={customInputBoxTheme} color={"focuscolor"} id="Cpass" type="password" placeholder="Confirm Your Password" required shadow />
                         </div>
 
                         <div>
                             <div className="mb-2 block">
                                 <Label htmlFor="Town" value="Phone No. *" />
                             </div>
-                            <TextInput theme={customInputBoxTheme} color={"focuscolor"} id="addr" type="tel" placeholder="Phone numbers" maxLength={10} required shadow />
+                            <TextInput onChange={(e) => setPhone(e.target.value)} value={phone} theme={customInputBoxTheme} color={"focuscolor"} id="addr" type="tel" placeholder="Phone numbers" maxLength={10} required shadow />
                         </div>
 
                         <div className="flex items-center gap-2">
-                            <Checkbox id="agree" theme={customCheckboxTheme} color="success" />
+                            <Checkbox checked={tncs} onChange={() => setTnCs(tncs ? false : true)} id="agree" theme={customCheckboxTheme} color="success" />
                             <Label htmlFor="agree" className="flex">
                                 I agree with the&nbsp;
-                                <Link href="terms-and-conditions" className="text-appGreen hover:underline dark:text-appGreen">
+                                <Link href="terms-and-conditions" target='_blank' className="text-appGreen hover:underline dark:text-appGreen">
                                     terms and conditions
                                 </Link>
                             </Label>
                         </div>
-                        <Button theme={customsubmitTheme} type="submit" color="appsuccess">Register</Button>
+                        {Visibility ? <Online><Button disabled={isprocessing ? true : false} isProcessing={isprocessing} theme={customsubmitTheme} type="submit" color="appsuccess">Register</Button></Online>
+                            : <Alert color="warning" rounded>
+                                <span className="font-medium">Wellcome!</span> Thank You For Registering With Us.
+                            </Alert>}
+                        <Offline>
+                            <Alert color="warning" icon={HiInformationCircle}>
+                                <span className="font-medium">Info alert!</span> We Could Not Detect Internet Connection.
+                                <p className="text-xs text-gray-500">Please toogle or troubleshoot your internet connection.</p>
+                            </Alert></Offline>
                     </form>
                 </Card>
             </div>
