@@ -17,6 +17,7 @@ const MyProjects = ({ item }: { item: IProjects }) => {
                         alt="Owner Picture"
                         height={40}
                         width={40}
+                        priority={false}
                         className="aspect-[3/4] rounded border mt-2 mb-2 mr-2"
                     />
 
@@ -34,7 +35,7 @@ const MyProjects = ({ item }: { item: IProjects }) => {
             <Badge icon={HiCash} color={"gray"} className="w-fit p-1 mt-1"> Budget : R{parseFloat(item?.budget).toFixed(2)}</Badge>
             <Badge icon={HiCash} color={"gray"} className="w-fit p-1 mt-1"> Best Offer : R{item?.bestOffer} {item?.winnerId == "myId" && item?.Status == "Closed" ? "🤝🏽✅" : null}</Badge>
             <p className="text-clip text-wrap">{item?.description}</p>
-            <Badge icon={HiCollection}  color={"light"} className="w-fit p-1 mt-1 mb-1"> No. of Bids Received : {item?.AllcontactorKeys?.length}</Badge>
+            <Badge icon={HiCollection}  color={"light"} className="w-fit p-1 mt-1 mb-1"> N0. of Bids Received : {item?.AllcontactorKeys?.length}</Badge>
             <div className="flex flex-wrap gap-2">
                 {
                     item?.otherOffers.length > 0 && item?.otherOffers?.map((ofrs, index) => (

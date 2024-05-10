@@ -39,7 +39,7 @@ const Jobtemplate = ({ item,membership,CurrUserKey }: { item: IProjects,membersh
 
             </div>
             <Badge icon={HiOutlineBriefcase}  color={"gray"} className="w-fit p-1 mt-1"> Job/Project : {item?.task}</Badge>
-            <Badge icon={HiCollection}  color={"light"} className="w-fit p-1 mt-1"> No. of Bids Received : {item?.AllcontactorKeys?.length}</Badge>
+            <Badge icon={HiCollection}  color={"light"} className="w-fit p-1 mt-1"> N0. of Bids Received : {item?.AllcontactorKeys?.length}</Badge>
             <p className="text-clip text-wrap">{item?.description}</p>
             {
                 membership=="contractor" &&

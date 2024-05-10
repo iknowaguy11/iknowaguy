@@ -30,7 +30,7 @@ const MyBids = ({ item,MyKey }: { item: IProjects,MyKey:string }) => {
             <Badge icon={HiCash}  color={"gray"} className="w-fit p-1 mt-1"> Budget : R{parseFloat(item?.budget).toFixed(2)}</Badge>
             <Badge icon={HiCash}  color={"gray"} className="w-fit p-1 mt-1"> Competing Offer : R{item?.bestOffer} {item?.winnerId=="competitorId" && item?.Status=="Closed" ? "🤝🏽✅" : null}</Badge>
             <p className="text-clip text-wrap">{item?.description}</p>
-            <Badge icon={HiCollection}  color={"light"} className="w-fit p-1 mt-1"> No. of Bids Received : {item?.AllcontactorKeys?.length}</Badge>
+            <Badge icon={HiCollection}  color={"light"} className="w-fit p-1 mt-1"> N0. of Bids Received : {item?.AllcontactorKeys?.length}</Badge>
             {!item.AllcontactorKeys.includes(MyKey?.trim()) && <Button className="place-self-end" theme={customsubmitTheme} type="button" color="appsuccess">Bid</Button>}
         </div>
     );

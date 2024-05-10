@@ -17,7 +17,6 @@ const Profile = () => {
         if(window?.sessionStorage?.getItem("ukey")==undefined || window?.sessionStorage?.getItem("ukey")==null || window?.sessionStorage?.getItem("ukey")=="" ){
             router.replace('login');
         }
-        console.log("profile");
     },[router]);
     return (
         <>
