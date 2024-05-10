@@ -1,11 +1,158 @@
 
 'use client';
 
-import { Button, Checkbox, Label, TextInput, Textarea, Card } from 'flowbite-react';
+import { Button, Checkbox, Label, TextInput, Card, Select, Alert, Badge } from 'flowbite-react';
 import Link from 'next/link';
-import { customCheckboxTheme, customInputBoxTheme, customsubmitTheme } from '../customTheme/appTheme';
+import { Offline, Online } from "react-detect-offline";
+import { NetworkMessage, NetworkTitle, customCheckboxTheme, customInputBoxTheme, customselectTheme, customsubmitTheme } from '../customTheme/appTheme';
+import { FormEvent, useCallback, useEffect, useState } from 'react';
+import { useFetchProvinces, useFetchServices } from '../_hooks/useFetch';
+import { HiTrash, HiInformationCircle } from 'react-icons/hi';
+import { db } from '../DB/firebaseConnection';
+import { failureMessage, successMessage } from '../notifications/successError';
+import { useRouter } from 'next/navigation';
+import { addDoc, collection } from 'firebase/firestore';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 export default function Recommend() {
+    const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+    const { ProvinceData, DataError, isLoading } = useFetchProvinces();
+    const { ServiceData, serviceError, isLoadingservies } = useFetchServices();
+    const [ContractorName, SetContractorName] = useState<string>("");
+    const [ContractorPhone, SetContractorPhone] = useState<string>("");
+    const [CompanyName, SetCompanyName] = useState<string>("");
+    const [RecommederName, SetRecommederName] = useState<string>("");
+    const [HowdoYouKnowThem, SetHowdoYouKnowThem] = useState<string>("");
+    const [Address, setAddress] = useState<string>("");
+    const [ContractorEmail, SetContractorEmail] = useState<string>("");
+    const [selectedServices, SetSelectedServices] = useState<string[]>([]);
+    const [tncs, setTnCs] = useState<boolean>(false);
+    const [isprocessing, Setprocessing] = useState<boolean>(false);
+    const [Visibility, setVisibility] = useState<boolean>(true);
+    let responseMessage:string;
+    const setResponseMessage=(msg:any)=> responseMessage=msg;
+    const router = useRouter();
+    const AppendSelectedServices = useCallback((value: string) => {
+        if (!selectedServices.includes(value) && selectedServices.length < 15) {
+            const updatedSelectedServices = [...selectedServices, value];
+            SetSelectedServices(updatedSelectedServices);
+        }
+    }, [selectedServices, SetSelectedServices]);
+    const RemoveServices = (value: string) => {
+        const updatedServices = selectedServices.filter((item) => item !== value);
+        SetSelectedServices(updatedServices);
+    }
+    const handleRecaptchaChange = (token: string | null) => {
+        setRecaptchaToken(token);
+    };
+    useEffect(() => {
+        if (ProvinceData && ProvinceData.length > 0) {
+            const firstTown = ProvinceData[0]?.Towns[0]?.area;
+            setAddress(firstTown);
+        }
+        if (ServiceData && ServiceData.length > 0) {
+            const firstService = ServiceData[0]?.actualTask[0]?.task;
+            AppendSelectedServices(firstService);
+        }
+    }, [ProvinceData, ServiceData]);
+
+    const VisibileRegisterButton = () => {
+        cleanUp();
+        setVisibility(true);
+        router.replace('/');
+    }
+
+    const cleanUp = () => {
+        SetContractorName("");
+        SetContractorPhone("");
+        SetCompanyName("");
+        SetRecommederName("");
+        setAddress("");
+        SetContractorEmail("");
+        SetSelectedServices([]);
+        setTnCs(false);
+        Setprocessing(false);
+        setVisibility(true);
+    }
+
+    const RecomentContractor = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        Setprocessing(true);
+        if (IsError()) return;
+        AddFirestoreData();
+    }
+    const IsError = () => {
+        let found: Boolean;
+        found = false;
+        if (CompanyName == "" || ContractorEmail == "" ||
+            ContractorName == "" || ContractorPhone == "" || Address == "" || HowdoYouKnowThem==""
+        ) {
+            found = true;
+            Setprocessing(false);
+            failureMessage("Please correct your form entry.");
+        }
+        if (selectedServices.length == 0) {
+            found = true;
+            Setprocessing(false);
+            failureMessage("Please select at lest one or more service(s).");
+        }
+        if (!tncs) {
+            found = true;
+            Setprocessing(false);
+            failureMessage("Please agree to the terms and conditions.");
+        };
+        return found;
+    }
+
+    const AddFirestoreData = async () => {
+        try {
+            const response = await fetch('http://localhost:4000/verify-recaptcha/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ token: recaptchaToken }),
+            });
+
+            const data = await response.json();
+            setResponseMessage(data.message);
+            
+            if (data.message == "reCAPTCHA verification successful" && data.success == true) {
+                try {
+                    const myCollection = collection(db, 'Recommended');
+                    const myDocumentData = {
+                        ContractorName,
+                        ContractorPhone,
+                        CompanyName,
+                        HowdoYouKnowThem:(HowdoYouKnowThem.trim() == "" ? "Preferred not to say" : HowdoYouKnowThem),
+                        RecommederName: (RecommederName.trim() == "" ? "Anonymous" : RecommederName),
+                        Address,
+                        ContractorEmail: ContractorEmail.trim().toLocaleLowerCase(),
+                        Services: selectedServices,
+                        tncs: tncs ? "agreed" : "not agreed but registered"
+                    };
+                    const newDocRef = await addDoc(myCollection, myDocumentData);
+                    if (newDocRef?.id) {
+                        Setprocessing(false);
+                        successMessage("Sucessfully Recommended A Contractor");
+                        setVisibility(false);
+                        setTimeout(VisibileRegisterButton, 4000);
+                    }
+                } catch (error: any) {
+                    failureMessage(error?.message);
+                    Setprocessing(false);
+                }
+            }else{
+                Setprocessing(false);
+                failureMessage(responseMessage);
+            }
+        } catch (error) {
+            Setprocessing(false);
+            console.error('Error submitting reCAPTCHA token:', error);
+            setResponseMessage('Error submitting reCAPTCHA token');
+            failureMessage("Error submitting reCAPTCHA token");
+        }
+    }
     return (
         <div className='divRecommend flex justify-center items-center'>
             <div className='grid lg:grid-cols-2 xl:lg:grid-cols-2 md:lg:grid-cols-1 sm:lg:grid-cols-1 justify-center'>
@@ -14,60 +161,105 @@ export default function Recommend() {
                     <p className='text-lg text-white text-wrap'>Do you know of a good, reliable tradesman or home care professional who does great work? Please tell us about him/her so that others can also benefit from the great service they provide.</p>
                 </div>
                 <Card className='flex max-w-md gap-4 flex-grow mt-28 mb-10 ml-2'>
-                    <form className="flex max-w-md flex-col gap-4 flex-grow">
+                    <form onSubmit={(e) => RecomentContractor(e)} className="flex max-w-md flex-col gap-4 flex-grow">
                         <div>
                             <div className="mb-2 block">
                                 <Label htmlFor="contrname" value="Contractor's Name" />
                             </div>
-                            <TextInput theme={customInputBoxTheme} color={"focuscolor"} id="contrname" type="text" placeholder="Name of the person you are recommending" required shadow />
+                            <TextInput onChange={(e) => SetContractorName(e?.target?.value)} value={ContractorName} theme={customInputBoxTheme} color={"focuscolor"} id="contrname" type="text" placeholder="Name of the person you are recommending" required shadow />
                         </div>
                         <div>
                             <div className="mb-2 block">
                                 <Label htmlFor="companyName" value="Their company Name" />
                             </div>
-                            <TextInput theme={customInputBoxTheme} color={"focuscolor"} id="companyName" type="text" placeholder="Contractor company Name" required shadow />
+                            <TextInput onChange={(e) => SetCompanyName(e?.target?.value)} value={CompanyName} theme={customInputBoxTheme} color={"focuscolor"} id="companyName" type="text" placeholder="Contractor company Name" required shadow />
                         </div>
                         <div>
                             <div className="mb-2 block">
                                 <Label htmlFor="contractphone" value="Contractor's Phone No." />
                             </div>
-                            <TextInput theme={customInputBoxTheme} color={"focuscolor"} id="contractphone" type="text" placeholder="Name of the person you are recommending" required shadow />
+                            <TextInput onChange={(e) => SetContractorPhone(e?.target?.value)} value={ContractorPhone} theme={customInputBoxTheme} color={"focuscolor"} id="contractphone" type="tel" placeholder="Name of the person you are recommending" maxLength={10} required shadow />
                         </div>
                         <div>
                             <div className="mb-2 block">
                                 <Label htmlFor="contemail" value="Their Email" />
                             </div>
-                            <TextInput theme={customInputBoxTheme} color={"focuscolor"} id="contemail" type="email" placeholder="someone@company.co.za" required shadow />
+                            <TextInput onChange={(e) => SetContractorEmail(e?.target?.value)} value={ContractorEmail} theme={customInputBoxTheme} color={"focuscolor"} id="contemail" type="email" placeholder="Someone@mailprovider.co.za" required shadow />
                         </div>
                         <div>
                             <div className="mb-2 block">
-                                <Label htmlFor="Town" value="Company's Physical Address" />
+                                <Label htmlFor="Town" value="Compay's Address*" />
                             </div>
-                            <TextInput theme={customInputBoxTheme} color={"focuscolor"} id="Town" type="text" placeholder="Company's Physical address (may be town/city/village/etc.)" required shadow />
+
+                            <Select id="addrSecltor" onChange={(e) => setAddress(e.target.value)} className="max-w-md" theme={customselectTheme} color={"success"} required>
+                                {ProvinceData?.map((item, index) => (
+                                    <optgroup label={item.province} key={item.Id}>
+                                        {item?.Towns?.map((ars, index) => (
+                                            <option key={index}>{ars.area}</option>
+                                        ))}
+                                    </optgroup>
+                                ))}
+                            </Select>
+                        </div>
+
+                        <div>
+                            <div className="mb-2 block">
+                                <Label htmlFor="Town" value="Company's Service(s) *" />
+                                <span className="text-xs text-gray-600 font-light text-wrap"> Limit : 15</span>
+                            </div>
+                            <Select onChange={(e) => AppendSelectedServices(e.target.value)} className="max-w-md" id="Service" theme={customselectTheme} color={"success"} required>
+                                {ServiceData?.map((item) => (
+                                    <optgroup label={item.ServiceType} key={item.Id}>
+                                        {item?.actualTask?.map((ars, index) => (
+                                            <option key={index}>{ars.task}</option>
+                                        ))}
+                                    </optgroup>
+                                ))}
+                            </Select>
+                            <div className="grid grid-cols-3  gap-1 pt-2">
+                                {selectedServices?.map((itm, index) => (
+                                    <div key={index} className='flex flex-wrap gap-2'>
+                                        <Badge onClick={() => RemoveServices(itm)} className="w-fit hover:cursor-pointer bg-appGreen text-white" icon={HiTrash} color="success">{itm}</Badge>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                         <div>
                             <div className="mb-2 block">
-                                <Label htmlFor="Services" value="Type of Services Rendering" />
+                                <Label htmlFor="shareUrName" value="Share your Name" />
                             </div>
-                            <Textarea theme={customInputBoxTheme} color={"focuscolor"} id="Services" placeholder="Indicate the type of Services they are rendering." required rows={3} />
+                            <TextInput onChange={(e) => SetRecommederName(e?.target?.value)} value={RecommederName} theme={customInputBoxTheme} color={"focuscolor"} id="shareUrName" type="text" placeholder='Share your Name (Optional)' shadow />
                         </div>
                         <div>
                             <div className="mb-2 block">
-                                <Label htmlFor="yourname" value="Share your Name" />
+                                <Label htmlFor="relation" value="How Do You Know Them" />
                             </div>
-                            <TextInput theme={customInputBoxTheme} color={"focuscolor"} id="repeat-password" type="text" placeholder='Share your Name' required shadow />
+                            <TextInput value={HowdoYouKnowThem} onChange={(e) => SetHowdoYouKnowThem(e?.target?.value)} theme={customInputBoxTheme} color={"focuscolor"} id="relation" type="text" placeholder='Your Relationship With The Contractor (Optional)' shadow />
                         </div>
                         <div className="flex items-center gap-2">
-                            <Checkbox id="agree" theme={customCheckboxTheme} color="success" />
+                            <Checkbox id="agree" checked={tncs} onChange={() => setTnCs(tncs ? false : true)} theme={customCheckboxTheme} color="success" />
                             <Label htmlFor="agree" className="flex">
                                 I agree with the&nbsp;
-                                <Link href="terms-and-conditions" className="text-appGreen hover:underline dark:text-appGreen">
+                                <Link href="terms-and-conditions" target="_blank" className="text-appGreen hover:underline dark:text-appGreen">
                                     terms and conditions
                                 </Link>
                             </Label>
                         </div>
-                        <Button theme={customsubmitTheme} type="submit" color="appsuccess">Recommend</Button>
+                        {Visibility ? <Online><Button isProcessing={isprocessing} disabled={isprocessing} theme={customsubmitTheme} type="submit" color="appsuccess">Recommend</Button></Online>
+                            : <Alert color="warning" rounded>
+                                <span className="font-medium">Hurray!</span> Thank You For "Recommeding a Guy".
+                            </Alert>}
+                        <Offline>
+                            <Alert color="warning" icon={HiInformationCircle}>
+                                <span className="font-medium">Info alert!</span>{NetworkTitle}
+                                <p className="text-xs text-gray-500">{NetworkMessage}</p>
+                            </Alert></Offline>
                     </form>
+                    <ReCAPTCHA
+                    className='self-center'
+                        sitekey={("6Lc6SdMpAAAAAD5XHKyVRfFFqheA6T5r4QAvSTJI" || process.env.NEXT_PUBLIC_SITE_KEY)?.toString()}
+                        onChange={(e) => handleRecaptchaChange(e)}
+                    />
                 </Card>
             </div>
         </div>

@@ -2,7 +2,7 @@
 import { Offline, Online } from "react-detect-offline";
 import { Button, Checkbox, Label, TextInput, Card, Avatar, Alert } from 'flowbite-react';
 import Link from 'next/link';
-import { customCheckboxTheme, customInputBoxTheme, customsubmitTheme } from '../customTheme/appTheme';
+import { NetworkMessage, NetworkTitle, customCheckboxTheme, customInputBoxTheme, customsubmitTheme } from '../customTheme/appTheme';
 import { FormEvent, useRef, useState } from "react";
 import { useRouter } from 'next/navigation';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
@@ -12,6 +12,8 @@ import { db, storage } from '../DB/firebaseConnection';
 import { failureMessage, successMessage } from '../notifications/successError';
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
+import moment from 'moment';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 const HomeOwnerRegistration = () => {
 
@@ -29,6 +31,9 @@ const HomeOwnerRegistration = () => {
     const [isprocessing, Setprocessing] = useState<boolean>(false);
     const [Visibility, setVisibility] = useState<boolean>(true);
     var imgfilename: string;
+    let responseMessage: string;
+    const setResponseMessage = (msg: any) => responseMessage = msg;
+    const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
 
     const fileInputRef = useRef<any>(null);
 
@@ -56,7 +61,9 @@ const HomeOwnerRegistration = () => {
         // Open the file picker by clicking the hidden file input
         fileInputRef.current.click();
     };
-
+    const handleRecaptchaChange = (token: string | null) => {
+        setRecaptchaToken(token);
+    };
 
     const RegisterMember = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -84,37 +91,68 @@ const HomeOwnerRegistration = () => {
     }
     const AddFirestoreData = async () => {
         try {
-            const auth = getAuth();
-            const profileData = {
-                companyName: firstName,
-                companyEmail: HomeownerEmail.toLowerCase(),
-                phone,
-                Address: "",
-                profileImage: image_url,
-                certificate: "",
-                imgfilename,
-                pdffilename: "",
-                isactive: "yes",
-                membership: "homeowner",
-                Services: [],
-                tncs: tncs ? "agreed" : "not agreed but registered"
-            }
-            let resp = await createUserWithEmailAndPassword(auth, HomeownerEmail.trim(), HomeOwnerpassword);
-            if (resp?.user?.uid !== undefined && resp?.user?.uid !== null) {
-                setDoc(doc(db, 'Users', resp?.user?.uid.trim()), profileData).then(() => {
+            const response = await fetch('http://localhost:4000/verify-recaptcha/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ token: recaptchaToken }),
+            });
+
+            const data = await response.json();
+            setResponseMessage(data.message);
+
+            if (data.message == "reCAPTCHA verification successful" && data.success == true) {
+                try {
+                    const auth = getAuth();
+                    const profileData = {
+                        companyName: "",
+                        companyEmail: HomeownerEmail.toLowerCase(),
+                        phone,
+                        Address: "",
+                        YourName:firstName,
+                        YourSurName:LastName,
+                        RegistrationNo:"",
+                        YourID:"",
+                        formSubmitted: "Home owner form",
+                        AdvertisingMsg:"",
+                        profileImage: image_url,
+                        certificate: "",
+                        imgfilename,
+                        pdffilename: "",
+                        isactive: "yes",
+                        membership: "homeowner",
+                        Services: [],
+                        tncs: tncs ? "agreed" : "not agreed but registered",
+                        TimeRegistered: moment().format('MMMM Do YYYY, h:mm a')
+                    }
+                    let resp = await createUserWithEmailAndPassword(auth, HomeownerEmail.trim(), HomeOwnerpassword);
+                    if (resp?.user?.uid !== undefined && resp?.user?.uid !== null) {
+                        setDoc(doc(db, 'Users', resp?.user?.uid.trim()), profileData).then(() => {
+                            Setprocessing(false);
+                            successMessage("Sucessfully registered");
+                            setVisibility(false);
+                            setTimeout(VisibileRegisterButton, 4000);
+                        }).catch((err: any) => {
+                            Setprocessing(false);
+                            failureMessage(err?.message);
+                        });
+                    }
+                } catch (error: any) {
                     Setprocessing(false);
-                    successMessage("Sucessfully registered");
-                    setVisibility(false);
-                    setTimeout(VisibileRegisterButton, 4000);
-                }).catch((err: any) => {
-                    Setprocessing(false);
-                    failureMessage(err?.message);
-                });
+                    failureMessage(error?.message);
+                }
+            } else {
+                Setprocessing(false);
+                failureMessage(responseMessage);
             }
-        } catch (error: any) {
+        } catch (error) {
             Setprocessing(false);
-            failureMessage(error?.message);
+            console.error('Error submitting reCAPTCHA token:', error);
+            setResponseMessage('Error submitting reCAPTCHA token');
+            failureMessage("Error submitting reCAPTCHA token");
         }
+
     }
 
     const IsError = () => {
@@ -226,10 +264,15 @@ const HomeOwnerRegistration = () => {
                             </Alert>}
                         <Offline>
                             <Alert color="warning" icon={HiInformationCircle}>
-                                <span className="font-medium">Info alert!</span> We Could Not Detect Internet Connection.
-                                <p className="text-xs text-gray-500">Please toogle or troubleshoot your internet connection.</p>
+                                <span className="font-medium">Info alert!</span> {NetworkTitle}
+                                <p className="text-xs text-gray-500">{NetworkMessage}</p>
                             </Alert></Offline>
                     </form>
+                    <ReCAPTCHA
+                        className='self-center'
+                        sitekey={("6Lc6SdMpAAAAAD5XHKyVRfFFqheA6T5r4QAvSTJI" || process.env.NEXT_PUBLIC_SITE_KEY)?.toString()}
+                        onChange={(e) => handleRecaptchaChange(e)}
+                    />
                 </Card>
             </div>
         </div>

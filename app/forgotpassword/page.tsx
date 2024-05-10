@@ -3,7 +3,7 @@
 import { Offline, Online } from "react-detect-offline";
 import { Alert, Button, FooterDivider, Label, TextInput } from "flowbite-react";
 import Link from "next/link";
-import { customInputBoxTheme, customsubmitTheme } from "../customTheme/appTheme";
+import { NetworkMessage, NetworkTitle, customInputBoxTheme, customsubmitTheme } from "../customTheme/appTheme";
 import { HiInformationCircle, HiMail } from "react-icons/hi";
 import { useState } from "react";
 import { sendPasswordResetEmail, getAuth } from "firebase/auth";
@@ -37,7 +37,7 @@ export default function ForgotPassword() {
             <div>
                 <form className="flex max-w-md flex-col gap-4 w-screen flex-grow border p-7 rounded-md shadow-md">
                     <h2 className="text-lg font-bold">Reset Your Password</h2>
-                    <p className="text-gray-600 font-light">Enter your email address below. We'll look for your account and send you a password reset email.</p>
+                    <p className="text-gray-600 font-light">Enter your email address below. We`ll look for your account and send you a password reset email.</p>
                     <div>
                         <div className="mb-2 block">
                             <Label htmlFor="email1" value="Your Email" />
@@ -47,8 +47,8 @@ export default function ForgotPassword() {
                     <Online><Button isProcessing={loading} disabled={loading} onClick={() => SendResetLink()} theme={customsubmitTheme} type="button" color="appsuccess">Sent Password Reset</Button></Online>
                     <Offline>
                         <Alert color="warning" icon={HiInformationCircle}>
-                            <span className="font-medium">Info alert!</span> We Could Not Detect Internet Connection.
-                            <p className="text-xs text-gray-500">Please toogle or troubleshoot your internet connection.</p>
+                            <span className="font-medium">Info alert!</span> {NetworkTitle}
+                            <p className="text-xs text-gray-500">{NetworkMessage}</p>
                         </Alert></Offline>
                     <FooterDivider></FooterDivider>
                     <div className="flex justify-end gap-2">

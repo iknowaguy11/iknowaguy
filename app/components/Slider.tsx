@@ -54,12 +54,16 @@ export function Slider() {
 
     const router = useRouter();
     const performSeach = () => {
+        console.log(ServiceCategory+" "+SelectedSubcategory);
+        console.log(provCategory+" "+Selectedsubarea);
         // if (selectedValue.toLocaleLowerCase().trim() == "all" && typedValue.trim() == "") {
         //     router.push('/contractors');
         // }
-        // if ((selectedValue.toLocaleLowerCase().trim() == "all" || selectedValue.toLocaleLowerCase().trim() != "all") && typedValue.trim() != "") {
-        //     router.push(`/contractors/${typedValue.toLowerCase()}/${selectedValue}`);
-        // }
+        if (( ServiceCategory.toLocaleLowerCase().trim() != "Select Service") && ( SelectedSubcategory.toLocaleLowerCase().trim() != "")
+        && ( provCategory.toLocaleLowerCase().trim() != "Select your location") && ( Selectedsubarea.toLocaleLowerCase().trim() != "")) {
+            router.push(`/contractors/${ServiceCategory.toLocaleLowerCase().trim()}/${SelectedSubcategory.toLocaleLowerCase().trim()}/
+            ${provCategory.toLocaleLowerCase().trim()}/${Selectedsubarea.toLocaleLowerCase().trim()}`);
+        }
     }
     return (
         <div id='searchBox' className="relative content-center">
@@ -71,14 +75,12 @@ export function Slider() {
                     <div className="grid gap-2 lg:grid-cols-2 xl:grid-cols-2 sm:grid-cols-1 md:grid-cols-1">
                         <div className="w-full gap-2">
 
-                            <Dropdown className='max-w-md' color='light' style={{ width: '100%' }} label={ServiceCategory}>
-
+                            <Dropdown className='max-w-md focus:ring-green-300 focus:border-appGreen' color='light' style={{ width: '100%' }} label={ServiceCategory}>
                                 {ServiceData?.map((item) => (
-                                    <Dropdown.Item onClick={() => SetSelectedService(item.ServiceType)} key={item.Id}>
+                                    <Dropdown.Item className='focus:ring-green-300 focus:border-appGreen' onClick={() => SetSelectedService(item.ServiceType)} key={item.Id}>
                                         {"🛠️" + item.ServiceType}
                                     </Dropdown.Item>
                                 )
-
                                 )}
                             </Dropdown>
                             {subcategory.length > 0 &&

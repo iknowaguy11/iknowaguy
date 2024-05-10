@@ -30,6 +30,7 @@ export interface IProjects {
     phone: string,
     addrs: string,
     postTime: string,
+    AllcontactorKeys:string[],
     description: string,
     budget: string,
     otherOffers: IOtherOffers[],
@@ -110,5 +111,68 @@ export interface IUser {
     membership: string,
     Services: [],
     tncs: string,
+    YourName:string,
+    YourSurName:string,
+    RegistrationNo:string,
+    YourID:string,
+    formSubmitted:string,
+    AdvertisingMsg:string,
+}
+
+
+export interface IPlans{
+    id:number,
+    Package:string,
+    Offering:string,
+    Price:number,
+    bid:number
+}
+
+export interface ITokens{
+    BidsGenerated:string,
+    Time_stamp:string,
+    Tokencost:string,
+    purchaseToken:string
+}
+
+export interface IBidCredits{
+    credit:string,
+    tokens:ITokens[]
+}
+
+export const DefaultProjectObject =
+{
+    ProjectId: "",
+    ownerId: "",
+    owner: "",
+    Profpic: "",
+    task: "",
+    email: "",
+    phone: "",
+    addrs: "",
+    postTime: "",
+    AllcontactorKeys:[],
+    description: "",
+    budget: "",
+    otherOffers: [
+        {
+            Id: "",
+            companyName: "",
+            companyEmail: "",
+            firstName: "",
+            LastName: "",
+            phone: "",
+            profileImage: "",
+            Address: "",
+            membership: "",
+            CompanyKey: "",
+            OfferMade: "",
+        }
+    ],
+    bestOffer: "",
+    Status: "",
+    winnerId: "",
+    bstOffrId: "",
+    tncs: "",
 }
 

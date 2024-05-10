@@ -8,9 +8,7 @@ import { IinspirationsCarosal } from '../inspirations/[...slug]/page';
 import Image from 'next/image';
 
 
-
 const EmblaCarousel = ({ slides, options }: { slides: IinspirationsCarosal[], options?: EmblaOptionsType }) => {
-  //const { slides, options } = props
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [emblaMainRef, emblaMainApi] = useEmblaCarousel(options)
   const [emblaThumbsRef, emblaThumbsApi] = useEmblaCarousel({
@@ -60,7 +58,7 @@ const EmblaCarousel = ({ slides, options }: { slides: IinspirationsCarosal[], op
         <div className="embla-thumbs__viewport" ref={emblaThumbsRef}>
           <div className="embla-thumbs__container">
             {slides.map((item, index) => (
-                <Image
+                <Image key={item.id}
                   onClick={() => onThumbClick(item.id)}
                   className={'w-full h-auto aspect-[3/4] object-scale-down overflow-hidden rounded-md embla-thumbs__slide'.concat(
                     selectedIndex ? ' embla-thumbs__slide--selected' : ''

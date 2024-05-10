@@ -139,8 +139,7 @@ button:hover {
 }
 
 .divRecommend {
-  /* Background pattern from Toptal Subtle Patterns */
-  background-image: url("https://firebasestorage.googleapis.com/v0/b/metrorail-5b955.appspot.com/o/jules-a-R6LaEftVTYE-unsplash.jpg?alt=media&token=9de48797-4f06-4c25-8291-266036ebc4e9");
+  background-image: url("../public/background.jpg");
 }
 
 /*emba css*/

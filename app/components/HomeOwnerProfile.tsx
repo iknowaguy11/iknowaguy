@@ -7,12 +7,11 @@ import { HiPlusCircle } from 'react-icons/hi';
 import { IUser } from "../Interfaces/appInterfaces";
 import MyProjects from "./MyProjects";
 import { useRouter } from "next/navigation";
-import { AppContext } from "../Context/appContext";
 import { useFetchUserProjects } from "../_hooks/useFetch";
 
 const HomeOwnerProfile = ({UserData}:{UserData:IUser[]}) => {
-    const [LastName, setLastName] = useState<string>(UserData[0]?.LastName);
-    const [FristName, setFristName] = useState<string>(UserData[0]?.firstName);
+    const [LastName, setLastName] = useState<string>(UserData[0]?.YourSurName);
+    const [FristName, setFristName] = useState<string>(UserData[0]?.YourName);
     const [phone, setPhone] = useState<string>(UserData[0]?.phone);
     const { UserProjects } = useFetchUserProjects(UserData[0]?.Id);
     const router=useRouter();
@@ -65,7 +64,7 @@ const HomeOwnerProfile = ({UserData}:{UserData:IUser[]}) => {
 
                         <div>
                             <div className="mb-2 block">
-                                <Label htmlFor="phone" value={"User Phone No."} />
+                                <Label htmlFor="phone" value={"User Phone No. *"} />
                             </div>
                             <TextInput theme={customInputBoxTheme} onChange={(e)=>setPhone(e.target.value)} value={phone} color={"focuscolor"} id="phone" type="tel" placeholder="Phone Numbers" maxLength={10} required shadow />
                         </div>

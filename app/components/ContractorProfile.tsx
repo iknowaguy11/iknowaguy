@@ -1,40 +1,43 @@
-import { Card,Label,Tooltip,TextInput,Select, Badge, Button } from "flowbite-react";
-import { useFetchProvinces, useFetchServices, useFetchUserProjects, useFetchgetContractorProjects } from "../_hooks/useFetch";
+import { Card, Label, Tooltip, TextInput, Select, Badge, Button } from "flowbite-react";
+import { useFetchBidCredits, useFetchProvinces, useFetchServices, useFetchgetContractorProjects } from "../_hooks/useFetch";
 import { useState } from "react";
 import certificatePng from '../../public/certificate.png';
 import iknown from '../../public/logoinknow.png';
 import MyBids from "../components/MyBids";
-import { customInputBoxTheme, customsubmitTheme,customselectTheme } from '../customTheme/appTheme';
+import { customInputBoxTheme, customsubmitTheme, customselectTheme } from '../customTheme/appTheme';
 import Image from "next/image";
 import Link from "next/link";
-import { HiTrash } from 'react-icons/hi';
+import { HiTrash, HiShoppingCart } from 'react-icons/hi';
 import { IUser } from "../Interfaces/appInterfaces";
+import { useRouter } from "next/navigation";
 
-const ContractorProfile = ({UserData}:{UserData:IUser[]}) => {
+const ContractorProfile = ({ UserData }: { UserData: IUser[] }) => {
     const { ProvinceData, DataError, isLoading } = useFetchProvinces();
     const { ServiceData, serviceError, isLoadingservies } = useFetchServices();
-    const { ContractorProjects, ProjectsError, isGettingProjects  } = useFetchgetContractorProjects(UserData[0]?.Id);
-    //const { UserProjects } = useFetchUserProjects(UserData[0]?.Id);
+    const { ContractorProjects, ProjectsError, isGettingProjects } = useFetchgetContractorProjects(UserData[0]?.Id);
+    const {BidCredits}=useFetchBidCredits(UserData[0]?.Id);
+
     const [companyName, setcompanyName] = useState<string>(UserData[0]?.companyName);
     const [Address, setAddress] = useState<string>(UserData[0]?.Address);
     const [phone, setPhone] = useState<string>(UserData[0]?.phone);
+    const router = useRouter();
 
-    return ( 
+    return (
         <>
-        <div className="h-full items-center justify-items-center">
+            <div className="h-full items-center justify-items-center">
                 <Card className='flex max-w-lg flex-grow rounded mt-3'>
                     <form className="flex max-w-lg flex-col gap-4 flex-grow">
                         <div className="mb-2 block">
                             {
                                 UserData[0]?.profileImage &&
                                 <Image
-                                src={UserData[0]?.profileImage}
-                                alt="Picture of the author"
-                                className="mr-3 w-auto sm:h-9"
-                                width={170}
-                                height={40}
-                                
-                            />
+                                    src={UserData[0]?.profileImage}
+                                    alt="Picture of the author"
+                                    className="mr-3 w-auto sm:h-9"
+                                    width={170}
+                                    height={40}
+
+                                />
                             }
                         </div>
                         <p className="text-xs text-gray-500">{UserData[0]?.companyEmail}</p>
@@ -57,7 +60,7 @@ const ContractorProfile = ({UserData}:{UserData:IUser[]}) => {
                             <TextInput theme={customInputBoxTheme} value={Address || UserData[0]?.Address} readOnly color={"focuscolor"} id="addr" disabled type="text" placeholder="The address where the work will be done" required shadow />
                         </div>
                         {
-                            ProvinceData.length>0 &&
+                            ProvinceData.length > 0 &&
                             <Select id="addrSecltor" className="max-w-md" theme={customselectTheme} color={"success"} required>
                                 {ProvinceData?.map((item, index) => (
                                     <optgroup label={item.province} key={item.Id}>
@@ -68,12 +71,12 @@ const ContractorProfile = ({UserData}:{UserData:IUser[]}) => {
                                 ))}
                             </Select>
                         }
-                        
+
                         <div>
                             <div className="mb-2 block">
-                                <Label htmlFor="phone" value={"Company Phone No as recorded : "+UserData[0]?.phone} />
+                                <Label htmlFor="phone" value={"Company Phone No as recorded : " + UserData[0]?.phone} />
                             </div>
-                            <TextInput theme={customInputBoxTheme} onChange={(e)=>setPhone(e.target.value)} value={phone} color={"focuscolor"} id="addr" type="tel" placeholder="The company's phone numbers" maxLength={10} required shadow />
+                            <TextInput theme={customInputBoxTheme} onChange={(e) => setPhone(e.target.value)} value={phone} color={"focuscolor"} id="addr" type="tel" placeholder="The company's phone numbers" maxLength={10} required shadow />
                         </div>
 
                         <div>
@@ -82,13 +85,13 @@ const ContractorProfile = ({UserData}:{UserData:IUser[]}) => {
                             </div>
                             {
                                 UserData[0]?.certificate && <Link href={UserData[0]?.certificate} target="_blank">
-                                <Image
-                                    alt="certificate pdf"
-                                    src={certificatePng}
-                                    width={25}
-                                    height={25}
-                                />
-                            </Link>
+                                    <Image
+                                        alt="certificate pdf"
+                                        src={certificatePng}
+                                        width={25}
+                                        height={25}
+                                    />
+                                </Link>
                             }
                         </div>
 
@@ -98,28 +101,28 @@ const ContractorProfile = ({UserData}:{UserData:IUser[]}) => {
                             </div>
                             <div className="flex gap-1">
                                 {
-                                    UserData[0]?.Services.map((serv,index) => (
+                                    UserData[0]?.Services.map((serv, index) => (
                                         <div key={index} className='flex flex-wrap gap-2'>
                                             <Badge icon={HiTrash} className="bg-appGreen text-white" color="success">{serv}</Badge>
-                                        </div>                                       
+                                        </div>
                                     ))
                                 }
 
                             </div>
                         </div>
 
-                        {ServiceData.length>0 &&
-                        <Select className="max-w-md" id="Service" theme={customselectTheme} color={"success"} required>
-                        {ServiceData?.map((item) => (
-                            <optgroup label={item.ServiceType} key={item.Id}>
-                                {item?.actualTask?.map((ars, index) => (
-                                    <option key={index}>{ars.task}</option>
+                        {ServiceData.length > 0 &&
+                            <Select className="max-w-md" id="Service" theme={customselectTheme} color={"success"} required>
+                                {ServiceData?.map((item) => (
+                                    <optgroup label={item.ServiceType} key={item.Id}>
+                                        {item?.actualTask?.map((ars, index) => (
+                                            <option key={index}>{ars.task}</option>
+                                        ))}
+                                    </optgroup>
                                 ))}
-                            </optgroup>
-                        ))}
-                    </Select>
+                            </Select>
                         }
-                        
+
                         <Button theme={customsubmitTheme} type="submit" color="appsuccess">Update</Button>
                     </form>
                 </Card>
@@ -141,17 +144,27 @@ const ContractorProfile = ({UserData}:{UserData:IUser[]}) => {
                             />
                         </div>
                         <p className="text-xs text-gray-500">support@ikag.co.za</p>
+                        <Button
+                            onClick={() => router.push('purchase')}
+                            size={"sm"}
+                            theme={customsubmitTheme}
+                            color="appsuccess"
+                            type="button"
+                            className="inline-flex w-full justify-center rounded-lg text-center text-sm font-medium text-white focus:outline-none focus:ring-4 focus:ring-cyan-200 dark:focus:ring-cyan-200"
+                        >
+                            <HiShoppingCart className="mr-2 h-5 w-5" /> Purchase Bid Credits
+                        </Button>
+                        <p className="text-md text-gray-800">Balance:{BidCredits[0]?.credit || 0} Bid(s)</p>
                         {
                             ContractorProjects?.map((item) => (
-                                <MyBids item={item} key={item.ProjectId}/>
+                                <MyBids item={item} key={item.ProjectId} MyKey={UserData[0]?.Id}/>
                             ))
                         }
-
                     </form>
                 </Card>
             </div>
         </>
-     );
+    );
 }
- 
+
 export default ContractorProfile;

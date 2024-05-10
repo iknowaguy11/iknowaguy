@@ -3,9 +3,9 @@
 import { Offline, Online } from "react-detect-offline";
 import { Alert, Button, FooterDivider, Label, TextInput } from "flowbite-react";
 import Link from "next/link";
-import { customInputBoxTheme, customsubmitTheme } from "../customTheme/appTheme";
+import { NetworkMessage, NetworkTitle, customInputBoxTheme, customsubmitTheme } from "../customTheme/appTheme";
 import { HiMail } from "react-icons/hi";
-import { FormEvent, useContext, useState } from "react";
+import { FormEvent, useContext, useEffect, useState } from "react";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { app } from "../DB/firebaseConnection";
 import { useRouter } from "next/navigation";
@@ -21,9 +21,11 @@ export default function Login() {
     const [loading, setloading] = useState(false);
     const router = useRouter();
 
-    if (window?.sessionStorage?.getItem("ukey") !== undefined && window?.sessionStorage?.getItem("ukey") !== null && window?.sessionStorage?.getItem("ukey") !== "") {
-        router.replace('/');
-    }
+    useEffect(()=>{
+        if (window?.sessionStorage?.getItem("ukey") !== undefined && window?.sessionStorage?.getItem("ukey") !== null && window?.sessionStorage?.getItem("ukey") !== "") {
+            router.replace('/');
+        }
+    },[router]);
     const AttemptLogin = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (username !== "" && password !== "") {
@@ -78,8 +80,8 @@ export default function Login() {
                     </Online>
                     <Offline>
                         <Alert color="warning" icon={HiInformationCircle}>
-                            <span className="font-medium">Info alert!</span> We Could Not Detect Internet Connection.
-                            <p className="text-xs text-gray-500">Please toogle or troubleshoot your internet connection.</p>
+                            <span className="font-medium">Info alert!</span> {NetworkTitle}
+                            <p className="text-xs text-gray-500">{NetworkMessage}</p>
                         </Alert></Offline>
                     <FooterDivider></FooterDivider>
                     <div className="flex justify-between">

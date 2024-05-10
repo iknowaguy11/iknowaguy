@@ -2,6 +2,7 @@
 'use client';
 
 import { Footer } from 'flowbite-react';
+import Link from 'next/link';
 import { BsDribbble, BsFacebook, BsGithub, BsInstagram, BsTwitter } from 'react-icons/bs';
 
 export function FooterApp() {
@@ -12,8 +13,8 @@ export function FooterApp() {
           <div>
             <Footer.Title title="Company" />
             <Footer.LinkGroup col>
-              <Footer.Link href="#">About</Footer.Link>
-              <Footer.Link href="#">Blog</Footer.Link>
+              <Footer.Link href="tel:087 012 5690">087 012 5690</Footer.Link>
+              <Footer.Link href="mailto:support@iknowaguy.co.za" as={Link}>support@iknowaguy.co.za</Footer.Link>
             </Footer.LinkGroup>
           </div>
           <div>
@@ -21,7 +22,6 @@ export function FooterApp() {
             <Footer.LinkGroup col>
               <Footer.Link href="#">Twitter</Footer.Link>
               <Footer.Link href="#">Facebook</Footer.Link>
-              <Footer.Link href="#">Contact Us</Footer.Link>
             </Footer.LinkGroup>
           </div>
           <div>
@@ -33,10 +33,11 @@ export function FooterApp() {
             </Footer.LinkGroup>
           </div>
           <div>
-            <Footer.Title title="download" />
+            <Footer.Title title="Quick Links" />
             <Footer.LinkGroup col>
-              <Footer.Link href="#">iOS</Footer.Link>
-              <Footer.Link href="#">Android</Footer.Link>
+              <Footer.Link href="purchase" as={Link}>Biding Credits</Footer.Link>
+              <Footer.Link href="recommend" as={Link}>Recommend A "Guy"</Footer.Link>
+              <Footer.Link href="contractors" as={Link}>Contractors</Footer.Link>
             </Footer.LinkGroup>
           </div>
         </div>

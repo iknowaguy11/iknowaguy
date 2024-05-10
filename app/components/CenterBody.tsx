@@ -1,5 +1,5 @@
 'use client';
-import { Badge, Button, Card } from "flowbite-react";
+import { Alert, Badge, Button, Card } from "flowbite-react";
 import Image from "next/image";
 import Post from '../../public/Post.png';
 import Quotes from '../../public/Quotes.png';
@@ -16,10 +16,14 @@ import KidsRoom from '../../public/Kids-Room.jpg';
 import caponlycrop from '../../public/caponlycrop.png';
 import { IhowItwors, Iinspirations } from "../Interfaces/appInterfaces";
 import {  customTheme, customsubmitTheme } from "../customTheme/appTheme";
-import { HiShare } from 'react-icons/hi';
+import { HiShare,HiMail } from 'react-icons/hi';
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useFetchUserProjects } from "../_hooks/useFetch";
+import LoadingProjects from "./LoadingProjects";
+import LoadingProjectError from "./LoadingProjectError";
+import { useState } from "react";
+import { failureMessage, successMessage } from "../notifications/successError";
 
 
 let howitworks: IhowItwors[] = [{
@@ -43,19 +47,41 @@ let howitworks: IhowItwors[] = [{
 
 
 const inspirations: Iinspirations[] = [
-    { id: 'difuf', tittle: 'Bedroom', imgsr: Bedroom, caption: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500.", sharelink: "https://www.iknowaguysa.co.za/get-inspired/" },
-    { id: 'fkgh', tittle: 'Bathroom', imgsr: Bathroom, caption: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500.", sharelink: "https://www.iknowaguysa.co.za/get-inspired/" },
-    { id: 'vjdc', tittle: 'Kitchen', imgsr: Kitchen, caption: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500.", sharelink: "https://www.iknowaguysa.co.za/get-inspired/" },
-    { id: 'kljh', tittle: 'Interior Decor', imgsr: InteriorDecor, caption: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500.", sharelink: "https://www.iknowaguysa.co.za/get-inspired/" },
-    { id: 'dhdyrhv', tittle: 'Landscape', imgsr: Landscape, caption: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500.", sharelink: "https://www.iknowaguysa.co.za/get-inspired/" },
-    { id: 'wfd', tittle: 'Home Exterior', imgsr: HouseExterior, caption: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500.", sharelink: "https://www.iknowaguysa.co.za/get-inspired/" },
-    { id: 'ioiyu', tittle: 'Dining Room', imgsr: Diningroom, caption: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500.", sharelink: "https://www.iknowaguysa.co.za/get-inspired/" },
-    { id: 'cvcvcrgd', tittle: 'Kids Room', imgsr: KidsRoom, caption: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500.", sharelink: "https://www.iknowaguysa.co.za/get-inspired/" },
+    { id: '0', tittle: 'Bedroom', imgsr: Bedroom, caption: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500.", sharelink: "Bedroom" },
+    { id: '1', tittle: 'Bathroom', imgsr: Bathroom, caption: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500.", sharelink: "Bathroom" },
+    { id: '2', tittle: 'Kitchen', imgsr: Kitchen, caption: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500.", sharelink: "Kitchen" },
+    { id: '3', tittle: 'Interior Decor', imgsr: InteriorDecor, caption: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500.", sharelink: "Interior-Decor" },
+    { id: '4', tittle: 'Landscape', imgsr: Landscape, caption: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500.", sharelink: "Landscape" },
+    { id: '5', tittle: 'Home-Exterior', imgsr: HouseExterior, caption: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500.", sharelink: "Home-Exterior" },
+    { id: '6', tittle: 'Dining-Room', imgsr: Diningroom, caption: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500.", sharelink: "Dining-Room" },
+    { id: '7', tittle: 'Kids-Room', imgsr: KidsRoom, caption: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500.", sharelink: "Kids-Room" },
 ]
+
 
 const CenterBody = () => {
     const router = useRouter();
-    const { UserProjects } = useFetchUserProjects("");
+    const [isNotification,setNotification]=useState(false);
+    const { UserProjects,ProjectsError, isGettingProjects  } = useFetchUserProjects("");
+    const CheckProjects=()=>{
+        if(UserProjects?.length>0){
+            router.push("/jobs");
+        }else{
+            setNotification(true);
+            setTimeout(HideNotification, 5000);
+        } 
+    }
+
+    const HideNotification=()=>{
+        setNotification(false);
+    }
+    const copylink = (link:string) => {
+        try {
+            navigator.clipboard.writeText(link);
+            successMessage("Copied Link");
+        } catch (error:any) {
+            failureMessage(String(error?.message));
+        }
+    }
     return (
         <main>
             {/*section 1*/}
@@ -95,9 +121,9 @@ Alternatively, you can <Link href={'/postproject'} className="text-appGreen">Pos
             <div id="jobSection" className="flex flex-col justify-center items-center gap-2 p-6">
                 <Button onClick={()=>router.push("/postproject")} theme={customsubmitTheme} size={"md"} type="submit" color="appsuccess">Post A Project</Button>
                 <h1 className="text-4xl m-3">Current Projects</h1>
-                <div className="flex-row justify-between m-4 grid gap-3 sm:grid-cols-2 md:grid-cols-2 xm:grid-cols-1 lg:grid-cols-4 xl:grid-cols-4 xs:grid-cols-1 justify-items-center mt-5 bg-slate-50 overflow-hidden p-2 rounded-md">
-                    {
-                        UserProjects?.map((item, index) =>
+                <div className="flex-row justify-between m-4 grid gap-3 sm:grid-cols-2 md:grid-cols-2 xm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 xs:grid-cols-1 justify-items-center mt-5 bg-slate-50 overflow-hidden p-2 rounded-md">
+                    { 
+                        isGettingProjects==false && UserProjects.length>0 ? UserProjects?.map((item, index) =>
                             Number(index) < 4 ?
                                 (
                                     <Card key={item.ProjectId}>
@@ -113,9 +139,9 @@ Alternatively, you can <Link href={'/postproject'} className="text-appGreen">Pos
                                                     />
                                                 </div>
                                                 <div className="min-w-0 flex-1">
-                                                    <p className="truncate text-sm font-medium text-gray-900 dark:text-white">{item.owner}</p>
-                                                    <p className="truncate text-sm text-gray-500 dark:text-gray-400">{item.email}</p>
-                                                    <p className=" text-sm text-gray-500 dark:text-gray-400">category: {item.task}</p>
+                                                    <p className="truncate text-sm font-medium text-gray-900 dark:text-white">{item.owner.replace(item.owner.substring(2,item.owner.length-1),"***")}</p>
+                                                    <p className="flex truncate text-sm text-gray-500 dark:text-gray-400"><HiMail className="w-4 h-4 gap-1 mt-1"/>{item.email.replace(item.email.substring(1,item.email.indexOf("@")),"*******")}</p>
+                                                    <p className=" text-sm text-gray-500 dark:text-gray-400">Job/Task: {item.task}</p>
                                                 </div>
                                                 <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
                                                     R{parseFloat(item.budget).toFixed(2)}
@@ -123,16 +149,19 @@ Alternatively, you can <Link href={'/postproject'} className="text-appGreen">Pos
                                             </div>
                                         </div>
                                         <div className="flex">
-                                            <Button theme={customsubmitTheme} color="appsuccess" size="xs">Explore</Button>
+                                            <Button onClick={()=>router.push("moredetails/"+item.ProjectId)} theme={customsubmitTheme} color="appsuccess" size="xs">Explore</Button>
                                         </div>
                                     </Card>
                                 ) : null
-                        )
+                        ):isGettingProjects && (ProjectsError==undefined || ProjectsError==null) ? <LoadingProjects/> : ProjectsError!=undefined || ProjectsError!=null ? <LoadingProjectError/> :null
                     }
 
                 </div>
-                <Button onClick={()=>router.push("/jobs")} theme={customsubmitTheme} color="appsuccess" size="md">See more projects</Button>
-
+                <Button onClick={()=>CheckProjects()} theme={customsubmitTheme} color="appsuccess" size="md">See More Projects</Button>
+                {isNotification && <Alert color="warning" rounded>
+                    <span className="font-medium">Info alert!</span> we Currently Have no Projects to Show/Advertise.
+                  </Alert>}
+                
             </div>
             {/*section 4*/}
             <div id='inspirations' className="flex flex-col justify-center items-center gap-2 p-6">
@@ -143,15 +172,15 @@ Alternatively, you can <Link href={'/postproject'} className="text-appGreen">Pos
                         <div
                              key={item.id} className="max-w-sm relative overflow-hidden rounded-md hover:cursor-pointer"
                         >
-                            <Badge onClick={() => router.push(item.sharelink)} theme={customTheme} color={"success"} className="absolute z-10 w-fit top-0 m-1 hover:cursor-pointer" icon={HiShare}>share</Badge>
+                            <Badge onClick={() =>copylink("https://"+(window?.location?.hostname).toString()+"/inspirations/"+item.sharelink)} theme={customTheme} color={"success"} className="absolute z-10 w-fit top-0 m-1 hover:cursor-pointer" icon={HiShare}>copy link</Badge>
                             <Image
-                            onClick={()=>router.push("inspirations/"+item.tittle)}
+                            onClick={()=>router.push("inspirations/"+item.sharelink)}
                                 src={item.imgsr}
                                 alt="inspiration"
                                 className="aspect-[4/3] object-cover"
                             />
                             <div className="flex-wrap absolute z-10 bottom-0 bg-opacity-75 bg-black p-3">
-                                <h5 onClick={()=>router.push("inspirations/"+item.tittle)} className="text-2xl font-bold tracking-tight text-white dark:text-white hover:text-appGreen">
+                                <h5 onClick={()=>router.push("inspirations/"+item.sharelink)} className="text-2xl font-bold tracking-tight text-white dark:text-white hover:text-appGreen">
                                     {item.tittle}
                                 </h5>
                                 <p className="font-normal text-stone-100 dark:text-stone-100">

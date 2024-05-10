@@ -1,24 +1,23 @@
 'use client';
 
 import Image from "next/image";
-import Landscape from '../../public/Landscape.jpg';
-import { customInputBoxTheme, customsubmitTheme } from "../customTheme/appTheme";
-import {Button, TextInput } from "flowbite-react";
-import { HiSearch } from 'react-icons/hi';
-import Jobtemplate from "../components/JobTemplate";
-import { useFetchUserAccount, useFetchUserProjects } from "../_hooks/useFetch";
-import { useContext, useState } from "react";
+import Landscape from '../../../public/Landscape.jpg';
+import Jobtemplate from "@/app/components/JobTemplate";
+import { useFetchSingleProjects, useFetchUserAccount } from "@/app/_hooks/useFetch";
+import ProjectNotFound from "@/app/components/ProjectNotFound";
+import { useContext } from "react";
+import { AppContext } from "@/app/Context/appContext";
+import { Button } from "flowbite-react";
 import { HiHome } from "react-icons/hi";
 import { useRouter } from "next/navigation";
-import { AppContext } from "../Context/appContext";
+import { customsubmitTheme } from "@/app/customTheme/appTheme";
 
-const Jobs = () => {
-    const { UserProjects } = useFetchUserProjects("");
-    const [SearchText,SetSerarchText]=useState("");
+const MoreDetails = ({params}:{params:{slug:string}}) => {
+    const { SingleProject } = useFetchSingleProjects(params?.slug);
     const { ukey } = useContext(AppContext);
     const { UserData, accountError, isGettingAccount } = useFetchUserAccount(ukey);
     const router=useRouter();
-    return (
+    return ( 
         <div className="w-full gap-4 mt-16 mb-10">
             <div className="relative w-full">
                 <Image
@@ -33,23 +32,18 @@ const Jobs = () => {
                     </div>
                     <div className="h-full items-center justify-items-center">
                     
-                    <TextInput onChange={(e)=>SetSerarchText(e.target.value.trim())} value={SearchText} icon={HiSearch} theme={customInputBoxTheme} color={"focuscolor"} id="Town" type="text" placeholder="search for a project" required shadow />
+                    {/* <TextInput onChange={(e)=>SetSerarchText(e.target.value.trim())} value={SearchText} icon={HiSearch} theme={customInputBoxTheme} color={"focuscolor"} id="Town" type="text" placeholder="search for a project" required shadow /> */}
                     </div>
                 </div>
             </div>
             <Button theme={customsubmitTheme} onClick={()=>router.replace("/")} className="m-2" size={"md"} color="light">
                 <HiHome className="-ml-0.5 mr-2 h-4 w-4" />Home</Button>
-           { SearchText=="" ?
-            UserProjects?.map((item)=>(
-                <Jobtemplate item={item} key={item.ProjectId} membership={UserData[0]?.membership} CurrUserKey={UserData[0]?.Id}/>
-            )) : SearchText !== "" && UserProjects.filter((value) => {
-                return SearchText.toLocaleLowerCase() === '' ? value : value.task.toLowerCase().includes(SearchText.toLocaleLowerCase());
-            }).map((itm)=>(
-                <Jobtemplate item={itm} key={itm.ProjectId} membership={UserData[0]?.membership} CurrUserKey={UserData[0]?.Id}/>
-            ))
-           }  
+           { 
+           SingleProject?.ProjectId!=="" ?
+            <Jobtemplate item={SingleProject} key={SingleProject?.ProjectId} membership={UserData[0]?.membership} CurrUserKey={UserData[0]?.Id}/> : <ProjectNotFound/>
+           } 
         </div>
-    );
+     );
 }
-
-export default Jobs;
+ 
+export default MoreDetails;

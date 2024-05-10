@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { IOtherOffers, IProjects, IProvince, IServices, IUser } from "../Interfaces/appInterfaces";
-import { collection, getDocs, onSnapshot, query, where } from "firebase/firestore";
+import { DefaultProjectObject, IBidCredits, IProjects, IProvince, IServices, IUser } from "../Interfaces/appInterfaces";
+import { collection,onSnapshot} from "firebase/firestore";
 import { db } from "../DB/firebaseConnection";
 
 export const useFetchProvinces = () => {
@@ -71,6 +71,38 @@ export const useFetchServices = () => {
     }
 }
 
+export const useFetchBidCredits = (Ukey: string) => {
+    const [BidCredits, SetBidCredits] = useState<IBidCredits[]>([]);
+    const [BidCreditError, SetBidCreditError] = useState<unknown>(null);
+    const [isLoadingCredits, SetisLoadingCredits] = useState<boolean>(false);
+
+    useEffect(() => {
+        const colRef = collection(db, "BidCredits");
+        SetisLoadingCredits(true);
+
+        const unsubscribe = onSnapshot(colRef, (snapshot) => {
+            const tempData: IBidCredits[] = [];
+            snapshot.docs.forEach((doc) => {
+                if (doc.id === Ukey) {
+                    tempData.push({
+                        credit: doc.data()?.credit,
+                        tokens: doc.data()?.tokens
+                    });
+                }
+            });
+            SetBidCredits(tempData);
+            SetisLoadingCredits(false);
+        }, (error) => {
+            SetisLoadingCredits(false);
+            SetBidCreditError(error);
+        });
+
+        return () => unsubscribe();
+    }, []);
+
+    return { BidCredits, BidCreditError, isLoadingCredits };
+};
+
 export const useFetchUserAccount = (ukey: string | null) => {
 
     const [UserData, SetUserData] = useState<IUser[]>([]);
@@ -115,7 +147,13 @@ const getUserData = async (ukey: string | null, SetUserData: Dispatch<SetStateAc
                             isactive: doc.data()?.isactive,
                             membership: doc.data()?.membership,
                             Services: doc.data()?.Services,
-                            tncs: doc.data()?.tncs
+                            tncs: doc.data()?.tncs,
+                            YourName:doc.data()?.YourName,
+                            YourSurName:doc.data()?.YourSurName,
+                            RegistrationNo:doc.data()?.RegistrationNo,
+                            YourID:doc.data()?.YourID,
+                            formSubmitted:doc.data()?.formSubmitted,
+                            AdvertisingMsg:doc.data()?.AdvertisingMsg,
                         }
                     );
                 }
@@ -166,6 +204,7 @@ const getUserProject = async (ukey: string | null, SetUserProjects: Dispatch<Set
                             phone: doc.data()?.phone,
                             addrs: doc.data()?.addrs,
                             postTime: doc.data()?.postTime,
+                            AllcontactorKeys:doc.data()?.AllcontactorKeys,
                             description: doc.data()?.description,
                             budget: doc.data()?.budget,
                             otherOffers: doc.data()?.otherOffers,
@@ -188,6 +227,7 @@ const getUserProject = async (ukey: string | null, SetUserProjects: Dispatch<Set
                             phone: doc.data()?.phone,
                             addrs: doc.data()?.addrs,
                             postTime: doc.data()?.postTime,
+                            AllcontactorKeys:doc.data()?.AllcontactorKeys,
                             description: doc.data()?.description,
                             budget: doc.data()?.budget,
                             otherOffers: doc.data()?.otherOffers,
@@ -215,12 +255,13 @@ export const useFetchgetContractorProjects = (userKey: string) => {
         useEffect(() => {
             const colRef = collection(db, "Projects");
             const unsubscribe = onSnapshot(colRef, (snapshot) => {
-                SetContractorProjects([]);
+                var tempData: IProjects[] = [];
                 snapshot.forEach((doc) => {
                     if (doc.data()?.otherOffers?.length > 0) {
                         doc.data().otherOffers?.forEach((item: any) => {
+                            SetisGettingProjects(true);
                             if (item.CompanyKey == userKey) {
-                                SetContractorProjects([...ContractorProjects, {
+                                tempData.push({
                                     ProjectId: doc.id,
                                     ownerId: doc.data()?.ownerId,
                                     owner: doc.data()?.owner,
@@ -230,6 +271,7 @@ export const useFetchgetContractorProjects = (userKey: string) => {
                                     phone: doc.data()?.phone,
                                     addrs: doc.data()?.addrs,
                                     postTime: doc.data()?.postTime,
+                                    AllcontactorKeys:doc.data()?.AllcontactorKeys,
                                     description: doc.data()?.description,
                                     budget: doc.data()?.budget,
                                     otherOffers: doc.data()?.otherOffers,
@@ -238,8 +280,10 @@ export const useFetchgetContractorProjects = (userKey: string) => {
                                     winnerId: doc.data()?.winnerId,
                                     bstOffrId: doc.data()?.bstOffrId,
                                     tncs: doc.data()?.tncs,
-                                }]);
+                                });
                             }
+                            SetisGettingProjects(false);
+                            SetContractorProjects(tempData);
                         });
                     }
                 });
@@ -248,8 +292,150 @@ export const useFetchgetContractorProjects = (userKey: string) => {
         }, [userKey]);
 
     } catch (error: any) {
+        SetisGettingProjects(false);
         SetProjectsError(error.message);
     } finally {
         return { ContractorProjects, ProjectsError, isGettingProjects };
+    }
+}
+
+export const useFetchSingleProjects = (projectId: string) => {
+
+    const [SingleProject, SetProject] = useState<IProjects>(DefaultProjectObject);
+    const [ProjectError, SetProjectError] = useState<unknown>(null);
+    const [isGettingProject, SetisGettingProject] = useState<boolean>(false);
+    try {
+        useEffect(() => {
+            const colRef = collection(db, "Projects");
+            const unsubscribe = onSnapshot(colRef, (snapshot) => {
+                if (snapshot.size > 0) {
+                    SetisGettingProject(true);
+                    snapshot.forEach(doc => {
+                        if (doc.id == projectId) {
+                            SetProject(
+                                {
+                                    ProjectId: doc.id,
+                                    ownerId: doc.data()?.ownerId,
+                                    owner: doc.data()?.owner,
+                                    Profpic: doc.data()?.Profpic,
+                                    task: doc.data()?.task,
+                                    email: doc.data()?.email,
+                                    phone: doc.data()?.phone,
+                                    addrs: doc.data()?.addrs,
+                                    postTime: doc.data()?.postTime,
+                                    AllcontactorKeys:doc.data()?.AllcontactorKeys,
+                                    description: doc.data()?.description,
+                                    budget: doc.data()?.budget,
+                                    otherOffers: doc.data()?.otherOffers,
+                                    bestOffer: doc.data()?.bestOffer,
+                                    Status: doc.data()?.Status,
+                                    winnerId: doc.data()?.winnerId,
+                                    bstOffrId: doc.data()?.bstOffrId,
+                                    tncs: doc.data()?.tncs,
+                                }
+                            )
+                        }
+                    })
+                    SetisGettingProject(false);
+                }
+
+            });
+        }, [projectId]);
+
+    } catch (error: any) {
+        SetisGettingProject(false);
+        SetProjectError(error.message);
+    } finally {
+        return { SingleProject, ProjectError, isGettingProject };
+    }
+
+}
+
+export const useFetchContractorsAccount = (prov: string | null) => {
+
+    const [UserData, SetUserData] = useState<IUser[]>([]);
+    const [accountError, SetaccountError] = useState<unknown>(null);
+    const [isGettingAccount, SetisGettingAccount] = useState<boolean>(false);
+    try {
+        useEffect(() => {
+            getContractorData(prov, SetUserData, SetaccountError, SetisGettingAccount);
+        }, [prov]);
+
+    } catch (error) {
+        SetisGettingAccount(false);
+        SetaccountError(error);
+    }
+    finally {
+        return { UserData, accountError, isGettingAccount };
+    }
+}
+
+const getContractorData = async (Address: string | null, SetUserData: Dispatch<SetStateAction<IUser[]>>, SetaccountError: Dispatch<SetStateAction<unknown>>, SetisGettingAccount: Dispatch<SetStateAction<boolean>>) => {
+    if (await Address !== null) {
+        const colRef = collection(db, "Users");
+        var tempData: IUser[] = [];
+        SetisGettingAccount(true);
+        const unsubscribe = onSnapshot(colRef, (snapshot) => {
+            tempData = [];
+            snapshot?.docs?.forEach(async (doc) => {
+                if (doc.data()?.Address.trim().toLocaleLowerCase() === await Address?.trim().toLocaleLowerCase()
+                 && doc.data()?.membership==="contractor") {
+                    tempData.push(
+                        {
+                            Id: doc.id,
+                            companyName: doc.data()?.companyName,
+                            companyEmail: doc.data()?.companyEmail,
+                            phone: doc.data()?.phone,
+                            LastName: doc.data()?.LastName,
+                            firstName: doc.data()?.firstName,
+                            Address: doc.data()?.Address,
+                            profileImage: doc.data()?.profileImage,
+                            certificate: doc.data()?.certificate,
+                            imgfilename: doc.data()?.imgfilename,
+                            pdffilename: doc.data()?.pdffilename,
+                            isactive: doc.data()?.isactive,
+                            membership: doc.data()?.membership,
+                            Services: doc.data()?.Services,
+                            tncs: doc.data()?.tncs,
+                            YourName:doc.data()?.YourName,
+                            YourSurName:doc.data()?.YourSurName,
+                            RegistrationNo:doc.data()?.RegistrationNo,
+                            YourID:doc.data()?.YourID,
+                            formSubmitted:doc.data()?.formSubmitted,
+                            AdvertisingMsg:doc.data()?.AdvertisingMsg,
+                        }
+                    );
+                }else if(await Address?.trim().toLocaleLowerCase()=="all" && doc.data()?.membership==="contractor"){
+                    tempData.push(
+                        {
+                            Id: doc.id,
+                            companyName: doc.data()?.companyName,
+                            companyEmail: doc.data()?.companyEmail,
+                            phone: doc.data()?.phone,
+                            LastName: doc.data()?.LastName,
+                            firstName: doc.data()?.firstName,
+                            Address: doc.data()?.Address,
+                            profileImage: doc.data()?.profileImage,
+                            certificate: doc.data()?.certificate,
+                            imgfilename: doc.data()?.imgfilename,
+                            pdffilename: doc.data()?.pdffilename,
+                            isactive: doc.data()?.isactive,
+                            membership: doc.data()?.membership,
+                            Services: doc.data()?.Services,
+                            tncs: doc.data()?.tncs,
+                            YourName:doc.data()?.YourName,
+                            YourSurName:doc.data()?.YourSurName,
+                            RegistrationNo:doc.data()?.RegistrationNo,
+                            YourID:doc.data()?.YourID,
+                            formSubmitted:doc.data()?.formSubmitted,
+                            AdvertisingMsg:doc.data()?.AdvertisingMsg,
+                        }
+                    );
+                }
+                SetUserData(tempData);
+                SetisGettingAccount(false);
+            });
+        })
+        return () => unsubscribe();
     }
 }

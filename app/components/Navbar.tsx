@@ -44,22 +44,26 @@ export function AppNavbar() {
                 }
               >
                 <Dropdown.Header>
-                  <span className="block text-sm"><Link href={'/profile'}>{UserData[0]?.companyName}</Link></span>
+                  <span className="block text-sm"><Link href={'/profile'}>{UserData[0]?.membership=="contractor" ? UserData[0]?.companyName :UserData[0]?.membership=="homeowner" ? UserData[0]?.YourName:null }</Link></span>
                   <span className="block truncate text-sm font-medium">{UserData[0]?.companyEmail}</span>
                 </Dropdown.Header>
                 <Dropdown.Item onClick={() => {
-                  auth.signOut();
-                  window.sessionStorage.setItem("ukey", "");
-                  setLoggedIn(false);
-                  window.sessionStorage.clear();
-                  router.replace("/");
+                  try {
+                    auth.signOut();
+                    window.sessionStorage.setItem("ukey", "");
+                    setLoggedIn(false);
+                    window.sessionStorage.clear();
+                    router.replace("/");
+                  } catch (error:any) {
+                    console.log(error);
+                  }
                 }}>Sign out</Dropdown.Item>
               </Dropdown>
             </Suspense>
             :
             <div className='btns flex flex-row gap-1'>
-              <Button onClick={() => router.push('login')} theme={customsubmitTheme} size={"xs"} color='appsuccess'>Login</Button>
-              <Button onClick={() => router.push("register")} theme={customsubmitTheme} size={"xs"} color='appsuccess'>Sign Up</Button>
+              <Button onClick={() => router.push('login')} theme={customsubmitTheme} size={'xs'} color='appsuccess'>Login</Button>
+              <Button onClick={() => router.push("register")} theme={customsubmitTheme} size={'xs'} color='appsuccess'>Sign Up</Button>
             </div>
           }
           <Navbar.Toggle />
@@ -82,8 +86,9 @@ export function AppNavbar() {
             const element = document.getElementById('jobSection');
             element?.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
           }} >Current Projects</Navbar.Link>
-          <Navbar.Link as={Link} href="/postproject">Post A Project</Navbar.Link>
-          <Navbar.Link as={Link} href="/recommend">Recommend "A Guy"</Navbar.Link>
+          {UserData[0]?.Id && UserData[0]?.membership.trim().toLocaleLowerCase()=="homeowner" ? <Navbar.Link as={Link} href="/postproject">Post A Project</Navbar.Link> :null }
+          
+          <Navbar.Link as={Link} href="/recommend">Recommend A "Guy"</Navbar.Link>
           <Navbar.Link onClick={() => {
             const element = document.getElementById('inspirations');
             element?.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
