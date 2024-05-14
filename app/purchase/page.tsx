@@ -37,8 +37,10 @@ export default function BidsCredits() {
           });
       
           const data = await response.json();
-          setClientSecret(data.clientSecret);
-      CreateBought();//sent things you bought to Purchased section
+          //setClientSecret(data.clientSecret);
+          //console.log(data);
+          
+     // CreateBought();//sent things you bought to Purchased section
     } catch (error) {
       console.log('Error:', error);
     }

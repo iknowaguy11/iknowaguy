@@ -148,7 +148,7 @@ export const AcceptBidingModal = ({ openModal, setOpenModal, ProjectIdBid, proje
             <Modal.Body>
                 <div className="space-y-6 p-6">
                     <p className="text-base leading-relaxed text-black dark:text-black font-semibold">
-                        You are about to place a bid on this project. If your happy with the terms below your may type your offer and click "accept"
+                        You are about to place a bid on this project. If your happy with the terms below your may type your offer and click &quot;accept&quot;
                     </p>
                     <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
                         The European Union’s General Data Protection Regulation (G.D.P.R.) goes into effect on May 25 and is meant

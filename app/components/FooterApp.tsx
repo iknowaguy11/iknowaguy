@@ -36,7 +36,7 @@ export function FooterApp() {
             <Footer.Title title="Quick Links" />
             <Footer.LinkGroup col>
               <Footer.Link href="purchase" as={Link}>Biding Credits</Footer.Link>
-              <Footer.Link href="recommend" as={Link}>Recommend A "Guy"</Footer.Link>
+              <Footer.Link href="recommend" as={Link}>Recommend A &quot;Guy&quot;</Footer.Link>
               <Footer.Link href="contractors" as={Link}>Contractors</Footer.Link>
             </Footer.LinkGroup>
           </div>

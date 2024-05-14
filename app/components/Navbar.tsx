@@ -88,7 +88,7 @@ export function AppNavbar() {
           }} >Current Projects</Navbar.Link>
           {UserData[0]?.Id && UserData[0]?.membership.trim().toLocaleLowerCase()=="homeowner" ? <Navbar.Link as={Link} href="/postproject">Post A Project</Navbar.Link> :null }
           
-          <Navbar.Link as={Link} href="/recommend">Recommend A "Guy"</Navbar.Link>
+          <Navbar.Link as={Link} href="/recommend">Recommend A &quot;Guy&quot;</Navbar.Link>
           <Navbar.Link onClick={() => {
             const element = document.getElementById('inspirations');
             element?.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
