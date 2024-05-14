@@ -25,7 +25,6 @@ export default function BidsCredits() {
         }
     }
     
-
   const onCheckout=async(amount:any)=>{
     try {
         const response = await fetch('/create-payment-intent', {
