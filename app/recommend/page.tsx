@@ -247,7 +247,7 @@ export default function Recommend() {
                         </div>
                         {Visibility ? <Online><Button isProcessing={isprocessing} disabled={isprocessing} theme={customsubmitTheme} type="submit" color="appsuccess">Recommend</Button></Online>
                             : <Alert color="warning" rounded>
-                                <span className="font-medium">Hurray!</span> Thank You For "Recommeding a Guy".
+                                <span className="font-medium">Hurray!</span> Thank You For Recommeding a &quot;Guy&quot;.
                             </Alert>}
                         <Offline>
                             <Alert color="warning" icon={HiInformationCircle}>
