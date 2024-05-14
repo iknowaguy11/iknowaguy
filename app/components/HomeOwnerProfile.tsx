@@ -89,5 +89,4 @@ const HomeOwnerProfile = ({UserData}:{UserData:IUser[]}) => {
         </>
     );
 }
- 
 export default HomeOwnerProfile;

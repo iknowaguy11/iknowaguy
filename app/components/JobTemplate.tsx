@@ -51,5 +51,4 @@ const Jobtemplate = ({ item,membership,CurrUserKey }: { item: IProjects,membersh
             </div>
     );
 }
-
 export default Jobtemplate;
