@@ -111,8 +111,6 @@ export const AcceptBidingModal = ({ openModal, setOpenModal, ProjectIdBid, proje
                 setOpenModal(false);
                 setMyOffer("0.00");
                 successMessage("Bid placed successful");
-                
-                //update your balance
                 await setDoc(doc(db, 'BidCredits', UserData[0]?.Id.trim()), updateBalance, { merge: true });
             });
         } catch (error) {
