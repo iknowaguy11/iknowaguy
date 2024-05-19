@@ -103,7 +103,7 @@ const ContractorRegistration = () => {
     const RegisterMember = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         Setprocessing(true);
-        if(formType){
+        if (formType) {
             await uploadProfileImage();
             if (image_url !== null && image_url?.includes("http")) {
                 if (formType) {
@@ -113,12 +113,12 @@ const ContractorRegistration = () => {
                     if (IsErrorContractor()) return;
                     AddFirestoreData();
                 }
-    
+
             } else {
                 Setprocessing(false);
                 failureMessage("Opps... we had an issue while uploading your media files. (Try again)");
             }
-        }else if(!formType){
+        } else if (!formType) {
             await uploadProfileImage();
             await uploadCertificate();
             if (image_url !== null && image_url?.includes("http") && pdf_url !== null && pdf_url?.includes("http")) {
@@ -129,14 +129,14 @@ const ContractorRegistration = () => {
                     if (IsErrorContractor()) return;
                     AddFirestoreData();
                 }
-    
+
             } else {
                 Setprocessing(false);
                 failureMessage("Opps... we had an issue while uploading your media files. (Try again)");
             }
         }
-        
-        
+
+
     }
 
     const IsErrorContractor = () => {
@@ -233,7 +233,7 @@ const ContractorRegistration = () => {
                         RegistrationNo,
                         YourID,
                         formSubmitted: formType ? "Skilled Individual" : "Registered Company",
-                        AdvertisingMsg:"",//to be updated in their profile
+                        AdvertisingMsg: "",//to be updated in their profile
                         profileImage: image_url,
                         certificate: pdf_url,
                         imgfilename,
@@ -246,7 +246,7 @@ const ContractorRegistration = () => {
                     }
                     const BidCredits = {
                         credit: 1, //one free Bidding credit for new contractor members only.
-                        CreditType:"free",
+                        CreditType: "free",
                         tokens: []
                     }
                     let resp = await createUserWithEmailAndPassword(auth, companyEmail.trim(), companypassword);
@@ -326,21 +326,23 @@ const ContractorRegistration = () => {
                         <p className="text-xs text-black">Are you a bussiness owner or just a skilled individual Toogle the button below for skilled individual.</p>
 
                         <label className="inline-flex items-center me-5 cursor-pointer">
-                            <input type="checkbox" className="sr-only peer" checked={formType} onChange={() => setformType(formType ? false : true)} />
+                            <span className="me-3 text-sm font-medium text-gray-900 dark:text-gray-300">Bussiness Owner</span>
+                            <input type="checkbox" className="sr-only peer mr-2" checked={formType} onChange={() => setformType(formType ? false : true)} />
                             <div className="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-appGreen dark:peer-focus:ring-appGreen peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-appGreen"></div>
                             <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Skilled Individual</span>
                         </label>
-                        <div>
-                            <div className="mb-2 block">
-                                <Label htmlFor="Town" value={formType ? "Name *" : "Company Representative"} />
-                            </div>
-                            <TextInput
-                                value={YourName}
-                                onChange={(e) => SetYourName(e.target.value)}
-                                theme={customInputBoxTheme} color={"focuscolor"} id="cmpName" type="text" placeholder={formType ? "Your Name" : "Company Representative"} required shadow />
-                        </div>
+
                         {formType ?
                             <>
+                                <div>
+                                    <div className="mb-2 block">
+                                        <Label htmlFor="Town" value={formType ? "Name *" : "Company Representative"} />
+                                    </div>
+                                    <TextInput
+                                        value={YourName}
+                                        onChange={(e) => SetYourName(e.target.value)}
+                                        theme={customInputBoxTheme} color={"focuscolor"} id="cmpName" type="text" placeholder={formType ? "Your Name" : "Company Representative"} required shadow />
+                                </div>
                                 <div>
                                     <div className="mb-2 block">
                                         <Label htmlFor="Town" value="Surname *" />
@@ -349,6 +351,47 @@ const ContractorRegistration = () => {
                                         value={YourSurName}
                                         onChange={(e) => SetYourSurName(e.target.value)}
                                         theme={customInputBoxTheme} color={"focuscolor"} id="cmpName" type="text" placeholder="Your Surname" required shadow />
+                                </div>
+
+                                <div>
+                                    <div className="mb-2 block">
+                                        <Label htmlFor="idnum" value="ID Number *" />
+                                    </div>
+                                    <TextInput
+                                        value={YourID}
+                                        onChange={(e) => SetYourID(e.target.value)}
+                                        theme={customInputBoxTheme} color={"focuscolor"} id="idnum" type="tel" placeholder={formType ? "Your ID no." : "Representative ID no."} maxLength={13} required shadow />
+                                </div>
+
+                                <div>
+                                    <div className="mb-2 block">
+                                        <Label htmlFor="Town" value={formType ? "Your Email" : "Company Email *"} />
+                                        <p className="text-xs text-gray-500">Note this field once submitted it can only be updated with the help of administrator.</p>
+                                    </div>
+                                    <TextInput
+                                        value={companyEmail}
+                                        onChange={(e) => setcompanyEmail(e.target.value)}
+                                        theme={customInputBoxTheme} color={"focuscolor"} id="cmpEmail" type="email" placeholder={formType ? "Your Email" : "Company Email *"} required shadow />
+                                </div>
+
+                                <div>
+                                    <div className="mb-2 block">
+                                        <Label htmlFor="Town" value={formType ? "Phone No. *" : "Company Phone No. *"} />
+                                    </div>
+                                    <TextInput
+                                        value={phone}
+                                        onChange={(e) => setPhone(e.target.value)}
+                                        theme={customInputBoxTheme} color={"focuscolor"} id="phones" type="tel" placeholder={formType ? "Phone numbers" : "The company's phone numbers"} maxLength={10} required shadow />
+                                </div>
+                                <div>
+                                    <div className="mb-2 block">
+                                        <Label htmlFor="Town" value="Account Password *" />
+                                        <p className="text-xs text-gray-500">Your password: {companypassword}</p>
+                                    </div>
+                                    <TextInput
+                                        value={companypassword}
+                                        onChange={(e) => setcompanypassword(e.target.value)}
+                                        theme={customInputBoxTheme} color={"focuscolor"} id="cmpPass" type="password" placeholder="The Account Password (6 characters min)" required shadow />
                                 </div>
 
                             </>
@@ -367,6 +410,8 @@ const ContractorRegistration = () => {
                                         onChange={(e) => setcompanyName(e.target.value)}
                                         theme={customInputBoxTheme} color={"focuscolor"} id="cmpName" type="text" placeholder="The company's Name" required shadow />
                                 </div>
+
+
                                 <div>
                                     <div className="mb-2 block">
                                         <Label htmlFor="regno" value="Registration Number *" />
@@ -379,6 +424,57 @@ const ContractorRegistration = () => {
                                 </div>
 
                                 <div>
+                                    <div className="mb-2 block">
+                                        <Label htmlFor="Town" value={formType ? "Name *" : "Company Representative"} />
+                                    </div>
+                                    <TextInput
+                                        value={YourName}
+                                        onChange={(e) => SetYourName(e.target.value)}
+                                        theme={customInputBoxTheme} color={"focuscolor"} id="cmpName" type="text" placeholder={formType ? "Your Name" : "Company Representative"} required shadow />
+                                </div>
+
+                                <div>
+                                    <div className="mb-2 block">
+                                        <Label htmlFor="idnum" value="ID Number *" />
+                                    </div>
+                                    <TextInput
+                                        value={YourID}
+                                        onChange={(e) => SetYourID(e.target.value)}
+                                        theme={customInputBoxTheme} color={"focuscolor"} id="idnum" type="tel" placeholder={formType ? "Your ID no." : "Representative ID no."} maxLength={13} required shadow />
+                                </div>
+
+                                <div>
+                                    <div className="mb-2 block">
+                                        <Label htmlFor="Town" value={formType ? "Your Email" : "Company Email *"} />
+                                        <p className="text-xs text-gray-500">Note this field once submitted it can only be updated with the help of administrator.</p>
+                                    </div>
+                                    <TextInput
+                                        value={companyEmail}
+                                        onChange={(e) => setcompanyEmail(e.target.value)}
+                                        theme={customInputBoxTheme} color={"focuscolor"} id="cmpEmail" type="email" placeholder={formType ? "Your Email" : "Company Email *"} required shadow />
+                                </div>
+
+                                <div>
+                                    <div className="mb-2 block">
+                                        <Label htmlFor="Town" value={formType ? "Phone No. *" : "Company Phone No. *"} />
+                                    </div>
+                                    <TextInput
+                                        value={phone}
+                                        onChange={(e) => setPhone(e.target.value)}
+                                        theme={customInputBoxTheme} color={"focuscolor"} id="phones" type="tel" placeholder={formType ? "Phone numbers" : "The company's phone numbers"} maxLength={10} required shadow />
+                                </div>
+                                <div>
+                                    <div className="mb-2 block">
+                                        <Label htmlFor="Town" value="Account Password *" />
+                                        <p className="text-xs text-gray-500">Your password: {companypassword}</p>
+                                    </div>
+                                    <TextInput
+                                        value={companypassword}
+                                        onChange={(e) => setcompanypassword(e.target.value)}
+                                        theme={customInputBoxTheme} color={"focuscolor"} id="cmpPass" type="password" placeholder="The Account Password (6 characters min)" required shadow />
+                                </div>
+
+                                <div>
                                     <div>
                                         <Label htmlFor="file-upload-helper-text" value="Company Certification *" />
                                     </div>
@@ -387,36 +483,10 @@ const ContractorRegistration = () => {
 
                             </>
                         }
-                        <div>
-                            <div className="mb-2 block">
-                                <Label htmlFor="Town" value={formType ? "Your Email" : "Company Email *"} />
-                                <p className="text-xs text-gray-500">Note this field once submitted it can only be updated with the help of administrator.</p>
-                            </div>
-                            <TextInput
-                                value={companyEmail}
-                                onChange={(e) => setcompanyEmail(e.target.value)}
-                                theme={customInputBoxTheme} color={"focuscolor"} id="cmpEmail" type="email" placeholder={formType ? "Your Email" : "Company Email *"} required shadow />
-                        </div>
-                        <div>
-                            <div className="mb-2 block">
-                                <Label htmlFor="Town" value="Account Password *" />
-                                <p className="text-xs text-gray-500">Your password: {companypassword}</p>
-                            </div>
-                            <TextInput
-                                value={companypassword}
-                                onChange={(e) => setcompanypassword(e.target.value)}
-                                theme={customInputBoxTheme} color={"focuscolor"} id="cmpPass" type="password" placeholder="The Account Password (6 characters min)" required shadow />
-                        </div>
 
-                        <div>
-                            <div className="mb-2 block">
-                                <Label htmlFor="idnum" value="ID Number *" />
-                            </div>
-                            <TextInput
-                                value={YourID}
-                                onChange={(e) => SetYourID(e.target.value)}
-                                theme={customInputBoxTheme} color={"focuscolor"} id="idnum" type="tel" placeholder={formType ? "Your ID no." : "Representative ID no."} maxLength={13} required shadow />
-                        </div>
+
+
+
 
 
                         <div>
@@ -457,15 +527,7 @@ const ContractorRegistration = () => {
                                 ))}
                             </div>
                         </div>
-                        <div>
-                            <div className="mb-2 block">
-                                <Label htmlFor="Town" value={formType ? "Phone No. *" : "Company Phone No. *"} />
-                            </div>
-                            <TextInput
-                                value={phone}
-                                onChange={(e) => setPhone(e.target.value)}
-                                theme={customInputBoxTheme} color={"focuscolor"} id="phones" type="tel" placeholder={formType ? "Phone numbers" : "The company's phone numbers"} maxLength={10} required shadow />
-                        </div>
+
 
                         <div className="flex items-center gap-2">
                             <Checkbox id="agree" checked={tncs} onChange={() => setTnCs(tncs ? false : true)} theme={customCheckboxTheme} color="success" />

@@ -45,16 +45,15 @@ let howitworks: IhowItwors[] = [{
 
 ];
 
-
 const inspirations: Iinspirations[] = [
-    { id: '0', tittle: 'Bedroom', imgsr: Bedroom, caption: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500.", sharelink: "Bedroom" },
-    { id: '1', tittle: 'Bathroom', imgsr: Bathroom, caption: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500.", sharelink: "Bathroom" },
-    { id: '2', tittle: 'Kitchen', imgsr: Kitchen, caption: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500.", sharelink: "Kitchen" },
-    { id: '3', tittle: 'Interior Decor', imgsr: InteriorDecor, caption: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500.", sharelink: "Interior-Decor" },
-    { id: '4', tittle: 'Landscape', imgsr: Landscape, caption: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500.", sharelink: "Landscape" },
-    { id: '5', tittle: 'Home-Exterior', imgsr: HouseExterior, caption: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500.", sharelink: "Home-Exterior" },
-    { id: '6', tittle: 'Dining-Room', imgsr: Diningroom, caption: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500.", sharelink: "Dining-Room" },
-    { id: '7', tittle: 'Kids-Room', imgsr: KidsRoom, caption: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500.", sharelink: "Kids-Room" },
+    { id: '0', tittle: 'Bedroom', imgsr: Bedroom, caption: "", sharelink: "Bedroom" },
+    { id: '1', tittle: 'Bathroom', imgsr: Bathroom, caption: "", sharelink: "Bathroom" },
+    { id: '2', tittle: 'Kitchen', imgsr: Kitchen, caption: "", sharelink: "Kitchen" },
+    { id: '3', tittle: 'Interior Decor', imgsr: InteriorDecor, caption: "", sharelink: "Interior-Decor" },
+    { id: '4', tittle: 'Landscape', imgsr: Landscape, caption: "", sharelink: "Landscape" },
+    { id: '5', tittle: 'Home-Exterior', imgsr: HouseExterior, caption: "", sharelink: "Home-Exterior" },
+    { id: '6', tittle: 'Dining-Room', imgsr: Diningroom, caption: "", sharelink: "Dining-Room" },
+    { id: '7', tittle: 'Kids-Room', imgsr: KidsRoom, caption: "", sharelink: "Kids-Room" },
 ]
 
 
