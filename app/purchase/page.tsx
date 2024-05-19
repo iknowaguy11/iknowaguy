@@ -129,9 +129,9 @@ export default function BidsCredits() {
                                 <form action="https://sandbox.payfast.co.za​/eng/process" method="post">
                                     <input type="hidden" name="merchant_id" value="10000100" />
                                     <input type="hidden" name="merchant_key" value="46f0cd694581a" />
-                                    <input type="hidden" name="return_url" value="https://inkowaguy.vercel.app/success"/>
-                                    <input type="hidden" name="cancel_url" value="https://inkowaguy.vercel.app/cancel"/>
-                                    <input type="hidden" name="notify_url" value="https://inkowaguy.vercel.app/notify"/>
+                                    <input type="hidden" name="return_url" value={"https://"+(window?.location?.hostname).toString()+"/success"}/>
+                                    <input type="hidden" name="cancel_url" value={"https://"+(window?.location?.hostname).toString()+"/cancel"}/>
+                                    <input type="hidden" name="notify_url" value={"https://"+(window?.location?.hostname).toString()+"/notify"}/>
                                     <input type="hidden" name="amount" value={item?.Price?.toFixed(2)} />
                                     <input type="hidden" name="item_name" value={"Package:"+item?.Package} />
                                     <Button
