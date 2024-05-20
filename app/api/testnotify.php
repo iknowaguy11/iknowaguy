@@ -108,8 +108,12 @@ $check3 = pfValidPaymentData(150.00, $pfData);
 $check4 = pfValidServerConfirmation($pfParamString, $pfHost);
 if($check1 && $check2 && $check3 && $check4) {
     // All checks have passed, the payment is successful
+    header("Location: https://www.google.com/");
+  exit();
     echo('All checks have passed, the payment is successful');
+    
 } else {
     echo('Some checks have failed, check payment manually and log for investigation');
     // Some checks have failed, check payment manually and log for investigation
+    header("Location: https://www.w3schools.com/");
 } 
