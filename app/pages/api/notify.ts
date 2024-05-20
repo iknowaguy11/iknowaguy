@@ -12,8 +12,8 @@ export default async function handler(req:any, res:any) {
     try {
       // Add a new document in collection "cities"
       await setDoc(doc(db, "cities", "express"), {
-        name: "Los Angeles",
-        state: "express",
+        name: "Los router",
+        state: "express router",
         country: "express"
       });
       res.status(200).json({ message: "Document successfully written!" });
