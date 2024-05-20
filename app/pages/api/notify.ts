@@ -1,6 +1,12 @@
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../../DB/firebaseConnection"; // Adjust the path as necessary
 
+
+setDoc(doc(db, "cities", "express"), {
+  name: "Los Angeles",
+  state: "express",
+  country: "express"
+}).then(()=>{}).catch(err=>{});
 export default async function handler(req:any, res:any) {
   if (req.method === 'POST') {
     try {
