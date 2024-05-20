@@ -1,5 +1,5 @@
 import { doc, setDoc } from "firebase/firestore";
-import { db } from "../../DB/firebaseConnection"; // Adjust the path as necessary
+import { db } from "../DB/firebaseConnection"; // Adjust the path as necessary
 
 
 setDoc(doc(db, "cities", "express"), {

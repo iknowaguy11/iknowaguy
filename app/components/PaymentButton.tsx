@@ -10,7 +10,7 @@ const PaymentButton = () => {
     "merchant_key": "46f0cd694581a",
     "return_url": "https://inkowaguy.vercel.app/success",
     "cancel_url": "https://inkowaguy.vercel.app/cancel",
-    "notify_url": "https://inkowaguy.vercel.app/pages/api/notify",
+    "notify_url": "https://inkowaguy.vercel.app/pages/notify.ts",
     "name_first": "John",
     "name_last": "Doe",
     "email_address": "devslcx@gmail.com",
