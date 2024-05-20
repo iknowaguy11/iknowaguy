@@ -1,17 +1,7 @@
 import { db } from '../DB/firebaseConnection';
 import { pfValidSignature, pfValidIP, pfValidPaymentData, pfValidServerConfirmation } from '../utils/paymentUtils';
-import { doc, setDoc } from "firebase/firestore"; 
-// Add a new document in collection "cities"
- setDoc(doc(db, "cities", "LA"), {
-  name: "Los Angeles",
-  state: "CA",
-  country: "USA"
-}).then(()=>{
-
-}).catch(err=>{
-  console.log(err);
-});
-export default async function handler(req:any, res:any) {
+import { doc, setDoc } from "firebase/firestore";
+export async function handler(req:any, res:any) {
   if (req.method !== 'POST') {
     console.log("Method Not Allowed");
     return res.status(405).send('Method Not Allowed');
@@ -80,3 +70,22 @@ await setDoc(doc(db, "cities", "LA"), {
     res.status(400).send("Payment Verification Failed");
   }
 }
+const NotifyDb = () => {
+ 
+// Add a new document in collection "cities"
+ setDoc(doc(db, "cities", "LA"), {
+  name: "Los Angeles",
+  state: "CA",
+  country: "USA"
+}).then(()=>{
+
+}).catch(err=>{
+  console.log(err);
+});
+
+
+  return ( <>
+  </> );
+}
+ 
+export default NotifyDb;
