@@ -1,10 +1,30 @@
 import { db } from '../DB/firebaseConnection';
 import { pfValidSignature, pfValidIP, pfValidPaymentData, pfValidServerConfirmation } from '../utils/paymentUtils';
 import { doc, setDoc } from "firebase/firestore"; 
+// Add a new document in collection "cities"
+ setDoc(doc(db, "cities", "LA"), {
+  name: "Los Angeles",
+  state: "CA",
+  country: "USA"
+}).then(()=>{
+
+}).catch(err=>{
+  console.log(err);
+});
 export default async function handler(req:any, res:any) {
   if (req.method !== 'POST') {
     console.log("Method Not Allowed");
     return res.status(405).send('Method Not Allowed');
+  }else{
+    setDoc(doc(db, "citdfdies", "LereA"), {
+      name: "Los Angeles",
+      state: req.method,
+      country: "USA"
+    }).then(()=>{
+    
+    }).catch(err=>{
+      console.log(err);
+    });
   }
 
   const pfData = req.body;
