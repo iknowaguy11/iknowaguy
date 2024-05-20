@@ -1,5 +1,6 @@
+import { db } from '../DB/firebaseConnection';
 import { pfValidSignature, pfValidIP, pfValidPaymentData, pfValidServerConfirmation } from '../utils/paymentUtils';
-
+import { doc, setDoc } from "firebase/firestore"; 
 export default async function handler(req:any, res:any) {
   if (req.method !== 'POST') {
     console.log("Method Not Allowed");
@@ -27,8 +28,21 @@ export default async function handler(req:any, res:any) {
   if (check1 && check2 && check3 && check4) {
     // All checks have passed, the payment is successful
     console.log("All checks have passed, the payment is successful");
+   
+
+// Add a new document in collection "cities"
+await setDoc(doc(db, "cities", "LA"), {
+  name: "Los Angeles",
+  state: "CA",
+  country: "USA"
+});
     res.status(200).send("Payment Verified");
   } else {
+    await setDoc(doc(db, "citieserrors", "LAerrors"), {
+      name: "Los Angeles",
+      state: "CA",
+      country: "USA"
+    });
     // Some checks have failed, check payment manually and log for investigation
     console.log("Some checks have failed, check payment manually and log for investigation");
     if(check1){
