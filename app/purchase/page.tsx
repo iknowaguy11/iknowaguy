@@ -1,53 +1,13 @@
 
-"use client";
-
 import { Button, Card } from "flowbite-react";
 import { Plans, customsubmitTheme } from "../customTheme/appTheme";
 import Link from "next/link";
 import { HiShoppingCart } from "react-icons/hi";
-//import { failureMessage } from "../notifications/successError";
-//import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import { useState } from "react";
+import PaymentButton from "../components/PaymentButton";
+
 
 export default function BidsCredits() {
-    const [clientSecret, setClientSecret] = useState('');
-    //const stripe = useStripe();
-    //const elements = useElements();
-    const MakePayment = (item: any) => {
-        let amount = 0.00;
-        if (item.Package === "Bronze" && item.Price === "150.00") {
-            //onCheckout(item.Price);
-        } else if (item.Package === "Silver" && item.Price === "250.00") {
-            //onCheckout(item.Price);
-        }
-        else if (item.Package === "Gold" && item.Price === "400.00") {
-            //onCheckout(item.Price);
-        }
-    }
-
-    const onCheckout = async (amount: any) => {
-        try {
-            const response = await fetch('/create-payment-intent', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ amount: 1000 }), // Example amount (in cents)
-            });
-
-            const data = await response.json();
-            //setClientSecret(data.clientSecret);
-            //console.log(data);
-
-            // CreateBought();//sent things you bought to Purchased section
-        } catch (error) {
-            console.log('Error:', error);
-        }
-    }
-    const CreateBought = () => {
-        let data = [];
-
-    }
+    
     return (
         <div className="w-full gap-4">
             <div className="h-full flex justify-center bg-opacity-75 bg-black">
@@ -126,7 +86,7 @@ export default function BidsCredits() {
                                     </li>
                                 </ul>
                                 
-                                <form action="https://sandbox.payfast.co.za​/eng/process" method="post">
+                                {/* <form action="https://sandbox.payfast.co.za​/eng/process" method="post">
                                     <input type="hidden" name="merchant_id" value="10000100" />
                                     <input type="hidden" name="merchant_key" value="46f0cd694581a" />
                                     <input type="hidden" name="return_url" value="https://inkowaguy.vercel.app/success"/>
@@ -145,7 +105,9 @@ export default function BidsCredits() {
                                     >
                                         <HiShoppingCart className="mr-2 h-5 w-5" /> Choose plan
                                     </Button>
-                                </form>
+                                </form> */}
+
+                                <PaymentButton/>
 
                             </Card>
                         ))
