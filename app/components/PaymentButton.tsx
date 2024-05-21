@@ -16,7 +16,9 @@ const PaymentButton = () => {
     "email_address": "devslcx@gmail.com",
     "m_payment_id": "1234",
     "amount": "150.00",
-    "item_name": "Biding Package:Bronze"
+    "item_name": "Biding Package:Bronze",
+    "custom_str1":"customerUserId",
+    "custom_str2":"Bronze"
   };
 
   const myPassphrase = "jt7NOE43FZPn";
