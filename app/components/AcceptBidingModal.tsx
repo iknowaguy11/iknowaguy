@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Label, Modal, TextInput } from "flowbite-react";
+import { Button, Modal, TextInput } from "flowbite-react";
 import { Dispatch, SetStateAction, useContext, useState } from "react";
 import { customInputBoxTheme, customsubmitTheme } from "../customTheme/appTheme";
 import { AppContext } from "../Context/appContext";

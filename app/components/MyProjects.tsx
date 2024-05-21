@@ -1,5 +1,5 @@
 import { customsubmitTheme } from "../customTheme/appTheme";
-import { Avatar, Badge, Button, Tooltip } from "flowbite-react";
+import { Badge, Button, Tooltip } from "flowbite-react";
 import { HiOutlineBriefcase,HiCollection, HiLocationMarker, HiCash, HiClock, HiOutlineTrash, HiOutlineCheckCircle } from 'react-icons/hi';
 import Image from "next/image";
 import { IProjects } from "../Interfaces/appInterfaces";
