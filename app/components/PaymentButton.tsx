@@ -5,8 +5,8 @@ import { HiShoppingCart } from 'react-icons/hi';
 import { customsubmitTheme } from '../customTheme/appTheme';
 import { v4 } from "uuid";
 
-const PaymentButton = ({price}:{price:string}) => {
-  const myData:any = {
+const PaymentButton = ({ price, Bidpackage }: { price: string, Bidpackage: string }) => {
+  const myData: any = {
     "merchant_id": "10000100",
     "merchant_key": "46f0cd694581a",
     "return_url": "https://inkowaguy.vercel.app/success",
@@ -18,9 +18,9 @@ const PaymentButton = ({price}:{price:string}) => {
     "m_payment_id": v4(),
     "amount": price.trim(),
     "item_name": "Biding Package:Bronze",
-    "custom_str1":"0GMS8DwnjRYuTDn0QIYkMbxwM362",
-    "custom_str2":"Bronze",
-    "custom_str3":"0760170950"
+    "custom_str1": "0GMS8DwnjRYuTDn0QIYkMbxwM362",
+    "custom_str2": Bidpackage.trim(),
+    "custom_str3": "0760170950"
   };
 
   const myPassphrase = "jt7NOE43FZPn";
@@ -28,8 +28,12 @@ const PaymentButton = ({price}:{price:string}) => {
   const testingMode = true;
   const pfHost = testingMode ? 'sandbox.payfast.co.za' : 'www.payfast.co.za';
 
+  const IsLoggedIn=()=>{
+    return false;
+  }
+
   return (
-    <form action={`https://${pfHost}/eng/process`} method="post">
+    <form action={IsLoggedIn() ? `https://${pfHost}/eng/process` : '/purchase'} method="post">
       {Object.keys(myData).map((key) => (
         <input key={key} name={key} type="hidden" value={myData[key].trim()} />
       ))}

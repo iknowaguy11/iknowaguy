@@ -107,7 +107,7 @@ export default function BidsCredits() {
                                     </Button>
                                 </form> */}
 
-                                <PaymentButton price={item?.Price?.toFixed(2)}/>
+                                <PaymentButton price={item?.Price?.toFixed(2)} Bidpackage={item?.Package}/>
 
                             </Card>
                         ))
