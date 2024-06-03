@@ -3,10 +3,11 @@ import { generateSignature } from '../payment_signature/signature';
 import { Button } from 'flowbite-react';
 import { HiShoppingCart } from 'react-icons/hi';
 import { customsubmitTheme } from '../customTheme/appTheme';
+import { v4 } from "uuid";
 
-const PaymentButton = () => {
+const PaymentButton = ({price}:{price:string}) => {
   const myData:any = {
-    "merchant_id": "10000100",
+    "merchant_id": v4(),
     "merchant_key": "46f0cd694581a",
     "return_url": "https://inkowaguy.vercel.app/success",
     "cancel_url": "https://inkowaguy.vercel.app/cancel",
@@ -14,8 +15,8 @@ const PaymentButton = () => {
     "name_first": "John",
     "name_last": "Doe",
     "email_address": "devslcx@gmail.com",
-    "m_payment_id": "1234",
-    "amount": "150.00",
+    "m_payment_id": v4(),
+    "amount": price.trim(),
     "item_name": "Biding Package:Bronze",
     "custom_str1":"customerUserId",
     "custom_str2":"Bronze"
