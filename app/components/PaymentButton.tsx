@@ -18,8 +18,9 @@ const PaymentButton = ({price}:{price:string}) => {
     "m_payment_id": v4(),
     "amount": price.trim(),
     "item_name": "Biding Package:Bronze",
-    "custom_str1":"customerUserId",
-    "custom_str2":"Bronze"
+    "custom_str1":"0GMS8DwnjRYuTDn0QIYkMbxwM362",
+    "custom_str2":"Bronze",
+    "custom_str3":"0760170950"
   };
 
   const myPassphrase = "jt7NOE43FZPn";
