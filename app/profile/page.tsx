@@ -6,7 +6,6 @@ import { useFetchUserAccount } from "../_hooks/useFetch";
 import ContractorProfile from "../components/ContractorProfile";
 import HomeOwnerProfile from "../components/HomeOwnerProfile";
 import { useRouter } from "next/navigation";
-import { Console } from "console";
 
 const Profile = () => {
 
