@@ -1,10 +1,8 @@
 
-import { Button, Card } from "flowbite-react";
-import { Plans, customsubmitTheme } from "../customTheme/appTheme";
+import { Card } from "flowbite-react";
+import { Plans } from "../customTheme/appTheme";
 import Link from "next/link";
-import { HiShoppingCart } from "react-icons/hi";
 import PaymentButton from "../components/PaymentButton";
-
 
 export default function BidsCredits() {
     
