@@ -44,15 +44,16 @@ export function AppNavbar() {
                 }
               >
                 <Dropdown.Header>
-                  <span className="block text-sm"><Link href={'/profile'}>{UserData[0]?.membership=="contractor" ? UserData[0]?.companyName :UserData[0]?.membership=="homeowner" ? UserData[0]?.YourName:null }</Link></span>
+                  <span className="block text-sm"><Link href={'/profile'}>
+                    {UserData[0]?.membership=="contractor" && UserData[0]?.companyName!==""  ? UserData[0]?.companyName :UserData[0]?.membership=="homeowner" ? UserData[0]?.YourName: UserData[0]?.membership=="contractor" && UserData[0]?.companyName==""  ?  UserData[0]?.YourName : null }</Link></span>
                   <span className="block truncate text-sm font-medium">{UserData[0]?.companyEmail}</span>
                 </Dropdown.Header>
                 <Dropdown.Item onClick={() => {
                   try {
                     auth.signOut();
-                    window.sessionStorage.setItem("ukey", "");
+                    window?.sessionStorage.setItem("ukey", "");
                     setLoggedIn(false);
-                    window.sessionStorage.clear();
+                    window?.sessionStorage.clear();
                     router.replace("/");
                   } catch (error:any) {
                     console.log(error);
@@ -86,7 +87,7 @@ export function AppNavbar() {
             const element = document.getElementById('jobSection');
             element?.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
           }} >Current Projects</Navbar.Link>
-          {UserData[0]?.Id && UserData[0]?.membership.trim().toLocaleLowerCase()=="homeowner" ? <Navbar.Link as={Link} href="/postproject">Post A Project</Navbar.Link> :null }
+          {UserData[0]?.Id && UserData[0]?.membership?.trim().toLocaleLowerCase()=="homeowner" ? <Navbar.Link as={Link} href="/postproject">Post A Project</Navbar.Link> :null }
           
           <Navbar.Link as={Link} href="/recommend">Recommend A &quot;Guy&quot;</Navbar.Link>
           <Navbar.Link onClick={() => {
