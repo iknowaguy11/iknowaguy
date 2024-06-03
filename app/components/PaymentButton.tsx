@@ -7,7 +7,7 @@ import { v4 } from "uuid";
 
 const PaymentButton = ({price}:{price:string}) => {
   const myData:any = {
-    "merchant_id": v4(),
+    "merchant_id": "10000100",
     "merchant_key": "46f0cd694581a",
     "return_url": "https://inkowaguy.vercel.app/success",
     "cancel_url": "https://inkowaguy.vercel.app/cancel",
