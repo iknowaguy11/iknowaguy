@@ -136,8 +136,8 @@ export default function Recommend() {
                     if (newDocRef?.id) {
                         Setprocessing(false);
                         successMessage("Sucessfully Recommended A Contractor");
-                        let msg=`You have been recommended by someone to join our platdform\\nnDetails of the Person are as follows:\n
-                        Name: ${RecommederName.trim() == "" ? "Anonymous" : RecommederName}\n
+                        let msg=`You have been recommended by someone to join our Job(Project) Biding platform\n\nDetails of the Person are as follows:\n
+                        \nName: ${RecommederName.trim() == "" ? "Anonymous" : RecommederName}\n
                         Described Relationship: ${HowdoYouKnowThem.trim() == "" ? "Preferred not to say" : HowdoYouKnowThem}\n
                         Services Recommended For: ${selectedServices}\n`;
                         SendMailToContractor(ContractorEmail,ContractorName,msg,"I Know A Guy - Recommendation");
