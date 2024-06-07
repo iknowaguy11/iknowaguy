@@ -85,27 +85,6 @@ export default function BidsCredits() {
                                     </li>
                                 </ul>
                                 
-                                {/* <form action="https://sandbox.payfast.co.za​/eng/process" method="post">
-                                    <input type="hidden" name="merchant_id" value="10000100" />
-                                    <input type="hidden" name="merchant_key" value="46f0cd694581a" />
-                                    <input type="hidden" name="return_url" value="https://inkowaguy.vercel.app/success"/>
-                                    <input type="hidden" name="cancel_url" value="https://inkowaguy.vercel.app/cancel"/>
-                                    <input type="hidden" name="notify_url" value="https://inkowaguy.vercel.app/notify"/>
-                                    <input type="hidden" name="amount" value={item?.Price?.toFixed(2)} />
-                                    <input type="hidden" name="item_name" value={"Biding Package:"+item?.Package} />
-                                    <input type="hidden" name="name_first" value="John"/>
-                                    <input type="hidden" name="name_last" value="Doe"/>
-                                    <input type="hidden" name="email_address" value="devslcx@gmail.com"/>
-                                    <Button
-                                        theme={customsubmitTheme}
-                                        color="appsuccess"
-                                        type="submit"
-                                        className="inline-flex w-full justify-center rounded-lg px-5 py-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4 focus:ring-cyan-200 dark:focus:ring-cyan-200"
-                                    >
-                                        <HiShoppingCart className="mr-2 h-5 w-5" /> Choose plan
-                                    </Button>
-                                </form> */}
-
                                 <PaymentButton price={item?.Price?.toFixed(2)} Bidpackage={item?.Package}/>
 
                             </Card>

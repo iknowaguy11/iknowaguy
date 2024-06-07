@@ -545,7 +545,7 @@ const ContractorRegistration = () => {
                     </form>
                     <ReCAPTCHA
                         className='self-center'
-                        sitekey={("6Lc6SdMpAAAAAD5XHKyVRfFFqheA6T5r4QAvSTJI" || process.env.NEXT_PUBLIC_SITE_KEY)?.toString()}
+                        sitekey={(process?.env?.NEXT_PUBLIC_SITE_KEY)?.toString() || ""}
                         onChange={(e) => handleRecaptchaChange(e)}
                     />
                 </Card>
