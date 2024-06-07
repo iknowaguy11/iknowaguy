@@ -13,6 +13,7 @@ import { failureMessage, successMessage } from '../notifications/successError';
 import { useRouter } from 'next/navigation';
 import { addDoc, collection } from 'firebase/firestore';
 import ReCAPTCHA from 'react-google-recaptcha';
+import { SendMailToContractor } from '../utils/SendEmail';
 
 export default function Recommend() {
     const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
@@ -135,6 +136,11 @@ export default function Recommend() {
                     if (newDocRef?.id) {
                         Setprocessing(false);
                         successMessage("Sucessfully Recommended A Contractor");
+                        let msg=`You have been recommended by someone to join our platdform\\nnDetails of the Person are as follows:\n
+                        Name: ${RecommederName.trim() == "" ? "Anonymous" : RecommederName}\n
+                        Described Relationship: ${HowdoYouKnowThem.trim() == "" ? "Preferred not to say" : HowdoYouKnowThem}\n
+                        Services Recommended For: ${selectedServices}\n`;
+                        SendMailToContractor(ContractorEmail,ContractorName,msg,"I Know A Guy - Recommendation");
                         setVisibility(false);
                         setTimeout(VisibileRegisterButton, 4000);
                     }

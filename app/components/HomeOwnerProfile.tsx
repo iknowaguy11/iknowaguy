@@ -8,6 +8,7 @@ import { IUser } from "../Interfaces/appInterfaces";
 import MyProjects from "./MyProjects";
 import { useRouter } from "next/navigation";
 import { useFetchUserProjects } from "../_hooks/useFetch";
+import { updateProfile } from "../Controllers/UpdateProfile";
 
 const HomeOwnerProfile = ({UserData}:{UserData:IUser[]}) => {
     const [LastName, setLastName] = useState<string>(UserData[0]?.YourSurName);
@@ -33,7 +34,7 @@ const HomeOwnerProfile = ({UserData}:{UserData:IUser[]}) => {
                         </div>
                 <div className="h-full items-center justify-items-center">
                 <Card className='flex max-w-lg flex-grow rounded mt-3'>
-                    <form className="flex max-w-lg flex-col gap-4 flex-grow">
+                    <form onSubmit={(e)=>updateProfile(e,router,{YourName:FristName,YourSurName:LastName,phone},UserData[0]?.Id)} className="flex max-w-lg flex-col gap-4 flex-grow">
                         <div className="mb-2 block">
                             {
                                 UserData[0]?.profileImage &&

@@ -43,7 +43,7 @@ const Jobtemplate = ({ item,membership,CurrUserKey }: { item: IProjects,membersh
             <p className="text-clip text-wrap">{item?.description}</p>
             {
                 membership=="contractor" &&
-                <> {!item.AllcontactorKeys.includes(CurrUserKey.trim()) && <Button onClick={()=>setOpenModal(!openModal)} className="place-self-end" theme={customsubmitTheme} type="submit" color="appsuccess">Bid</Button>}
+                <> {!item.AllcontactorKeys.includes(CurrUserKey.trim()) && item?.AllcontactorKeys?.length<5  && <Button onClick={()=>setOpenModal(!openModal)} className="place-self-end" theme={customsubmitTheme} type="submit" color="appsuccess">Bid</Button>}
 
                 <AcceptBidingModal openModal={openModal} setOpenModal={setOpenModal} ProjectIdBid={item?.ProjectId} projectBudget={item?.budget} otherOffers={item?.otherOffers} bestOffer={item?.bestOffer} bstOffrId={item?.bstOffrId} AllcontactorKeys={item?.AllcontactorKeys}/>
             </>

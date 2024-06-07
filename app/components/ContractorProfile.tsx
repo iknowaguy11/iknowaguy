@@ -1,6 +1,6 @@
 import { Card, Label, Tooltip, TextInput, Select, Badge, Button } from "flowbite-react";
 import { useFetchBidCredits, useFetchProvinces, useFetchServices, useFetchgetContractorProjects } from "../_hooks/useFetch";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import certificatePng from '../../public/certificate.png';
 import iknown from '../../public/logoinknow.png';
 import MyBids from "../components/MyBids";
@@ -10,23 +10,55 @@ import Link from "next/link";
 import { HiTrash, HiShoppingCart } from 'react-icons/hi';
 import { IUser } from "../Interfaces/appInterfaces";
 import { useRouter } from "next/navigation";
+import { updateProfile } from "../Controllers/UpdateProfile";
 
 const ContractorProfile = ({ UserData }: { UserData: IUser[] }) => {
     const { ProvinceData, DataError, isLoading } = useFetchProvinces();
     const { ServiceData, serviceError, isLoadingservies } = useFetchServices();
     const { ContractorProjects, ProjectsError, isGettingProjects } = useFetchgetContractorProjects(UserData[0]?.Id);
-    const {BidCredits}=useFetchBidCredits(UserData[0]?.Id);
+    const { BidCredits } = useFetchBidCredits(UserData[0]?.Id);
 
     const [companyName, setcompanyName] = useState<string>(UserData[0]?.companyName);
     const [Address, setAddress] = useState<string>(UserData[0]?.Address);
     const [phone, setPhone] = useState<string>(UserData[0]?.phone);
     const router = useRouter();
 
+    const [selectedServices, SetSelectedServices] = useState<string[]>([]);
+    const [HistoryServices, setHistoryServices] = useState<string[]>([]);
+
+    const RemoveOldServices = (value: string) => {
+        const updatedServices = HistoryServices.filter((item) => item !== value);
+        setHistoryServices(updatedServices);
+    }
+    const RemoveServices = (value: string) => {
+        const updatedServices = selectedServices.filter((item) => item !== value);
+        SetSelectedServices(updatedServices);
+    }
+    const AppendSelectedServices = useCallback((value: string) => {
+        if (!selectedServices.includes(value) && selectedServices.length < 15) {
+            const updatedSelectedServices = [...selectedServices, value];
+            SetSelectedServices(updatedSelectedServices);
+        }
+    }, [selectedServices, SetSelectedServices]);
+
+    useEffect(() => {
+
+        if (ServiceData && ServiceData.length > 0) {
+            const firstService = ServiceData[0]?.actualTask[0]?.task;
+            AppendSelectedServices(firstService);
+        }
+    }, [ServiceData]);
+
+    useEffect(() => {
+        setHistoryServices(UserData[0]?.Services);
+    }, [])
+    
+
     return (
         <>
             <div className="h-full items-center justify-items-center">
                 <Card className='flex max-w-lg flex-grow rounded mt-3'>
-                    <form className="flex max-w-lg flex-col gap-4 flex-grow">
+                    <form onSubmit={(e) => updateProfile(e,router, { Address, phone,Services:[...new Set([...selectedServices,...HistoryServices])]},UserData[0]?.Id)} className="flex max-w-lg flex-col gap-4 flex-grow">
                         <div className="mb-2 block">
                             {
                                 UserData[0]?.profileImage &&
@@ -61,7 +93,7 @@ const ContractorProfile = ({ UserData }: { UserData: IUser[] }) => {
                         </div>
                         {
                             ProvinceData.length > 0 &&
-                            <Select id="addrSecltor" className="max-w-md" theme={customselectTheme} color={"success"} required>
+                            <Select id="addrSecltor" onChange={(e) => setAddress(e.target.value)} className="max-w-md" theme={customselectTheme} color={"success"} required>
                                 {ProvinceData?.map((item, index) => (
                                     <optgroup label={item.province} key={item.Id}>
                                         {item?.Towns?.map((ars, index) => (
@@ -99,11 +131,11 @@ const ContractorProfile = ({ UserData }: { UserData: IUser[] }) => {
                             <div className="mb-2 block">
                                 <Label htmlFor="specialty" value="Specialities" />
                             </div>
-                            <div className="flex gap-1">
+                            <div className="grid grid-cols-3  gap-1 pt-2">
                                 {
-                                    UserData[0]?.Services.map((serv, index) => (
+                                    HistoryServices?.map((serv, index) => (
                                         <div key={index} className='flex flex-wrap gap-2'>
-                                            <Badge icon={HiTrash} className="bg-appGreen text-white" color="success">{serv}</Badge>
+                                            <Badge onClick={() => RemoveOldServices(serv)} icon={HiTrash} className="bg-appGreen text-white hover:cursor-pointer" color="success">{serv}</Badge>
                                         </div>
                                     ))
                                 }
@@ -112,7 +144,7 @@ const ContractorProfile = ({ UserData }: { UserData: IUser[] }) => {
                         </div>
 
                         {ServiceData.length > 0 &&
-                            <Select className="max-w-md" id="Service" theme={customselectTheme} color={"success"} required>
+                            <Select onChange={(e) => AppendSelectedServices(e.target.value)} className="max-w-md" id="Service" theme={customselectTheme} color={"success"} required>
                                 {ServiceData?.map((item) => (
                                     <optgroup label={item.ServiceType} key={item.Id}>
                                         {item?.actualTask?.map((ars, index) => (
@@ -121,8 +153,15 @@ const ContractorProfile = ({ UserData }: { UserData: IUser[] }) => {
                                     </optgroup>
                                 ))}
                             </Select>
-                        }
 
+                        }
+                        <div className="grid grid-cols-3  gap-1 pt-2">
+                            {selectedServices?.map((itm, index) => (
+                                <div key={index} className='flex flex-wrap gap-2'>
+                                    <Badge onClick={() => RemoveServices(itm)} className="w-fit hover:cursor-pointer bg-appGreen text-white" icon={HiTrash} color="success">{itm}</Badge>
+                                </div>
+                            ))}
+                        </div>
                         <Button theme={customsubmitTheme} type="submit" color="appsuccess">Update</Button>
                     </form>
                 </Card>
@@ -157,7 +196,7 @@ const ContractorProfile = ({ UserData }: { UserData: IUser[] }) => {
                         <p className="text-md text-gray-800">Balance:{BidCredits[0]?.credit || 0} Bid(s)</p>
                         {
                             ContractorProjects?.map((item) => (
-                                <MyBids item={item} key={item.ProjectId} MyKey={UserData[0]?.Id}/>
+                                <MyBids item={item} key={item.ProjectId} MyKey={UserData[0]?.Id} />
                             ))
                         }
                     </form>

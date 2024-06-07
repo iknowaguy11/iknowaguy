@@ -484,11 +484,6 @@ const ContractorRegistration = () => {
                             </>
                         }
 
-
-
-
-
-
                         <div>
                             <div className="mb-2 block">
                                 <Label htmlFor="Town" value={formType ? "Your Address*" : "Compay's Address*"} />
