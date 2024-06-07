@@ -23,7 +23,7 @@ const PaymentButton = ({ price, Bidpackage }: { price: string, Bidpackage: strin
     "email_address": UserData[0]?.companyEmail?.trim(),
     "m_payment_id": v4()?.trim(),
     "amount": price.trim(),
-    "item_name": "Biding Package:Bronze",
+    "item_name": "Biding Package:"+Bidpackage?.trim(),
     "custom_str1": ukey?.trim(),
     "custom_str2": Bidpackage?.trim(),
     "custom_str3": UserData[0]?.phone?.trim()
