@@ -38,7 +38,7 @@ const PaymentButton = ({ price, Bidpackage }: { price: string, Bidpackage: strin
       SetIsLoggedIn(false);
     } 
   },[ukey]);
-  const testingMode = true;
+  const testingMode = false;
   const pfHost = testingMode ? 'sandbox.payfast.co.za' : 'www.payfast.co.za';
 
   return (

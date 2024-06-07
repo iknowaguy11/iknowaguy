@@ -1,6 +1,6 @@
-import { Card, Label, Tooltip, TextInput, Select, Badge, Button } from "flowbite-react";
+import { Card, Label, Tooltip, TextInput, Select, Badge, Button, Avatar } from "flowbite-react";
 import { useFetchBidCredits, useFetchProvinces, useFetchServices, useFetchgetContractorProjects } from "../_hooks/useFetch";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import certificatePng from '../../public/certificate.png';
 import iknown from '../../public/logoinknow.png';
 import MyBids from "../components/MyBids";
@@ -11,6 +11,10 @@ import { HiTrash, HiShoppingCart } from 'react-icons/hi';
 import { IUser } from "../Interfaces/appInterfaces";
 import { useRouter } from "next/navigation";
 import { updateProfile } from "../Controllers/UpdateProfile";
+import { v4 } from "uuid";
+import { storage } from "../DB/firebaseConnection";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { failureMessage } from "../notifications/successError";
 
 const ContractorProfile = ({ UserData }: { UserData: IUser[] }) => {
     const { ProvinceData, DataError, isLoading } = useFetchProvinces();
@@ -22,7 +26,9 @@ const ContractorProfile = ({ UserData }: { UserData: IUser[] }) => {
     const [Address, setAddress] = useState<string>(UserData[0]?.Address);
     const [phone, setPhone] = useState<string>(UserData[0]?.phone);
     const router = useRouter();
-
+    const [avatarImage, setAvatarImage] = useState<any>(null);
+    const [Imageupload, setImageupload] = useState<File | null>(null);
+    const[isProcessing,SetIsprocessing]=useState<boolean>(false);
     const [selectedServices, SetSelectedServices] = useState<string[]>([]);
     const [HistoryServices, setHistoryServices] = useState<string[]>([]);
 
@@ -51,16 +57,45 @@ const ContractorProfile = ({ UserData }: { UserData: IUser[] }) => {
 
     useEffect(() => {
         setHistoryServices(UserData[0]?.Services);
-    }, [])
-    
+    }, []);
 
+
+    const fileInputRef = useRef<any>(null);
+
+    const handleImageChange = (e: any) => {
+        const file = e.target.files[0];
+        if (file) {
+            // Check if the selected file is an image and is not gif
+            if (!file.type.startsWith('image/') || file.type === 'image/gif') {
+                alert('Please select a non-GIF image file.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (event: any) => {
+                // Set the image source to the selected file
+                const imageDataUrl = event.target.result;
+                setAvatarImage(imageDataUrl);
+                setImageupload(file);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+    var imgfilename: string;
+    imgfilename = "";
+    let image_url: string;
+    image_url = "";
+
+    const OpenImagePicker = () => {
+        fileInputRef.current.click();
+    };
     return (
         <>
             <div className="h-full items-center justify-items-center">
                 <Card className='flex max-w-lg flex-grow rounded mt-3'>
-                    <form onSubmit={(e) => updateProfile(e,router, { Address, phone,Services:[...new Set([...selectedServices,...HistoryServices])]},UserData[0]?.Id)} className="flex max-w-lg flex-col gap-4 flex-grow">
+                    <form onSubmit={(e) => updateProfile(e, router, { Address, phone, Services: [...new Set([...selectedServices, ...HistoryServices])] }, UserData[0]?.Id, Imageupload,SetIsprocessing)} className="flex max-w-lg flex-col gap-4 flex-grow">
                         <div className="mb-2 block">
-                            {
+                            {/* {
                                 UserData[0]?.profileImage &&
                                 <Image
                                     src={UserData[0]?.profileImage}
@@ -70,7 +105,29 @@ const ContractorProfile = ({ UserData }: { UserData: IUser[] }) => {
                                     height={40}
 
                                 />
-                            }
+                            } */}
+                            <div>
+                                <input
+                                    type="file"
+                                    ref={fileInputRef}
+                                    accept="image/*"
+                                    style={{ display: 'none' }}
+                                    onChange={handleImageChange}
+                                />
+                                <div className="w-fit">
+                                <Avatar size={"lg"} className='hover:cursor-pointer relative' onClick={OpenImagePicker} img={avatarImage == null ? "" : avatarImage}>
+                                    <div className="space-y-1 font-medium dark:text-white">
+                                        <div>{"Update your " +(UserData[0].membership=="contractor" ? "company logo": "profile picture")}</div>
+                                    </div>
+                                    
+                                </Avatar>
+                                <Badge onClick={()=>{
+                                        setAvatarImage(null);
+                                        setImageupload(null);
+                                    }} className="w-fit hover:cursor-pointer bg-appGreen text-white z-10" icon={HiTrash}>Remove</Badge>
+                                </div>
+                                
+                            </div>
                         </div>
                         <p className="text-xs text-gray-500">{UserData[0]?.companyEmail}</p>
 
@@ -162,7 +219,7 @@ const ContractorProfile = ({ UserData }: { UserData: IUser[] }) => {
                                 </div>
                             ))}
                         </div>
-                        <Button theme={customsubmitTheme} type="submit" color="appsuccess">Update</Button>
+                        <Button isProcessing={isProcessing} theme={customsubmitTheme} type="submit" color="appsuccess">Update</Button>
                     </form>
                 </Card>
             </div>
