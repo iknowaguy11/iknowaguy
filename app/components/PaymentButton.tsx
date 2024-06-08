@@ -11,10 +11,10 @@ const PaymentButton = ({ price, Bidpackage }: { price: string, Bidpackage: strin
   const { ukey } = useContext(AppContext);
   const { UserData } = useFetchUserAccount(ukey);
   const [IsLoggedIn,SetIsLoggedIn]=useState(false);
-  const testingMode = true;
+  const testingMode = false;
   const myData: any = {
-    "merchant_id": testingMode ? process?.env?.NEXT_PUBLIC_MERCHANT_ID : process?.env?.NEXT_PRIVATE_MERCHANT_ID,
-    "merchant_key":testingMode ? process?.env?.NEXT_PUBLIC_MERCHANT_KEY : process?.env?.NEXT_PRIVATE_MERCHANT_KEY,
+    "merchant_id": testingMode ? process?.env?.NEXT_PUBLIC_MERCHANT_ID : process?.env?.NEXT_PUBLIC_PMERCHANT_ID,
+    "merchant_key":testingMode ? process?.env?.NEXT_PUBLIC_MERCHANT_KEY : process?.env?.NEXT_PUBLIC_PMERCHANT_KEY,
     "return_url": "https://inkowaguy.vercel.app/success",
     "cancel_url": "https://inkowaguy.vercel.app/cancel",
     "notify_url": "https://payfastpaymentvalidator.onrender.com/notify",
@@ -32,7 +32,7 @@ const PaymentButton = ({ price, Bidpackage }: { price: string, Bidpackage: strin
   useEffect(()=>{
     if(ukey!=="" && ukey!==null ){
       SetIsLoggedIn(true);
-      const myPassphrase = testingMode ? process?.env?.NEXT_PUBLIC_PASSPHRASE : process?.env?.NEXT_PRIVATE_PASSPHRASE;
+      const myPassphrase = testingMode ? process?.env?.NEXT_PUBLIC_PASSPHRASE : process?.env?.NEXT_PUBLIC_PPASSPHRASE;
       myData["signature"] = generateSignature(myData, myPassphrase);
     }else{
       SetIsLoggedIn(false);
