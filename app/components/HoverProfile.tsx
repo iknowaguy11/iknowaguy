@@ -2,6 +2,7 @@ import { Avatar, Button,Popover } from "flowbite-react";
 import { IOtherOffers } from "../Interfaces/appInterfaces";
 import { SendMailAcceptence } from "../utils/SendEmail";
 
+
 export default function HoverProfile({ofrs}:{ofrs:IOtherOffers}) {
   const AcceptOffer=()=>{
     let msg="You have been awarded a project to work on, find more details of the project uder your profile on I Know A Guy";
