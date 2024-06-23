@@ -15,9 +15,9 @@ const InsiprationFullView = ({paths_Segments,inpiration_folder}:{inpiration_fold
                 InspirationGroups.map((itm:any)=>{
                     if(parseInt(itm.id)==parseInt(inpiration_folder)){
                         return (
-                            itm.imgArray.map((imgf:any)=> {
+                            itm.imgArray.map((imgf:any,index:any)=> {
                                 return (
-                                    <Image
+                                    <Image key={index}
                                     className="m-2 aspect-[4/3] object-cover"
                                     alt='inspiration image'
                                     src={imgf}
