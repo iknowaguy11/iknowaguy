@@ -29,3 +29,32 @@ export const SendMailToContractor = async (email: string, name: string, message:
     }
 
 }
+
+export const SendMailAcceptence = async (email: string, name: string, message: string, subject: string) => {
+    try {
+        const response = await fetch('https://payfastpaymentvalidator.onrender.com/sendemail', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(
+                {
+                    email: email,
+                    name: name,
+                    message: message,
+                    subject: subject
+                }),
+        });
+
+        const data = await response.json();
+        if (data.message == "email deliverd") {
+            successMessage("An acceptence offer email has been shared to the contractor or skilled individual.");
+        } else {
+            failureMessage("We could not deliver your mail to the contractor or skilled individual.");
+        }
+    } catch (error: any) {
+        console.log(error);
+        failureMessage("Error: " + error?.message);
+    }
+
+}

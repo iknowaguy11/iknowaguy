@@ -85,8 +85,8 @@ export default function Recommend() {
     const IsError = () => {
         let found: Boolean;
         found = false;
-        if (CompanyName == "" || ContractorEmail == "" ||
-            ContractorName == "" || ContractorPhone == "" || Address == "" || HowdoYouKnowThem==""
+        if ( ContractorEmail == "" ||
+            ContractorName == "" || ContractorPhone == "" || Address == "" || HowdoYouKnowThem=="" || HowdoYouKnowThem=="---"
         ) {
             found = true;
             Setprocessing(false);
@@ -124,7 +124,7 @@ export default function Recommend() {
                     const myDocumentData = {
                         ContractorName,
                         ContractorPhone,
-                        CompanyName,
+                        CompanyName:CompanyName.trim() !=="" ? CompanyName :"Skilled Individual",
                         HowdoYouKnowThem:(HowdoYouKnowThem.trim() == "" ? "Preferred not to say" : HowdoYouKnowThem),
                         RecommederName: (RecommederName.trim() == "" ? "Anonymous" : RecommederName),
                         Address,
@@ -170,31 +170,31 @@ export default function Recommend() {
                     <form onSubmit={(e) => RecomentContractor(e)} className="flex max-w-md flex-col gap-4 flex-grow">
                         <div>
                             <div className="mb-2 block">
-                                <Label htmlFor="contrname" value="Contractor's Name" />
+                                <Label htmlFor="contrname" value="Contractor's Name *" />
                             </div>
-                            <TextInput onChange={(e) => SetContractorName(e?.target?.value)} value={ContractorName} theme={customInputBoxTheme} color={"focuscolor"} id="contrname" type="text" placeholder="Name of the person you are recommending" required shadow />
+                            <TextInput onChange={(e) => SetContractorName(e?.target?.value)} value={ContractorName} theme={customInputBoxTheme} color={"focuscolor"} id="contrname" type="text" placeholder="Name Of The Person You Are Recommending" required shadow />
                         </div>
                         <div>
                             <div className="mb-2 block">
-                                <Label htmlFor="companyName" value="Their company Name" />
+                                <Label htmlFor="companyName" value="Their Company Name *" />
                             </div>
-                            <TextInput onChange={(e) => SetCompanyName(e?.target?.value)} value={CompanyName} theme={customInputBoxTheme} color={"focuscolor"} id="companyName" type="text" placeholder="Contractor company Name" required shadow />
+                            <TextInput onChange={(e) => SetCompanyName(e?.target?.value)} value={CompanyName} theme={customInputBoxTheme} color={"focuscolor"} id="companyName" type="text" placeholder="Contractor Company Name" required shadow />
                         </div>
                         <div>
                             <div className="mb-2 block">
-                                <Label htmlFor="contractphone" value="Contractor's Phone No." />
+                                <Label htmlFor="contractphone" value="Contractor's Phone No. *" />
                             </div>
-                            <TextInput onChange={(e) => SetContractorPhone(e?.target?.value)} value={ContractorPhone} theme={customInputBoxTheme} color={"focuscolor"} id="contractphone" type="tel" placeholder="Name of the person you are recommending" maxLength={10} required shadow />
+                            <TextInput onChange={(e) => SetContractorPhone(e?.target?.value)} value={ContractorPhone} theme={customInputBoxTheme} color={"focuscolor"} id="contractphone" type="tel" placeholder="Contractor’s Phone Number" maxLength={10} required shadow />
                         </div>
                         <div>
                             <div className="mb-2 block">
-                                <Label htmlFor="contemail" value="Their Email" />
+                                <Label htmlFor="contemail" value="Their Email *" />
                             </div>
                             <TextInput onChange={(e) => SetContractorEmail(e?.target?.value)} value={ContractorEmail} theme={customInputBoxTheme} color={"focuscolor"} id="contemail" type="email" placeholder="Someone@mailprovider.co.za" required shadow />
                         </div>
                         <div>
                             <div className="mb-2 block">
-                                <Label htmlFor="Town" value="Compay's Address*" />
+                                <Label htmlFor="Town" value="Compay's Address *" />
                             </div>
 
                             <Select id="addrSecltor" onChange={(e) => setAddress(e.target.value)} className="max-w-md" theme={customselectTheme} color={"success"} required>
@@ -232,15 +232,21 @@ export default function Recommend() {
                         </div>
                         <div>
                             <div className="mb-2 block">
-                                <Label htmlFor="shareUrName" value="Share your Name" />
+                                <Label htmlFor="shareUrName" value="Share your Name " />
                             </div>
-                            <TextInput onChange={(e) => SetRecommederName(e?.target?.value)} value={RecommederName} theme={customInputBoxTheme} color={"focuscolor"} id="shareUrName" type="text" placeholder='Share your Name (Optional)' shadow />
+                            <TextInput onChange={(e) => SetRecommederName(e?.target?.value)} value={RecommederName} theme={customInputBoxTheme} color={"focuscolor"} id="shareUrName" type="text" placeholder='Share your Name' shadow />
                         </div>
                         <div>
                             <div className="mb-2 block">
-                                <Label htmlFor="relation" value="How Do You Know Them" />
+                                <Label htmlFor="relation" value="How Do You Know Them *" />
                             </div>
-                            <TextInput value={HowdoYouKnowThem} onChange={(e) => SetHowdoYouKnowThem(e?.target?.value)} theme={customInputBoxTheme} color={"focuscolor"} id="relation" type="text" placeholder='Your Relationship With The Contractor (Optional)' shadow />
+                            <Select onChange={(e) => SetHowdoYouKnowThem(e?.target?.value)} className="max-w-md" id="Service" theme={customselectTheme} color={"success"} required>
+                            <option >---</option>
+                            <option >I've hired them</option>
+                            <option >Friend or Family Member</option>
+                            <option >I'm recommending myself/my company</option>
+                            <option >Other</option>
+                            </Select>
                         </div>
                         <div className="flex items-center gap-2">
                             <Checkbox id="agree" checked={tncs} onChange={() => setTnCs(tncs ? false : true)} theme={customCheckboxTheme} color="success" />

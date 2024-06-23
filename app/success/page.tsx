@@ -12,7 +12,7 @@ const SuccessPage = () => {
                 imgSrc={om.src}
             >
                 <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                    Succesfull Payment
+                    Succesful Payment
                 </h5>
                 <p className="font-normal text-gray-700 dark:text-gray-400">
                     Thank you for making this payment. Your account has been credited, you can now place a bid of your choice.

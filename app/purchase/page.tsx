@@ -8,8 +8,8 @@ import PaymentButton from "../components/PaymentButton";
 export default function BidsCredits() {
     
     return (
-        <div className="w-full gap-4">
-            <div className="h-full flex justify-center bg-opacity-75 bg-black">
+        <div className="w-full gap-4 bg-slate-50">
+            <div className="h-full flex justify-center bg-slate-50">
                 <div className="grid xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-1 sm:grid-cols-1 top-0 mt-20 mb-3 gap-2">
                     {
                         Plans.map((item) => (

@@ -10,7 +10,7 @@ import AcceptBidingModal from "./AcceptBidingModal";
 const Jobtemplate = ({ item,membership,CurrUserKey }: { item: IProjects,membership:string,CurrUserKey:string }) => {
     const[openModal,setOpenModal]=useState(false);
     return (
-        <div className="border w-full z-10 m-2 p-1 rounded-md shadow">
+        <div className="border w-full z-10 ml-2 mr-2 mt-6 mb-3 p-1 rounded-md shadow">
             <div className="gridCont grid">
                 <div className="imageNownwer">
                     <Image

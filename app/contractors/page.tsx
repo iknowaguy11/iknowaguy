@@ -19,7 +19,7 @@ const contractors:Icontractors[]=[
 const Allcontractors = () => {
     const { UserData, accountError, isGettingAccount}=useFetchContractorsAccount("all");
     return ( 
-        <div className='flex justify-center items-center mt-28 mb-10'>
+        <div className='flex justify-center items-center mt-28 mb-10 gap-2'>
             <NewContractorTemplate contractors={UserData} params={[]} isGettingAccount={isGettingAccount} accountError={accountError}/>
         </div>
      );

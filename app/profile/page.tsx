@@ -24,7 +24,6 @@ const Profile = () => {
         <div className={UserData[0]?.membership=="contractor" ? "w-full h-full mt-16 mb-8 grid lg:grid-cols-2 xl:lg:grid-cols-2 md:lg:grid-cols-2 sm:lg:grid-cols-1 items-center justify-items-center justify-center" : "w-full h-full mt-16 mb-8 flex items-center justify-items-center justify-center" }>
             {
                 UserData[0]?.membership=="contractor" ? <ContractorProfile UserData={UserData}/> : UserData[0]?.membership=="homeowner"? <HomeOwnerProfile UserData={UserData}/>  : null     
-                
             }
         </div>
         }

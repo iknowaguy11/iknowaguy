@@ -28,7 +28,7 @@ export function NewContractorTemplate({ contractors, params, isGettingAccount, a
             <div>
                 {
                     contractors.length > 0 ? contractors?.map((item) => (
-                        <div key={item.Id} className='bg-slate-100 border z-10 rounded-md p-2 shadow-md m-2'>
+                        <div key={item.Id} className='bg-slate-100 border z-10 rounded-md p-2 shadow-md m-5'>
                             <h2 className='text-lg text-black font-bold'>{item.companyName}</h2>
                             <div className="grid lg:grid-cols-3 xl:grid-cols-3 sm:grid-cols-1 md:grid-cols-2 sm:w-fit md:w-fit lg:w-full xl:w-full" >
 
@@ -47,7 +47,7 @@ export function NewContractorTemplate({ contractors, params, isGettingAccount, a
                                 </div>
 
                                 <div className='gap-1'>
-                                    <div className='flex items-center gap-1 m-1'>
+                                    <div className='flex items-center gap-1 m-2'>
                                         <Badge theme={customTheme} color={"success"} icon={HiPhone}></Badge>
                                         <p className='text-sm'>{item.phone}</p>
                                     </div>
@@ -84,7 +84,7 @@ export function NewContractorTemplate({ contractors, params, isGettingAccount, a
             <div>
                 {
                     TempContractor.length > 0 ? TempContractor?.map((item) => (
-                        <div key={item.Id} className='bg-slate-100 border z-10 rounded-md p-2 shadow-md m-2'>
+                        <div key={item.Id} className='bg-slate-100 border z-10 rounded-md p-2 shadow-md m-5'>
                             <h2 className='text-lg text-black font-bold'>{item.companyName}</h2>
                             <div className="grid lg:grid-cols-3 xl:grid-cols-3 sm:grid-cols-1 md:grid-cols-2 sm:w-fit md:w-fit lg:w-full xl:w-full" >
 

@@ -305,8 +305,8 @@ const ContractorRegistration = () => {
     }
 
     return (
-        <div className="w-full gap-4">
-            <div className="h-full flex justify-center bg-opacity-75 bg-black">
+        <div className="bg-slate-50 w-full gap-4">
+            <div className="h-full flex justify-center bg-slate-50">
                 <Card className='flex max-w-lg flex-grow rounded top-0 mt-20 mb-3 ml-1 mr-1'>
                     <form onSubmit={(e) => RegisterMember(e)} className="flex max-w-lg flex-col gap-4 flex-grow">
                         <div>
@@ -323,13 +323,13 @@ const ContractorRegistration = () => {
                                 </div>
                             </Avatar>
                         </div>
-                        <p className="text-xs text-black">Are you a bussiness owner or just a skilled individual Toogle the button below for skilled individual.</p>
+                        <p className="text-xs text-black">Are you a business or a skilled individual?.</p>
 
                         <label className="inline-flex items-center me-5 cursor-pointer">
-                            <span className="me-3 text-sm font-medium text-gray-900 dark:text-gray-300">Bussiness Owner</span>
+                            <span className="me-3 text-sm font-medium text-gray-900 dark:text-gray-300">Business</span>
                             <input type="checkbox" className="sr-only peer mr-2" checked={formType} onChange={() => setformType(formType ? false : true)} />
                             <div className="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-appGreen dark:peer-focus:ring-appGreen peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-appGreen"></div>
-                            <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Skilled Individual</span>
+                            <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Individual</span>
                         </label>
 
                         {formType ?
@@ -365,13 +365,13 @@ const ContractorRegistration = () => {
 
                                 <div>
                                     <div className="mb-2 block">
-                                        <Label htmlFor="Town" value={formType ? "Your Email" : "Company Email *"} />
+                                        <Label htmlFor="Town" value={formType ? "Email Address *" : "Email Address *"} />
                                         <p className="text-xs text-gray-500">Note this field once submitted it can only be updated with the help of administrator.</p>
                                     </div>
                                     <TextInput
                                         value={companyEmail}
                                         onChange={(e) => setcompanyEmail(e.target.value)}
-                                        theme={customInputBoxTheme} color={"focuscolor"} id="cmpEmail" type="email" placeholder={formType ? "Your Email" : "Company Email *"} required shadow />
+                                        theme={customInputBoxTheme} color={"focuscolor"} id="cmpEmail" type="email" placeholder={formType ? "Email Address" : "Email Address"} required shadow />
                                 </div>
 
                                 <div>
@@ -381,7 +381,7 @@ const ContractorRegistration = () => {
                                     <TextInput
                                         value={phone}
                                         onChange={(e) => setPhone(e.target.value)}
-                                        theme={customInputBoxTheme} color={"focuscolor"} id="phones" type="tel" placeholder={formType ? "Phone numbers" : "The company's phone numbers"} maxLength={10} required shadow />
+                                        theme={customInputBoxTheme} color={"focuscolor"} id="phones" type="tel" placeholder={formType ? "Phone Numbers" : "Phone Numbers"} maxLength={10} required shadow />
                                 </div>
                                 <div>
                                     <div className="mb-2 block">
@@ -408,19 +408,19 @@ const ContractorRegistration = () => {
                                     <TextInput
                                         value={companyName}
                                         onChange={(e) => setcompanyName(e.target.value)}
-                                        theme={customInputBoxTheme} color={"focuscolor"} id="cmpName" type="text" placeholder="The company's Name" required shadow />
+                                        theme={customInputBoxTheme} color={"focuscolor"} id="cmpName" type="text" placeholder="Name of the company you are representing" required shadow />
                                 </div>
 
 
                                 <div>
                                     <div className="mb-2 block">
-                                        <Label htmlFor="regno" value="Registration Number *" />
+                                        <Label htmlFor="regno" value="Company Registration Number  *" />
                                         <p className="text-xs text-gray-500">Note this field once submitted it can only be updated with the help of administrator.</p>
                                     </div>
                                     <TextInput
                                         value={RegistrationNo}
                                         onChange={(e) => setRegistrationNo(e.target.value)}
-                                        theme={customInputBoxTheme} color={"focuscolor"} id="regno" type="text" placeholder="Registration Number" required shadow />
+                                        theme={customInputBoxTheme} color={"focuscolor"} id="regno" type="text" placeholder="CIPC official registration number" required shadow />
                                 </div>
 
                                 <div>
@@ -430,7 +430,7 @@ const ContractorRegistration = () => {
                                     <TextInput
                                         value={YourName}
                                         onChange={(e) => SetYourName(e.target.value)}
-                                        theme={customInputBoxTheme} color={"focuscolor"} id="cmpName" type="text" placeholder={formType ? "Your Name" : "Company Representative"} required shadow />
+                                        theme={customInputBoxTheme} color={"focuscolor"} id="cmpName" type="text" placeholder={formType ? "Your Name" : "Name of the person representing the company"} required shadow />
                                 </div>
 
                                 <div>
@@ -445,23 +445,23 @@ const ContractorRegistration = () => {
 
                                 <div>
                                     <div className="mb-2 block">
-                                        <Label htmlFor="Town" value={formType ? "Your Email" : "Company Email *"} />
+                                        <Label htmlFor="Town" value={formType ? "Email Address *" : "Email Address *"} />
                                         <p className="text-xs text-gray-500">Note this field once submitted it can only be updated with the help of administrator.</p>
                                     </div>
                                     <TextInput
                                         value={companyEmail}
                                         onChange={(e) => setcompanyEmail(e.target.value)}
-                                        theme={customInputBoxTheme} color={"focuscolor"} id="cmpEmail" type="email" placeholder={formType ? "Your Email" : "Company Email *"} required shadow />
+                                        theme={customInputBoxTheme} color={"focuscolor"} id="cmpEmail" type="email" placeholder={formType ? "Email Address" : "Email Address"} required shadow />
                                 </div>
 
                                 <div>
                                     <div className="mb-2 block">
-                                        <Label htmlFor="Town" value={formType ? "Phone No. *" : "Company Phone No. *"} />
+                                        <Label htmlFor="Town" value={formType ? "Phone Numnber. *" : "Phone Numnber. *"} />
                                     </div>
                                     <TextInput
                                         value={phone}
                                         onChange={(e) => setPhone(e.target.value)}
-                                        theme={customInputBoxTheme} color={"focuscolor"} id="phones" type="tel" placeholder={formType ? "Phone numbers" : "The company's phone numbers"} maxLength={10} required shadow />
+                                        theme={customInputBoxTheme} color={"focuscolor"} id="phones" type="tel" placeholder={formType ? "Phone Numnber" : "Phone Numnber"} maxLength={10} required shadow />
                                 </div>
                                 <div>
                                     <div className="mb-2 block">
@@ -539,7 +539,7 @@ const ContractorRegistration = () => {
                             </Alert>}
                         <Offline>
                             <Alert color="warning" icon={HiInformationCircle}>
-                                <span className="font-medium">Info alert!</span>{NetworkTitle}
+                                <span className="font-medium">Info alert!. </span>{NetworkTitle}
                                 <p className="text-xs text-gray-500">{NetworkMessage}</p>
                             </Alert></Offline>
                     </form>

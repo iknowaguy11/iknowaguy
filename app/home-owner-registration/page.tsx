@@ -191,8 +191,8 @@ const HomeOwnerRegistration = () => {
     }
 
     return (
-        <div className="w-full gap-4">
-            <div className="h-full flex justify-center bg-opacity-75 bg-black">
+        <div className="bg-slate-50 w-full gap-4">
+            <div className="h-full flex justify-center bg-slate-50">
                 <Card className='flex max-w-lg flex-grow rounded top-0 mt-20 mb-3 ml-1 mr-1'>
                     <form onSubmit={(e) => RegisterMember(e)} className="flex max-w-lg flex-col gap-4 flex-grow">
                         <div>
@@ -264,7 +264,7 @@ const HomeOwnerRegistration = () => {
                             </Alert>}
                         <Offline>
                             <Alert color="warning" icon={HiInformationCircle}>
-                                <span className="font-medium">Info alert!</span> {NetworkTitle}
+                                <span className="font-medium">Info alert!. </span> {NetworkTitle}
                                 <p className="text-xs text-gray-500">{NetworkMessage}</p>
                             </Alert></Offline>
                     </form>

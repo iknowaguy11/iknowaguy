@@ -51,9 +51,9 @@ const inspirations: Iinspirations[] = [
     { id: '2', tittle: 'Kitchen', imgsr: Kitchen, caption: "", sharelink: "Kitchen" },
     { id: '3', tittle: 'Interior Decor', imgsr: InteriorDecor, caption: "", sharelink: "Interior-Decor" },
     { id: '4', tittle: 'Landscape', imgsr: Landscape, caption: "", sharelink: "Landscape" },
-    { id: '5', tittle: 'Home-Exterior', imgsr: HouseExterior, caption: "", sharelink: "Home-Exterior" },
-    { id: '6', tittle: 'Dining-Room', imgsr: Diningroom, caption: "", sharelink: "Dining-Room" },
-    { id: '7', tittle: 'Kids-Room', imgsr: KidsRoom, caption: "", sharelink: "Kids-Room" },
+    { id: '5', tittle: 'Home Exterior', imgsr: HouseExterior, caption: "", sharelink: "Home-Exterior" },
+    { id: '6', tittle: 'Dining Room', imgsr: Diningroom, caption: "", sharelink: "Dining-Room" },
+    { id: '7', tittle: 'Kids Room', imgsr: KidsRoom, caption: "", sharelink: "Kids-Room" },
 ]
 
 
@@ -87,7 +87,7 @@ const CenterBody = () => {
             <div className="flex flex-col justify-center items-center gap-2 p-6">
                 <h1 className="text-4xl">What is IKAG</h1>
                 <p className="text-gray-600 ml-5 mr-5">I Know A Guy is a user-driven platform on which home-owners can find trusted, reliable home care contractors. Whether you are looking for a handyman for small jobs around the house or a builder for a big renovation project, you will find them on I Know A Guy. Unlike other business directories, the listings on I Know A Guy are Recommended by people who have interacted with those contractors, people who have used their services and can vouch that you will receive good service from them.</p>
-                <p className="text-gray-600 ml-5 mr-5">There are two ways in which you can use I Know A Guy to find contractors. Firstly, you can <a onClick={()=>{
+                <p className="text-gray-600 ml-5 mr-5 mt-6">There are two ways in which you can use I Know A Guy to find contractors. Firstly, you can <a onClick={()=>{
             const element = document.getElementById('searchBox');
             element?.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
           }} className="text-appGreen">Find Contractors</a> by location and type of service you require and select one from our user-generated list. 
@@ -158,7 +158,7 @@ Alternatively, you can <Link href={'/postproject'} className="text-appGreen">Pos
                 </div>
                 <Button onClick={()=>CheckProjects()} theme={customsubmitTheme} color="appsuccess" size="md">See More Projects</Button>
                 {isNotification && <Alert color="warning" rounded>
-                    <span className="font-medium">Info alert!</span> we Currently Have no Projects to Show/Advertise.
+                    <span className="font-medium">Info alert!</span> We Currently Have no Projects to Show/Advertise.
                   </Alert>}
                 
             </div>
@@ -171,7 +171,7 @@ Alternatively, you can <Link href={'/postproject'} className="text-appGreen">Pos
                         <div
                              key={item.id} className="max-w-sm relative overflow-hidden rounded-md hover:cursor-pointer"
                         >
-                            <Badge onClick={() =>copylink("https://"+(window?.location?.hostname).toString()+"/inspirations/"+item.sharelink)} theme={customTheme} color={"success"} className="absolute z-10 w-fit top-0 m-1 hover:cursor-pointer" icon={HiShare}>copy link</Badge>
+                            {/* <Badge onClick={() =>copylink("https://"+(window?.location?.hostname).toString()+"/inspirations/"+item.sharelink)} theme={customTheme} color={"success"} className="absolute z-10 w-fit top-0 m-1 hover:cursor-pointer" icon={HiShare}>copy link</Badge> */}
                             <Image
                             onClick={()=>router.push("inspirations/"+item.sharelink)}
                                 src={item.imgsr}
@@ -189,7 +189,6 @@ Alternatively, you can <Link href={'/postproject'} className="text-appGreen">Pos
                             </div>
                         </div>
                     ))}
-
 
                 </div>
 

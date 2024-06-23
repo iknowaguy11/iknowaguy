@@ -24,7 +24,7 @@ export function Slider() {
     const [subcategory, SetSubcategory] = useState<IActualTasks[]>([]);
     const [subareas, SetSubareas] = useState<ITowns[]>([]);
    
-    const [provCategory, setprovCategory] = useState<string>("Select your location");
+    const [provCategory, setprovCategory] = useState<string>("Select Your Location");
     const [ServiceCategory, setServiceCategory] = useState<string>("Select Service");
     const SetSelectedService = (category: string) => {
         setServiceCategory(category);
@@ -41,7 +41,7 @@ export function Slider() {
 
     const SetProvince = (category: string) => {
         setprovCategory(category);
-        if (category !== "" && category !== "Select your location") {
+        if (category !== "" && category !== "Select Your Lcation") {
             ProvinceData.forEach((item) => {
                 if (item.province == category.replace("🛠️", '').trim()) {
                     SetSubareas(item.Towns);
@@ -54,13 +54,9 @@ export function Slider() {
 
     const router = useRouter();
     const performSeach = () => {
-        console.log(ServiceCategory+" "+SelectedSubcategory);
-        console.log(provCategory+" "+Selectedsubarea);
-        // if (selectedValue.toLocaleLowerCase().trim() == "all" && typedValue.trim() == "") {
-        //     router.push('/contractors');
-        // }
-        if (( ServiceCategory.toLocaleLowerCase().trim() != "Select Service") && ( SelectedSubcategory.toLocaleLowerCase().trim() != "")
-        && ( provCategory.toLocaleLowerCase().trim() != "Select your location") && ( Selectedsubarea.toLocaleLowerCase().trim() != "")) {
+        
+        if (( ServiceCategory.toLocaleLowerCase().trim() != "select service") && ( SelectedSubcategory.toLocaleLowerCase().trim() != "")
+        && ( provCategory.toLocaleLowerCase().trim() != "select your location") && ( Selectedsubarea.toLocaleLowerCase().trim() != "")) {
             router.push(`/contractors/${ServiceCategory.toLocaleLowerCase().trim()}/${SelectedSubcategory.toLocaleLowerCase().trim()}/
             ${provCategory.toLocaleLowerCase().trim()}/${Selectedsubarea.toLocaleLowerCase().trim()}`);
         }
@@ -134,7 +130,7 @@ export function Slider() {
                     <Button className='serch mt-3 bg-appGreen text-white' size="md" as="a" color="light"
                         onClick={() => performSeach()}>
                             <HiSearch className="mr-2 h-5 w-5" />
-                            search</Button>
+                            Search</Button>
                 </div>
 
                 {/*search results*/}

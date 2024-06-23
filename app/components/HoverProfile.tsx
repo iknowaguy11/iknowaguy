@@ -1,7 +1,12 @@
 import { Avatar, Button,Popover } from "flowbite-react";
 import { IOtherOffers } from "../Interfaces/appInterfaces";
+import { SendMailAcceptence } from "../utils/SendEmail";
 
 export default function HoverProfile({ofrs}:{ofrs:IOtherOffers}) {
+  const AcceptOffer=()=>{
+    let msg="You have been awarded a project to work on, find more details of the project uder your profile on I Know A Guy";
+    SendMailAcceptence("futurekgaphola@gmail.com",ofrs?.companyName!==null ? ofrs?.companyName  : ofrs.firstName,msg,"Project Offer");
+  }
   return (
     <Popover placement="left" trigger="hover"
       aria-labelledby="profile-popover"
@@ -16,7 +21,9 @@ export default function HoverProfile({ofrs}:{ofrs:IOtherOffers}) {
               />
             </a>
             <div>
-              <Button size="xs"
+              <Button
+              onClick={()=>AcceptOffer()}
+               size="xs"
                 type="button"
                 className="rounded-lg bg-blue-700 text-xs font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >

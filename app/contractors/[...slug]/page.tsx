@@ -25,7 +25,7 @@ const Contractors = ({params}:{params:{slug:string[]}}) => {
     console.log(decodeURIComponent(params.slug[3]).trim())
     if(params.slug.length==4){
         return ( 
-            <div className='flex justify-center items-center mt-28 mb-10'>
+            <div className='flex justify-center items-center mt-28 mb-10 gap-2'>
                 <NewContractorTemplate contractors={UserData} params={params.slug} isGettingAccount={isGettingAccount} accountError={accountError}/>
             </div>
          );

@@ -250,7 +250,7 @@ const ContractorProfile = ({ UserData }: { UserData: IUser[] }) => {
                         >
                             <HiShoppingCart className="mr-2 h-5 w-5" /> Purchase Bid Credits
                         </Button>
-                        <p className="text-md text-gray-800">Balance:{BidCredits[0]?.credit || 0} Bid(s)</p>
+                        <p className="text-md text-gray-800">Balance:{BidCredits[0]?.credit || 0} Credit(s)</p>
                         {
                             ContractorProjects?.map((item) => (
                                 <MyBids item={item} key={item.ProjectId} MyKey={UserData[0]?.Id} />

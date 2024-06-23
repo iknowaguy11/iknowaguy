@@ -42,7 +42,7 @@ const MyProjects = ({ item }: { item: IProjects }) => {
                         <HoverProfile key={index} ofrs={ofrs}/>
                     ))
                 }
-                {item.Status == "Active" ? <>{item?.otherOffers.length>0 ? <Button size={"md"} className="place-self-end" theme={customsubmitTheme} type="button" color="appsuccess"><HiOutlineCheckCircle className="mr-2 h-5 w-5" />Accept Best Offer</Button>: null} {item?.otherOffers.length<=0 ? <Tooltip className="self-center" content="You can delete a project only if best offer is still R0.00" style="dark"><HiOutlineTrash onClick={() => handlerDelete("Projects", item.ProjectId.trim())} className="mr-2 h-5 w-5 self-center hover:cursor-pointer" /></Tooltip>:null }</> : null}
+                {item.Status == "Active" ? <>{item?.otherOffers.length>0 ? null: null} {item?.otherOffers.length<=0 ? <Tooltip className="self-center" content="You can delete a project only if best offer is still R0.00" style="dark"><HiOutlineTrash onClick={() => handlerDelete("Projects", item.ProjectId.trim())} className="mr-2 h-5 w-5 self-center hover:cursor-pointer" /></Tooltip>:null }</> : null}
             </div>
         </div>
     );
