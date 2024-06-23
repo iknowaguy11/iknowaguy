@@ -242,9 +242,9 @@ export default function Recommend() {
                             </div>
                             <Select onChange={(e) => SetHowdoYouKnowThem(e?.target?.value)} className="max-w-md" id="Service" theme={customselectTheme} color={"success"} required>
                             <option >---</option>
-                            <option >I've hired them</option>
+                            <option >I&apos;ve hired them</option>
                             <option >Friend or Family Member</option>
-                            <option >I'm recommending myself/my company</option>
+                            <option >I&apos;m recommending myself/my company</option>
                             <option >Other</option>
                             </Select>
                         </div>
