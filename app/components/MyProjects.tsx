@@ -1,10 +1,11 @@
 import { customsubmitTheme } from "../customTheme/appTheme";
 import { Badge, Button, Tooltip } from "flowbite-react";
-import { HiOutlineBriefcase,HiCollection, HiLocationMarker, HiCash, HiClock, HiOutlineTrash, HiOutlineCheckCircle } from 'react-icons/hi';
+import { HiOutlineBriefcase, HiCollection, HiLocationMarker, HiCash, HiClock, HiOutlineTrash, HiOutlineCheckCircle } from 'react-icons/hi';
 import Image from "next/image";
 import { IProjects } from "../Interfaces/appInterfaces";
 import { handlerDelete } from "../Controllers/DeleteDocument";
 import HoverProfile from "./HoverProfile";
+import AwardedToDetails from "./AwardedToDetails";
 
 const MyProjects = ({ item }: { item: IProjects }) => {
 
@@ -35,14 +36,17 @@ const MyProjects = ({ item }: { item: IProjects }) => {
             <Badge icon={HiCash} color={"gray"} className="w-fit p-1 mt-1"> Budget : R{parseFloat(item?.budget).toFixed(2)}</Badge>
             <Badge icon={HiCash} color={"gray"} className="w-fit p-1 mt-1"> Best Offer : R{item?.bestOffer} {item?.winnerId == "myId" && item?.Status == "Closed" ? "🤝🏽✅" : null}</Badge>
             <p className="text-clip text-wrap">{item?.description}</p>
-            <Badge icon={HiCollection}  color={"light"} className="w-fit p-1 mt-1 mb-1"> N0. of Bids Received : {item?.AllcontactorKeys?.length}</Badge>
+            <Badge icon={HiCollection} color={"light"} className="w-fit p-1 mt-1 mb-1"> N0. of Bids Received : {item?.AllcontactorKeys?.length}</Badge>
             <div className="flex flex-wrap gap-2">
                 {
-                    item?.otherOffers.length > 0 && item?.otherOffers?.map((ofrs, index) => (
-                        <HoverProfile key={index} ofrs={ofrs}/>
+                    item.winnerId == "noId" && item?.otherOffers.length > 0 && item?.otherOffers?.map((ofrs, index) => (
+                        <HoverProfile key={index} ofrs={ofrs} project={item} />
                     ))
                 }
-                {item.Status == "Active" ? <>{item?.otherOffers.length>0 ? null: null} {item?.otherOffers.length<=0 ? <Tooltip className="self-center" content="You can delete a project only if best offer is still R0.00" style="dark"><HiOutlineTrash onClick={() => handlerDelete("Projects", item.ProjectId.trim())} className="mr-2 h-5 w-5 self-center hover:cursor-pointer" /></Tooltip>:null }</> : null}
+                {
+                    item.winnerId !== "noId" && item?.otherOffers.length > 0 && <AwardedToDetails contractorId={item.winnerId} homeOwnerId={item.ownerId} owner={item.owner} profpic={item.Profpic}/>
+                }
+                {item.Status == "Active" ? <>{item?.otherOffers.length > 0 ? null : null} {item?.otherOffers.length <= 0 ? <Tooltip className="self-center" content="You can delete a project only if best offer is still R0.00" style="dark"><HiOutlineTrash onClick={() => handlerDelete("Projects", item.ProjectId.trim())} className="mr-2 h-5 w-5 self-center hover:cursor-pointer" /></Tooltip> : null}</> : null}
             </div>
         </div>
     );

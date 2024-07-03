@@ -1,12 +1,32 @@
-import { Avatar, Button,Popover } from "flowbite-react";
-import { IOtherOffers } from "../Interfaces/appInterfaces";
+import { Avatar, Button, Popover } from "flowbite-react";
+import { IOtherOffers, IProjects } from "../Interfaces/appInterfaces";
 import { SendMailAcceptence } from "../utils/SendEmail";
+import { failureMessage, successMessage } from "../notifications/successError";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../DB/firebaseConnection";
+import { useState } from "react";
 
 
-export default function HoverProfile({ofrs}:{ofrs:IOtherOffers}) {
-  const AcceptOffer=()=>{
-    let msg="You have been awarded a project to work on, find more details of the project uder your profile on I Know A Guy";
-    SendMailAcceptence("futurekgaphola@gmail.com",ofrs?.companyName!==null ? ofrs?.companyName  : ofrs.firstName,msg,"Project Offer");
+export default function HoverProfile({ ofrs, project }: { ofrs: IOtherOffers, project: IProjects }) {
+  const [Isprocessing, SetIsprocessing] = useState(false);
+  const AcceptOffer = () => {
+    SetIsprocessing(true);
+    const upt = {
+      Status: "Closed",
+      winnerId: ofrs?.CompanyKey
+    }
+
+    setDoc(doc(db, 'Projects', project?.ProjectId?.trim()), upt, { merge: true }).then(() => {
+      SetIsprocessing(false);
+      successMessage("Projects awarded to a contractor");
+      let msg = "You have been awarded a project to work on, find more details of the project under your profile on I Know A Guy";
+      SendMailAcceptence(ofrs?.companyEmail?.trim(), ofrs?.companyName !== null ? ofrs?.companyName : ofrs.firstName, msg, "Project Offer");
+    }).catch((error: any) => {
+      SetIsprocessing(false);
+      failureMessage("Error: " + error?.message);
+    });
+
+
   }
   return (
     <Popover placement="left" trigger="hover"
@@ -21,10 +41,19 @@ export default function HoverProfile({ofrs}:{ofrs:IOtherOffers}) {
                 alt="contract potrait"
               />
             </a>
-            <div>
+            <div className="flex gap-2">
               <Button
-              onClick={()=>AcceptOffer()}
-               size="xs"
+
+                size="xs"
+                type="button"
+                className="rounded-lg bg-blue-700 text-xs font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              >
+                Ratings & Reviews
+              </Button>
+              <Button
+                isProcessing={Isprocessing} disabled={Isprocessing}
+                onClick={() => AcceptOffer()}
+                size="xs"
                 type="button"
                 className="rounded-lg bg-blue-700 text-xs font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
@@ -32,24 +61,24 @@ export default function HoverProfile({ofrs}:{ofrs:IOtherOffers}) {
               </Button>
             </div>
           </div>
-          <p>{"Representative : "+ofrs?.firstName}</p>
+          <p>{"Representative : " + ofrs?.firstName}</p>
           <p id="profile-popover" className="text-base font-semibold leading-none text-gray-900 dark:text-white">
-            {ofrs?.companyName!=="" && ofrs?.companyName!==null ? ofrs?.companyName  : null}
+            {ofrs?.companyName !== "" && ofrs?.companyName !== null ? ofrs?.companyName : null}
           </p>
-          {ofrs?.Address!=="" && ofrs?.Address!==null ? <p className="text-xs text-nowrap">Address : {ofrs?.Address}</p>  : null}
+          {ofrs?.Address !== "" && ofrs?.Address !== null ? <p className="text-xs text-nowrap">Address : {ofrs?.Address}</p> : null}
           <p className="mb-3 text-sm font-normal">
             <a href="#" className="hover:underline">
               {ofrs?.companyEmail}
             </a>
           </p>
-          
+
           <ul className="flex text-sm">
-            
+
             <li>
               <a href="#" className="hover:underline">
-              <span>Offer : </span>
+                <span>Offer : </span>
                 <span className="font-semibold text-gray-900 dark:text-white">R{ofrs?.OfferMade}</span>
-                
+
               </a>
             </li>
           </ul>

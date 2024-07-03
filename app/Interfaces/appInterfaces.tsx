@@ -41,6 +41,16 @@ export interface IProjects {
     tncs: string,
     ProjectId:string,
 }
+export interface IReviews{
+    Id: string,
+    comment:string,
+    contractorId:string,
+    homeOwnerId:string,
+    homeOwnerName:string,
+    stars:string,
+    dateReviewed:string,
+    profilePicReviewer:string
+}
 
 export interface IhowItwors {
     tittle: string,

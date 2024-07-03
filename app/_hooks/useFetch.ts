@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { DefaultProjectObject, IBidCredits, IProjects, IProvince, IServices, IUser } from "../Interfaces/appInterfaces";
+import { DefaultProjectObject, IBidCredits, IProjects, IProvince, IReviews, IServices, IUser } from "../Interfaces/appInterfaces";
 import { collection,onSnapshot} from "firebase/firestore";
 import { db } from "../DB/firebaseConnection";
 
@@ -438,4 +438,49 @@ const getContractorData = async (Address: string | null, SetUserData: Dispatch<S
         })
         return () => unsubscribe();
     }
+}
+
+export const useFetchReviews=()=>{
+    const [userReviews, SetuserReviews] = useState<IReviews[]>([]);
+    const [ReviewsError, SetReviewsError] = useState<unknown>(null);
+    const [isGettingReviews, SetisGettingReviews] = useState<boolean>(false);
+
+    
+        try {
+           
+            useEffect(() => {
+                const colRef = collection(db, "Ratings");
+                var tempData: IReviews[] = [];
+                const unsubscribe = onSnapshot(colRef, (snapshot) => {
+                    snapshot.forEach((doc) => {
+                        if(doc.exists()){
+                            SetisGettingReviews(true);
+                            tempData.push({
+                                Id:doc.id,
+                                comment:doc?.data()?.comment,
+                                contractorId:doc?.data()?.contractorId,
+                                homeOwnerId:doc?.data()?.homeOwnerId,
+                                homeOwnerName:doc?.data()?.homeOwnerName,
+                                stars:doc?.data()?.stars,
+                                dateReviewed:doc?.data()?.dateRated,
+                                profilePicReviewer:doc?.data()?.profilePicReviewer
+                            })
+                        }else{
+                            SetisGettingReviews(true);
+                        }
+                        
+                    });
+                    SetuserReviews(tempData);
+                    SetisGettingReviews(false);
+                });
+                return () => unsubscribe();
+            },[]);
+        } catch (error:any) {
+            SetuserReviews([]);
+            SetisGettingReviews(false);
+            SetReviewsError(error.message);
+        }finally{
+            return { userReviews, ReviewsError, isGettingReviews };
+        }
+            
 }
