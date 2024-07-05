@@ -6,7 +6,8 @@ import { addDoc, collection } from "firebase/firestore";
 import { db } from "../DB/firebaseConnection";
 import moment from 'moment';
 import { failureMessage, successMessage } from "../notifications/successError";
-const AwardedToDetails = ({ contractorId, homeOwnerId, owner,profpic }: { contractorId: string, homeOwnerId: String, owner: string,profpic:string }) => {
+import { useRouter } from "next/navigation";
+const AwardedToDetails = ({ contractorId, homeOwnerId, owner, profpic }: { contractorId: string, homeOwnerId: String, owner: string, profpic: string }) => {
     const [openModal, setOpenModal] = useState(false);
     const { UserData } = useFetchUserAccount(contractorId);
     const [FilledOne, setFilledOne] = useState(false);
@@ -15,7 +16,8 @@ const AwardedToDetails = ({ contractorId, homeOwnerId, owner,profpic }: { contra
     const [FilledFour, setFilledFour] = useState(false);
     const [FilledFive, setFilledFive] = useState(false);
     const [Comment, SetComment] = useState("");
-    const[Isprocessing,SetIsprocessing]=useState(false);
+    const [Isprocessing, SetIsprocessing] = useState(false);
+    const router=useRouter();
     const SendReview = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
@@ -25,10 +27,10 @@ const AwardedToDetails = ({ contractorId, homeOwnerId, owner,profpic }: { contra
                 contractorId: contractorId,
                 homeOwnerId: homeOwnerId,
                 homeOwnerName: owner,
-                dateRated:moment().format('MMMM Do YYYY, h:mm a'),
-                profilePicReviewer:profpic,
+                dateRated: moment().format('MMMM Do YYYY, h:mm a'),
+                profilePicReviewer: profpic,
                 stars: FilledFive ? "5" : FilledFour ? "4" : FilledThree ? "3" : FilledTwo ? "2" : FilledOne ? "1" : "0",
-                comment: Comment?.trim()=="" ? "no comment" : Comment.trim()
+                comment: Comment?.trim() == "" ? "no comment" : Comment.trim()
             };
             const newDocRef = await addDoc(myCollection, myDocumentData);
             if (newDocRef?.id) {
@@ -49,9 +51,18 @@ const AwardedToDetails = ({ contractorId, homeOwnerId, owner,profpic }: { contra
                     <div>{UserData[0]?.companyName == "" ? UserData[0]?.YourName : UserData[0]?.companyName}</div>
                     <div className="text-sm text-gray-500 dark:text-gray-400">{UserData[0]?.membership}</div>
                 </div>
+                <div className="flex gap-2">
                 <Button onClick={() => setOpenModal(true)} color="success" size={"xs"} pill>
                     Rate
                 </Button>
+                <Button onClick={() => router?.push('profile/' +decodeURIComponent(UserData[0]?.Id))}
+                    size="xs"
+                    type="button"
+                    className="rounded-lg bg-blue-700 text-xs text-nowrap ml-1 text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                >
+                    Ratings & Reviews
+                </Button>
+                </div>
             </Avatar>
             <Modal show={openModal} size="md" onClose={() => setOpenModal(false)} popup>
                 <Modal.Header />

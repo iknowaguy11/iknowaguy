@@ -1,19 +1,21 @@
 
 'use client';
 
-import { Badge } from 'flowbite-react';
+import { Badge,Tooltip } from 'flowbite-react';
 import Image from 'next/image';
-import { HiPhone, HiHome, HiBriefcase, HiMail } from 'react-icons/hi';
+import { HiPhone, HiHome, HiBriefcase, HiMail,HiShare } from 'react-icons/hi';
 import { customTheme, customsubmitTheme } from '../customTheme/appTheme';
 import { Button } from 'flowbite-react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { IUser } from '../Interfaces/appInterfaces';
 import LoadingProjects from './LoadingProjects';
 import LoadingProjectError from './LoadingProjectError';
 import { useEffect, useState } from 'react';
+import { failureMessage, successMessage } from '../notifications/successError';
 
 export function NewContractorTemplate({ contractors, params, isGettingAccount, accountError }: { contractors: IUser[], params: string[], isGettingAccount: boolean, accountError: unknown }) {
     const pathname = usePathname();
+    const router = useRouter();
     const [TempContractor, SetTempContractor] = useState<IUser[]>([]);
 
     useEffect(() => {
@@ -59,6 +61,26 @@ export function NewContractorTemplate({ contractors, params, isGettingAccount, a
                                     <div className='flex items-center gap-1 m-1'>
                                         <Badge theme={customTheme} color={"success"} icon={HiHome}></Badge>
                                         <p className='text-sm'> {item.Address}</p>
+                                    </div>
+                                    <div className='flex gap-2 mb-2'><Button onClick={() => router?.push('profile/' + item?.Id)}
+                                        size="xs"
+                                        type="button"
+                                        className="rounded-lg bg-blue-700 text-xs text-nowrap ml-1 text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                    >
+                                        Ratings & Reviews
+                                    </Button>
+                                    <Tooltip content="copy profile">
+                                    <Badge onClick={()=>{
+                                        try {
+                                            navigator.clipboard.writeText('domain/profile/id')
+                                            successMessage("Copied profile");
+                                            
+                                        } catch (error:any) {
+                                            failureMessage(error?.message);
+                                        }
+                                    }} theme={customTheme} color={"success"} icon={HiShare}></Badge>
+                                    </Tooltip>
+                                        
                                     </div>
                                 </div>
 

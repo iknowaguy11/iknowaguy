@@ -19,10 +19,7 @@ import { useFetchContractorsAccount } from '@/app/_hooks/useFetch';
 ];
 const Contractors = ({params}:{params:{slug:string[]}}) => {
     const { UserData, accountError, isGettingAccount}=useFetchContractorsAccount(decodeURIComponent(params.slug[3]).trim());
-    console.log(decodeURIComponent(params.slug[0]).trim())
-    console.log(decodeURIComponent(params.slug[1]).trim())
-    console.log(decodeURIComponent(params.slug[2]).trim())
-    console.log(decodeURIComponent(params.slug[3]).trim())
+
     if(params.slug.length==4){
         return ( 
             <div className='flex justify-center items-center mt-28 mb-10 gap-2'>

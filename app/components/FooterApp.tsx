@@ -38,17 +38,16 @@ export function FooterApp() {
           <div>
             <Footer.Title title="legal" />
             <Footer.LinkGroup col>
-              <Footer.Link href="terms-and-conditions" as={Link} target='_blank'>Privacy Policy</Footer.Link>
-              <Footer.Link href="terms-and-conditions" as={Link} target='_blank'>Terms &amp; Conditions</Footer.Link>
+              <Footer.Link href="/terms-and-conditions" as={Link} target='_blank'>Privacy Policy</Footer.Link>
+              <Footer.Link href="/terms-and-conditions" as={Link} target='_blank'>Terms &amp; Conditions</Footer.Link>
             </Footer.LinkGroup>
           </div>
           <div>
             <Footer.Title title="Quick Links" />
             <Footer.LinkGroup col>
-              <Footer.Link href="purchase" as={Link}>Buy Credits</Footer.Link>
+              <Footer.Link href="/purchase" as={Link}>Buy Credits</Footer.Link>
               <Footer.Link href="#inspirations" as={Link}>Get Inspired</Footer.Link>
-
-              <Footer.Link href="recommend" as={Link}>Recommend A &quot;Guy&quot;</Footer.Link>
+              <Footer.Link href="/recommend" as={Link}>Recommend A &quot;Guy&quot;</Footer.Link>
               {/* <Footer.Link href="contractors" as={Link}>Contractors</Footer.Link> */}
             </Footer.LinkGroup>
           </div>

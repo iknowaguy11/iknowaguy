@@ -1,4 +1,4 @@
-import { Card, Label, Tooltip, TextInput, Select, Badge, Button, Avatar } from "flowbite-react";
+import { Card, Label, Tooltip, TextInput, Select, Badge, Button, Avatar, Textarea } from "flowbite-react";
 import { useFetchBidCredits, useFetchProvinces, useFetchServices, useFetchgetContractorProjects } from "../_hooks/useFetch";
 import { useCallback, useEffect, useRef, useState } from "react";
 import certificatePng from '../../public/certificate.png';
@@ -24,11 +24,12 @@ const ContractorProfile = ({ UserData }: { UserData: IUser[] }) => {
 
     const [companyName, setcompanyName] = useState<string>(UserData[0]?.companyName);
     const [Address, setAddress] = useState<string>(UserData[0]?.Address);
+    const [Bio, setBio] = useState<string>(UserData[0]?.AdvertisingMsg);
     const [phone, setPhone] = useState<string>(UserData[0]?.phone);
     const router = useRouter();
     const [avatarImage, setAvatarImage] = useState<any>(null);
     const [Imageupload, setImageupload] = useState<File | null>(null);
-    const[isProcessing,SetIsprocessing]=useState<boolean>(false);
+    const [isProcessing, SetIsprocessing] = useState<boolean>(false);
     const [selectedServices, SetSelectedServices] = useState<string[]>([]);
     const [HistoryServices, setHistoryServices] = useState<string[]>([]);
 
@@ -93,7 +94,7 @@ const ContractorProfile = ({ UserData }: { UserData: IUser[] }) => {
         <>
             <div className="h-full items-center justify-items-center">
                 <Card className='flex max-w-lg flex-grow rounded mt-3'>
-                    <form onSubmit={(e) => updateProfile(e, router, { Address, phone, Services: [...new Set([...selectedServices, ...HistoryServices])] }, UserData[0]?.Id, Imageupload,SetIsprocessing)} className="flex max-w-lg flex-col gap-4 flex-grow">
+                    <form onSubmit={(e) => updateProfile(e, router, { Address, phone, AdvertisingMsg: Bio, Services: [...new Set([...selectedServices, ...HistoryServices])] }, UserData[0]?.Id, Imageupload, SetIsprocessing)} className="flex max-w-lg flex-col gap-4 flex-grow">
                         <div className="mb-2 block">
                             {/* {
                                 UserData[0]?.profileImage &&
@@ -115,30 +116,44 @@ const ContractorProfile = ({ UserData }: { UserData: IUser[] }) => {
                                     onChange={handleImageChange}
                                 />
                                 <div className="w-fit">
-                                <Avatar size={"lg"} className='hover:cursor-pointer relative' onClick={OpenImagePicker} img={avatarImage == null ? "" : avatarImage}>
-                                    <div className="space-y-1 font-medium dark:text-white">
-                                        <div>{"Update your " +(UserData[0].membership=="contractor" ? "company logo": "profile picture")}</div>
-                                    </div>
-                                    
-                                </Avatar>
-                                <Badge onClick={()=>{
+                                    <Avatar size={"lg"} className='hover:cursor-pointer relative' onClick={OpenImagePicker} img={avatarImage == null ? "" : avatarImage}>
+                                        <div className="space-y-1 font-medium dark:text-white">
+                                            <div>{"Update your " + (UserData[0].membership == "contractor" ? "company logo" : "profile picture")}</div>
+                                        </div>
+
+                                    </Avatar>
+                                    <Badge onClick={() => {
                                         setAvatarImage(null);
                                         setImageupload(null);
                                     }} className="w-fit hover:cursor-pointer bg-appGreen text-white z-10" icon={HiTrash}>Remove</Badge>
                                 </div>
-                                
+
                             </div>
                         </div>
                         <p className="text-xs text-gray-500">{UserData[0]?.companyEmail}</p>
-
+                        <Button onClick={() => router?.push('profile/' + UserData[0]?.Id)}
+                            size="xs"
+                            type="button"
+                            className="rounded-lg bg-blue-700 text-xs text-nowrap ml-1 text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        >
+                            Ratings & Reviews
+                        </Button>
                         <div>
                             <div className="mb-2 block">
                                 <Label htmlFor="contemail" value="Company Name *" />
                             </div>
                             <Tooltip content="Admin Attention is Requires" style="dark">
-                                <TextInput theme={customInputBoxTheme} color={"focuscolor"} id="contemail" type="tel" readOnly value={companyName || UserData[0]?.companyName} disabled placeholder="Company Name" required shadow />
+                                <TextInput theme={customInputBoxTheme} color={"focuscolor"} id="contemail" type="text" readOnly value={companyName || UserData[0]?.companyName} disabled placeholder="Company Name" required shadow />
 
                             </Tooltip>
+                        </div>
+
+                        <div>
+                            <div className="mb-2 block">
+                                <Label htmlFor="bio" value="Profile Bio *" />
+                            </div>
+
+                            <Textarea rows={4} theme={customInputBoxTheme} onChange={(e) => setBio(e?.target.value?.trim())} color={"success"} id="bio" value={Bio} placeholder="Company Bio" shadow />
                         </div>
 
                         <div>

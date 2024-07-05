@@ -5,10 +5,12 @@ import { failureMessage, successMessage } from "../notifications/successError";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../DB/firebaseConnection";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 
 export default function HoverProfile({ ofrs, project }: { ofrs: IOtherOffers, project: IProjects }) {
   const [Isprocessing, SetIsprocessing] = useState(false);
+  const router=useRouter();
   const AcceptOffer = () => {
     SetIsprocessing(true);
     const upt = {
@@ -42,11 +44,10 @@ export default function HoverProfile({ ofrs, project }: { ofrs: IOtherOffers, pr
               />
             </a>
             <div className="flex gap-2">
-              <Button
-
+              <Button onClick={()=>router?.push('profile/'+ofrs.CompanyKey)}
                 size="xs"
                 type="button"
-                className="rounded-lg bg-blue-700 text-xs font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                className="rounded-lg bg-blue-700 text-xs text-nowrap ml-1 text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
                 Ratings & Reviews
               </Button>
@@ -55,7 +56,7 @@ export default function HoverProfile({ ofrs, project }: { ofrs: IOtherOffers, pr
                 onClick={() => AcceptOffer()}
                 size="xs"
                 type="button"
-                className="rounded-lg bg-blue-700 text-xs font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                className="rounded-lg bg-blue-700 text-xs text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
                 Accept
               </Button>

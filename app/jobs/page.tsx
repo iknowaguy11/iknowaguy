@@ -16,7 +16,7 @@ const Jobs = () => {
     const { UserProjects } = useFetchUserProjects("");
     const [SearchText,SetSerarchText]=useState("");
     const { ukey } = useContext(AppContext);
-    const { UserData, accountError, isGettingAccount } = useFetchUserAccount(ukey);
+    const { UserData} = useFetchUserAccount(ukey);
     const router=useRouter();
     return (
         <div className="w-full gap-4 mt-16 mb-10">

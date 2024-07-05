@@ -13,7 +13,7 @@ import { IOtherOffers } from "../Interfaces/appInterfaces";
 import Link from "next/link";
 export const AcceptBidingModal = ({ openModal, setOpenModal, ProjectIdBid, projectBudget, otherOffers, bestOffer, bstOffrId,AllcontactorKeys }: { openModal: boolean, setOpenModal: Dispatch<SetStateAction<boolean>>, ProjectIdBid: string, projectBudget: string, otherOffers: IOtherOffers[], bestOffer: string, bstOffrId: string,AllcontactorKeys:string[] }) => {
     const { ukey } = useContext(AppContext);
-    const { UserData, accountError, isGettingAccount } = useFetchUserAccount(ukey);
+    const { UserData} = useFetchUserAccount(ukey);
     const [myOffer, setMyOffer] = useState<string>("0.00");
     const [isProcessing, setIsProcessing] = useState<boolean>(false);
     const [errorMsg, setErrorMsg] = useState<string>("");

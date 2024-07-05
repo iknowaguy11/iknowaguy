@@ -528,7 +528,7 @@ const ContractorRegistration = () => {
                             <Checkbox id="agree" checked={tncs} onChange={() => setTnCs(tncs ? false : true)} theme={customCheckboxTheme} color="success" />
                             <Label htmlFor="agree" className="flex">
                                 I agree with the&nbsp;
-                                <Link href="terms-and-conditions" className="text-appGreen hover:underline dark:text-appGreen">
+                                <Link href="/terms-and-conditions" className="text-appGreen hover:underline dark:text-appGreen">
                                     terms and conditions
                                 </Link>
                             </Label>

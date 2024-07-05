@@ -85,8 +85,8 @@ export default function Login() {
                         </Alert></Offline>
                     <FooterDivider></FooterDivider>
                     <div className="flex justify-between">
-                        <Link href={"register"}>Not yet register?</Link>
-                        <Link href={"forgotpassword"}>Forgot password?</Link>
+                        <Link href={"/register"}>Not yet register?</Link>
+                        <Link href={"/forgotpassword"}>Forgot password?</Link>
                     </div>
 
                 </form>

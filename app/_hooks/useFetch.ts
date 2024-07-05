@@ -440,20 +440,20 @@ const getContractorData = async (Address: string | null, SetUserData: Dispatch<S
     }
 }
 
-export const useFetchReviews=()=>{
+export const useFetchReviews=(contractorId:string)=>{
+    
     const [userReviews, SetuserReviews] = useState<IReviews[]>([]);
     const [ReviewsError, SetReviewsError] = useState<unknown>(null);
     const [isGettingReviews, SetisGettingReviews] = useState<boolean>(false);
-
-    
         try {
            
             useEffect(() => {
                 const colRef = collection(db, "Ratings");
-                var tempData: IReviews[] = [];
+                
                 const unsubscribe = onSnapshot(colRef, (snapshot) => {
+                    var tempData: IReviews[] = [];
                     snapshot.forEach((doc) => {
-                        if(doc.exists()){
+                        if(doc?.data()?.contractorId==contractorId){
                             SetisGettingReviews(true);
                             tempData.push({
                                 Id:doc.id,
@@ -465,8 +465,6 @@ export const useFetchReviews=()=>{
                                 dateReviewed:doc?.data()?.dateRated,
                                 profilePicReviewer:doc?.data()?.profilePicReviewer
                             })
-                        }else{
-                            SetisGettingReviews(true);
                         }
                         
                     });

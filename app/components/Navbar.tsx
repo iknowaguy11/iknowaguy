@@ -63,8 +63,8 @@ export function AppNavbar() {
             </Suspense>
             :
             <div className='btns flex flex-row gap-1'>
-              <Button onClick={() => router.push('login')} theme={customsubmitTheme} size={'xs'} color='appsuccess'>Login</Button>
-              <Button onClick={() => router.push("register")} theme={customsubmitTheme} size={'xs'} color='appsuccess'>Sign Up</Button>
+              <Button onClick={() => router.push('/login')} theme={customsubmitTheme} size={'xs'} color='appsuccess'>Login</Button>
+              <Button onClick={() => router.push("/register")} theme={customsubmitTheme} size={'xs'} color='appsuccess'>Sign Up</Button>
             </div>
           }
           <Navbar.Toggle />
@@ -102,8 +102,8 @@ export function AppNavbar() {
             isLoggedIn ?
               null
               : <div className='logSign'>
-              <Button className='m-2' onClick={() => router.push('login')} theme={customsubmitTheme} size={"xs"} color='appsuccess'>Login</Button>
-              <Button className='m-2' onClick={() => router.push("register")} theme={customsubmitTheme} size={"xs"} color='appsuccess'>Sign Up</Button>
+              <Button className='m-2' onClick={() => router.push('/login')} theme={customsubmitTheme} size={"xs"} color='appsuccess'>Login</Button>
+              <Button className='m-2' onClick={() => router.push("/register")} theme={customsubmitTheme} size={"xs"} color='appsuccess'>Sign Up</Button>
             </div>
           }
 

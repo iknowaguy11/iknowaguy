@@ -52,7 +52,7 @@ export default function ForgotPassword() {
                         </Alert></Offline>
                     <FooterDivider></FooterDivider>
                     <div className="flex justify-end gap-2">
-                        <p>Already have an account?</p> <Link className="text-appGreen" href={"login"}> Login</Link>
+                        <p>Already have an account?</p> <Link className="text-appGreen" href={"/login"}> Login</Link>
                     </div>
                 </form>
             </div>
