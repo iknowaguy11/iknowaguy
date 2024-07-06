@@ -11,10 +11,6 @@ import { HiTrash, HiShoppingCart } from 'react-icons/hi';
 import { IUser } from "../Interfaces/appInterfaces";
 import { useRouter } from "next/navigation";
 import { updateProfile } from "../Controllers/UpdateProfile";
-import { v4 } from "uuid";
-import { storage } from "../DB/firebaseConnection";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { failureMessage } from "../notifications/successError";
 
 const ContractorProfile = ({ UserData }: { UserData: IUser[] }) => {
     const { ProvinceData, DataError, isLoading } = useFetchProvinces();
