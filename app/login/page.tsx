@@ -13,6 +13,7 @@ import { HiInformationCircle } from 'react-icons/hi';
 import { failureMessage, successMessage } from "../notifications/successError";
 import { AppContext } from "../Context/appContext";
 import { QuotaExceededError } from "../Interfaces/appInterfaces";
+import { isGrantedAccess } from "../Controllers/isAdminAllowed";
 
 export default function Login() {
     const { setLoggedIn } = useContext(AppContext);
@@ -38,12 +39,19 @@ export default function Login() {
                     SetUserName("");
                     setPassword("");
                     try {
-                        window.sessionStorage.setItem("ukey", resp?.user?.uid?.trim());
-                        successMessage("Succesful login in...");
-                        setLoggedIn(true);
-                        router.replace("/");
+                        if(await isGrantedAccess((resp?.user?.uid?.trim()).toString())){
+                            window.sessionStorage.setItem("ukey", resp?.user?.uid?.trim());
+                            successMessage("Succesful login in...");
+                            setLoggedIn(true);
+                            router.replace("/");
+                        }else{
+                            failureMessage("Your account is suspended or still under admin review.\n Contact Adminstrator for more details");
+                            setLoggedIn(false);
+                            auth.signOut();
+                        }
+                        
                     } catch (error: QuotaExceededError | any) {
-                        failureMessage(String(error.message));
+                        failureMessage(String(error?.message));
                         console.log(error);
                     }
 
@@ -54,7 +62,7 @@ export default function Login() {
             } catch (error: any) {
                 setPassword("");
                 setloading(false);
-                failureMessage(String(error.message));
+                failureMessage(String(error?.message));
             }
         }
     }

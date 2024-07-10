@@ -86,12 +86,11 @@ const CenterBody = () => {
             {/*section 1*/}
             <div className="flex flex-col justify-center items-center gap-2 p-6">
                 <h1 className="text-4xl">What is IKAG</h1>
-                <p className="text-gray-600 ml-5 mr-5">I Know A Guy is a user-driven platform on which home-owners can find trusted, reliable home care contractors. Whether you are looking for a handyman for small jobs around the house or a builder for a big renovation project, you will find them on I Know A Guy. Unlike other business directories, the listings on I Know A Guy are Recommended by people who have interacted with those contractors, people who have used their services and can vouch that you will receive good service from them.</p>
-                <p className="text-gray-600 ml-5 mr-5 mt-6">There are two ways in which you can use I Know A Guy to find contractors. Firstly, you can <a onClick={()=>{
+                <p className="text-gray-600 ml-5 mr-5 text-center">I Know A Guy is a user-driven platform on which home-owners can find trusted, reliable home care contractors. Whether you are looking for a handyman for small jobs around the house or a builder for a big renovation project, you will find them on I Know A Guy. Unlike other business directories, the listings on I Know A Guy are Recommended by people who have interacted with those contractors, people who have used their services and can vouch that you will receive good service from them.</p>
+                <p className="text-gray-600 ml-5 mr-5 mt-6 text-center">There are two ways in which you can use I Know A Guy to find contractors. Firstly, you can <a onClick={()=>{
             const element = document.getElementById('searchBox');
             element?.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
           }} className="text-appGreen">Find Contractors</a> by location and type of service you require and select one from our user-generated list. 
-
 
 Alternatively, you can <Link href={'/postproject'} className="text-appGreen">Post A Project</Link>. When posting a project, you will be required to provide specific information about the work you need done. Once you have done that, a maximum of 5 contractors will then submit quotes to you by email. The more detailed the information you provide about your project, the more accurately the contractors will be able to quote you. When the contractor you appoint has completed the work, you can share your experience with other users on I Know A Guy by rating and reviewing the contractor. </p>
             </div>

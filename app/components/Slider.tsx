@@ -1,7 +1,7 @@
 
 'use client';
 
-import { Carousel, Card, Button, Dropdown } from 'flowbite-react';
+import { Carousel, Card, Button, Dropdown,Select } from 'flowbite-react';
 import Image from 'next/image';
 import plumber from '../../public/1.jpg';
 import electrican from '../../public/3.jpg';
@@ -14,6 +14,7 @@ import { HiSearch } from 'react-icons/hi';
 import { useRouter } from 'next/navigation';
 import { useFetchProvinces, useFetchServices } from '../_hooks/useFetch';
 import { IActualTasks, ITowns } from '../Interfaces/appInterfaces';
+import Select_API from 'react-select';
 
 export function Slider() {
     const { ProvinceData, DataError, isLoading } = useFetchProvinces();
@@ -24,13 +25,36 @@ export function Slider() {
     const [subcategory, SetSubcategory] = useState<IActualTasks[]>([]);
     const [subareas, SetSubareas] = useState<ITowns[]>([]);
    
-    const [provCategory, setprovCategory] = useState<string>("Select Your Location");
-    const [ServiceCategory, setServiceCategory] = useState<string>("Select Service");
-    const SetSelectedService = (category: string) => {
+    const [provCategory, setprovCategory] = useState<string | null | undefined>("Select Your Location");
+    const [ServiceCategory, setServiceCategory] = useState<string  | null | undefined>("Select Service");
+
+    const provinces = [
+        {value:"Limpopo",label:"Limpopo"},
+        {value:"Gauteng",label:"Gauteng"},
+        {value:"Eastern Cape",label:"Eastern Cape"},
+        {value:"Free State",label:"Free State"},
+        {value:"KwaZulu Natal",label:"KwaZulu Natal"},
+        {value:"Mpumalanga",label:"Mpumalanga"},
+        {value:"North West",label:"North West"},
+        {value:"Northern Cape",label:"Northern Cape"},
+        {value:"Western Cape",label:"Western Cape"}
+        
+    ];
+    const Services = [
+        {value:"PLUMBING",label:"PLUMBING"},
+        {value:"HANDYMAN",label:"HANDYMAN"},
+        {value:"ELECTRICAL",label:"ELECTRICAL"},
+        {value:"PAINTING",label:"PAINTING"},
+        {value:"CARPENTRY",label:"CARPENTRY"},
+        {value:"GARDEN AND LANDSCAPING",label:"GARDEN AND LANDSCAPING"},
+        {value:"BUILDING AND RENOVATIONS",label:"BUILDING AND RENOVATIONS"},
+        {value:"MORE CATEGORIES",label:"MORE CATEGORIES"},
+    ];
+    const SetSelectedService = (category: string  | null | undefined) => {
         setServiceCategory(category);
         if (category !== "" && category !== "Select Service") {
             ServiceData.forEach((item) => {
-                if (item.ServiceType == category.replace("🛠️", '').trim()) {
+                if (item.ServiceType == category?.replace("🛠️", '').trim()) {
                     SetSubcategory(item.actualTask);
                 }
             })
@@ -39,11 +63,11 @@ export function Slider() {
         }
     }
 
-    const SetProvince = (category: string) => {
+    const SetProvince = (category: string | null | undefined) => {
         setprovCategory(category);
         if (category !== "" && category !== "Select Your Lcation") {
             ProvinceData.forEach((item) => {
-                if (item.province == category.replace("🛠️", '').trim()) {
+                if (item.province == category?.replace("🛠️", '').trim()) {
                     SetSubareas(item.Towns);
                 }
             })
@@ -55,72 +79,58 @@ export function Slider() {
     const router = useRouter();
     const performSeach = () => {
         
-        if (( ServiceCategory.toLocaleLowerCase().trim() != "select service") && ( SelectedSubcategory.toLocaleLowerCase().trim() != "")
-        && ( provCategory.toLocaleLowerCase().trim() != "select your location") && ( Selectedsubarea.toLocaleLowerCase().trim() != "")) {
-            router.push(`/contractors/${ServiceCategory.toLocaleLowerCase().trim()}/${SelectedSubcategory.toLocaleLowerCase().trim()}/
-            ${provCategory.toLocaleLowerCase().trim()}/${Selectedsubarea.toLocaleLowerCase().trim()}`);
+        if (( ServiceCategory?.toLocaleLowerCase().trim() != "select service") && ( SelectedSubcategory?.toLocaleLowerCase().trim() != "" && SelectedSubcategory?.toLocaleLowerCase().trim()!=="Select A Sub Area" && SelectedSubcategory?.toLocaleLowerCase().trim()!=="Select A Sub Service")
+        && ( provCategory?.toLocaleLowerCase().trim() != "select your location") && ( Selectedsubarea?.toLocaleLowerCase().trim() != "" && SelectedSubcategory?.toLocaleLowerCase().trim()!=="Select A Sub Area" && SelectedSubcategory?.toLocaleLowerCase().trim()!=="Select A Sub Service")) {
+            router.push(`/contractors/${ServiceCategory?.toLocaleLowerCase().trim()}/${SelectedSubcategory?.toLocaleLowerCase().trim()}/
+            ${provCategory?.toLocaleLowerCase().trim()}/${Selectedsubarea?.toLocaleLowerCase().trim()}`);
         }
     }
     return (
         <div id='searchBox' className="relative content-center">
             <Card className="z-10 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-fit min-w-fit max-h-fit" horizontal>
-                <h5 className="text-3xl tracking-tight leading-8 text-gray-900 dark:text-white lg:text-nowrap xl:text-nowrap md:text-wrap sm:text-wrap">
+                <h5 className="capMsg text-center tracking-tight leading-8 text-gray-900 dark:text-white lg:text-nowrap xl:text-nowrap md:text-wrap sm:text-wrap">
                     Find Trusted, Reliable Contractors For Your Home
                 </h5>
                 <div className='gap-1'>
                     <div className="grid gap-2 lg:grid-cols-2 xl:grid-cols-2 sm:grid-cols-1 md:grid-cols-1">
                         <div className="w-full gap-2">
-
-                            <Dropdown className='max-w-md focus:ring-green-300 focus:border-appGreen' color='light' style={{ width: '100%' }} label={ServiceCategory}>
-                                {ServiceData?.map((item) => (
-                                    <Dropdown.Item className='focus:ring-green-300 focus:border-appGreen' onClick={() => SetSelectedService(item.ServiceType)} key={item.Id}>
-                                        {"🛠️" + item.ServiceType}
-                                    </Dropdown.Item>
-                                )
-                                )}
-                            </Dropdown>
+                            <Select_API  placeholder={"Select Service"} options={Services} onChange={(e) => SetSelectedService(e?.value)}/>
+                            
                             {subcategory.length > 0 &&
 
-                                <Dropdown style={{ width: '100%' }} color='light' className="max-w-md mt-4" label={SelectedSubcategory}>
-
-                                    {subcategory?.map((item, index) => (
-                                        <Dropdown.Item onClick={() => SetSelectedSubcategory(item.task)} key={index}>
-                                            {"🛠️" + item.task}
-                                        </Dropdown.Item>
-                                    )
-
-                                    )}
-                                </Dropdown>
+<Select
+className="max-w-md rounded mt-1 mb-1" 
+onChange={(e) => SetSelectedSubcategory(e?.target.value)}
+>
+    <option>Select A Sub Service</option>
+    {
+        subcategory?.map((item, index) => (
+            <option key={item?.task}>{item.task}</option>
+        ))
+    }
+</Select>
                             }
 
                         </div>
 
                         <div className="w-full">
 
-                            <Dropdown style={{ width: '100%' }} color='light' className="max-w-md" label={provCategory}>
-
-                                {ProvinceData?.map((item) => (
-                                    <Dropdown.Item onClick={() => SetProvince(item.province)} key={item.Id}>
-                                        {"🛠️" + item.province}
-                                    </Dropdown.Item>
-                                )
-
-                                )}
-                            </Dropdown>
+                        <Select_API placeholder={"Select Your Location"} options={provinces} onChange={(e)=>SetProvince(e?.value)}/>
 
                             {
                                 subareas.length > 0 &&
 
-                                <Dropdown style={{ width: '100%' }} color='light' className="max-w-md mt-2" label={Selectedsubarea}>
-
-                                    {subareas?.map((item, index) => (
-                                        <Dropdown.Item onClick={() => SetSelectedsubarea(item.area)} key={index}>
-                                            {"🛠️" + item.area}
-                                        </Dropdown.Item>
-                                    )
-
-                                    )}
-                                </Dropdown>
+                                <Select
+                                className="max-w-md rounded mt-1 mb-1" 
+                                onChange={(e) => SetSelectedsubarea(e?.target.value)}
+                                >
+                                    <option>Select A Sub Area</option>
+                                    {
+                                        subareas?.map((item, index) => (
+                                            <option key={item?.area}>{item.area}</option>
+                                        ))
+                                    }
+                                </Select>
                             }
 
                         </div>

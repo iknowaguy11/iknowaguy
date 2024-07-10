@@ -62,7 +62,7 @@ export function NewContractorTemplate({ contractors, params, isGettingAccount, a
                                         <Badge theme={customTheme} color={"success"} icon={HiHome}></Badge>
                                         <p className='text-sm'> {item.Address}</p>
                                     </div>
-                                    <div className='flex gap-2 mb-2'><Button onClick={() => router?.push('profile/' + item?.Id)}
+                                    <div className='flex gap-2 mb-2'><Button onClick={() => router?.push('/profile/' + item?.Id)}
                                         size="xs"
                                         type="button"
                                         className="rounded-lg bg-blue-700 text-xs text-nowrap ml-1 text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -137,6 +137,26 @@ export function NewContractorTemplate({ contractors, params, isGettingAccount, a
                                     <div className='flex items-center gap-1 m-1'>
                                         <Badge theme={customTheme} color={"success"} icon={HiHome}></Badge>
                                         <p className='text-sm'> {item.Address}</p>
+                                    </div>
+                                    <div className='flex gap-2 mb-2'><Button onClick={() => router?.push('/profile/' + item?.Id)}
+                                        size="xs"
+                                        type="button"
+                                        className="rounded-lg bg-blue-700 text-xs text-nowrap ml-1 text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                    >
+                                        Ratings & Reviews
+                                    </Button>
+                                    <Tooltip content="copy profile">
+                                    <Badge onClick={()=>{
+                                        try {
+                                            navigator.clipboard.writeText('domain/profile/id')
+                                            successMessage("Copied profile");
+                                            
+                                        } catch (error:any) {
+                                            failureMessage(error?.message);
+                                        }
+                                    }} theme={customTheme} color={"success"} icon={HiShare}></Badge>
+                                    </Tooltip>
+                                        
                                     </div>
                                 </div>
 
