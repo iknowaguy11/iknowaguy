@@ -1,5 +1,5 @@
 'use client';
-import { Alert, Badge, Button, Card } from "flowbite-react";
+import { Alert, Button, Card } from "flowbite-react";
 import Image from "next/image";
 import Post from '../../public/Post.png';
 import Quotes from '../../public/Quotes.png';
@@ -15,15 +15,16 @@ import Diningroom from '../../public/Dining-room.jpg';
 import KidsRoom from '../../public/Kids-Room.jpg';
 import caponlycrop from '../../public/caponlycrop.png';
 import { IhowItwors, Iinspirations } from "../Interfaces/appInterfaces";
-import {  customTheme, customsubmitTheme } from "../customTheme/appTheme";
-import { HiShare,HiMail } from 'react-icons/hi';
+import { customsubmitTheme } from "../customTheme/appTheme";
+import { HiMail } from 'react-icons/hi';
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useFetchUserProjects } from "../_hooks/useFetch";
+import { useFetchUserAccount, useFetchUserProjects } from "../_hooks/useFetch";
 import LoadingProjects from "./LoadingProjects";
 import LoadingProjectError from "./LoadingProjectError";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { failureMessage, successMessage } from "../notifications/successError";
+import { AppContext } from "../Context/appContext";
 
 
 let howitworks: IhowItwors[] = [{
@@ -59,25 +60,27 @@ const inspirations: Iinspirations[] = [
 
 const CenterBody = () => {
     const router = useRouter();
-    const [isNotification,setNotification]=useState(false);
-    const { UserProjects,ProjectsError, isGettingProjects  } = useFetchUserProjects("");
-    const CheckProjects=()=>{
-        if(UserProjects?.length>0){
+    const [isNotification, setNotification] = useState(false);
+    const { ukey } = useContext(AppContext);
+    const { UserData } = useFetchUserAccount(ukey);
+    const { UserProjects, ProjectsError, isGettingProjects } = useFetchUserProjects("");
+    const CheckProjects = () => {
+        if (UserProjects?.length > 0) {
             router.push("/jobs");
-        }else{
+        } else {
             setNotification(true);
             setTimeout(HideNotification, 5000);
-        } 
+        }
     }
 
-    const HideNotification=()=>{
+    const HideNotification = () => {
         setNotification(false);
     }
-    const copylink = (link:string) => {
+    const copylink = (link: string) => {
         try {
             navigator.clipboard.writeText(link);
             successMessage("Copied Link");
-        } catch (error:any) {
+        } catch (error: any) {
             failureMessage(String(error?.message));
         }
     }
@@ -87,22 +90,23 @@ const CenterBody = () => {
             <div className="flex flex-col justify-center items-center gap-2 p-6">
                 <h1 className="text-4xl">What is IKAG</h1>
                 <p className="text-gray-600 ml-5 mr-5 text-center">I Know A Guy is a user-driven platform on which home-owners can find trusted, reliable home care contractors. Whether you are looking for a handyman for small jobs around the house or a builder for a big renovation project, you will find them on I Know A Guy. Unlike other business directories, the listings on I Know A Guy are Recommended by people who have interacted with those contractors, people who have used their services and can vouch that you will receive good service from them.</p>
-                <p className="text-gray-600 ml-5 mr-5 mt-6 text-center">There are two ways in which you can use I Know A Guy to find contractors. Firstly, you can <a onClick={()=>{
-            const element = document.getElementById('searchBox');
-            element?.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
-          }} className="text-appGreen">Find Contractors</a> by location and type of service you require and select one from our user-generated list. 
+                <p className="text-gray-600 ml-5 mr-5 mt-6 text-center">There are two ways in which you can use I Know A Guy to find contractors. Firstly, you can <a onClick={() => {
+                    const element = document.getElementById('searchBox');
+                    element?.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+                }} className="text-appGreen">Find Contractors</a> by location and type of service you require and select one from our user-generated list.
 
-Alternatively, you can <Link href={'/postproject'} className="text-appGreen">Post A Project</Link>. When posting a project, you will be required to provide specific information about the work you need done. Once you have done that, a maximum of 5 contractors will then submit quotes to you by email. The more detailed the information you provide about your project, the more accurately the contractors will be able to quote you. When the contractor you appoint has completed the work, you can share your experience with other users on I Know A Guy by rating and reviewing the contractor. </p>
+                    Alternatively, you can <Link href={'/postproject'} className="text-appGreen">Post A Project</Link>. When posting a project, you will be required to provide specific information about the work you need done. Once you have done that, a maximum of 5 contractors will then submit quotes to you by email. The more detailed the information you provide about your project, the more accurately the contractors will be able to quote you. When the contractor you appoint has completed the work, you can share your experience with other users on I Know A Guy by rating and reviewing the contractor. </p>
+                    <p></p>
             </div>
             {/*section 2*/}
-            <div id="whatIsIkg" className="flex flex-col justify-center items-center gap-2 p-6">
+            <div className="flex flex-col justify-center items-center gap-2 p-6">
                 <h1 className="text-4xl">How It Works</h1>
 
-                <div id='HowItWorks' className="flex-row justify-evenly m-4 grid gap-3 sm:grid-cols-4 md:grid-cols-4 xm:grid-cols-1 xs:grid-cols-1 justify-items-center mt-5 bg-slate-50 overflow-hidden p-2 rounded-md">
+                <div className="flex-row justify-evenly m-4 grid gap-3 sm:grid-cols-4 md:grid-cols-4 xm:grid-cols-1 xs:grid-cols-1 justify-items-center mt-5 bg-slate-50 overflow-hidden p-2 rounded-md">
                     {
                         howitworks?.map((item, index) => (
                             <Card key={index} className="max-w-sm flex flex-col justify-center items-center gap-3">
-                                <Image className='aspect-[4/3] object-contain self-center w-auto h-auto'
+                                <Image id="whatIsIkg" className='aspect-[4/3] object-contain self-center w-auto h-auto'
                                     width={46}
                                     height={46}
                                     src={item.imgsr} alt="..." />
@@ -116,12 +120,12 @@ Alternatively, you can <Link href={'/postproject'} className="text-appGreen">Pos
 
             </div>
             {/*section 3*/}
-            <div id="jobSection" className="flex flex-col justify-center items-center gap-2 p-6">
-                <Button onClick={()=>router.push("/postproject")} theme={customsubmitTheme} size={"md"} type="submit" color="appsuccess">Post A Project</Button>
-                <h1 className="text-4xl m-3">Current Projects</h1>
+            <div className="flex flex-col justify-center items-center gap-2 p-6">
+            {/* <Button onClick={() => router.push("/postproject")} theme={customsubmitTheme} size={"md"} type="submit" color="appsuccess">Post A Project</Button> */}
+                <h1 className="text-4xl mt-3 mb-2">Current Projects</h1>
                 <div className="flex-row justify-between m-4 grid gap-3 sm:grid-cols-2 md:grid-cols-2 xm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 xs:grid-cols-1 justify-items-center mt-5 bg-slate-50 overflow-hidden p-2 rounded-md">
-                    { 
-                        isGettingProjects==false && UserProjects.length>0 ? UserProjects?.map((item, index) =>
+                    {
+                        isGettingProjects == false && UserProjects?.length > 0 ? UserProjects?.filter(p=>p.Status.toLocaleLowerCase()!=="closed").map((item, index) =>
                             Number(index) < 4 ?
                                 (
                                     <Card key={item.ProjectId}>
@@ -137,8 +141,8 @@ Alternatively, you can <Link href={'/postproject'} className="text-appGreen">Pos
                                                     />
                                                 </div>
                                                 <div className="min-w-0 flex-1">
-                                                    <p className="truncate text-sm font-medium text-gray-900 dark:text-white">{item.owner.replace(item.owner.substring(2,item.owner.length-1),"***")}</p>
-                                                    <p className="flex truncate text-sm text-gray-500 dark:text-gray-400"><HiMail className="w-4 h-4 gap-1 mt-1"/>{item.email.replace(item.email.substring(1,item.email.indexOf("@")),"*******")}</p>
+                                                    <p id='HowItWorks' className="truncate text-sm font-medium text-gray-900 dark:text-white">{item.owner.replace(item.owner.substring(2, item.owner.length - 1), "***")}</p>
+                                                    <p className="flex truncate text-sm text-gray-500 dark:text-gray-400"><HiMail className="w-4 h-4 gap-1 mt-1" />{item.email.replace(item.email.substring(1, item.email.indexOf("@")), "*******")}</p>
                                                     <p className=" text-sm text-gray-500 dark:text-gray-400">Job/Task: {item.task}</p>
                                                 </div>
                                                 <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
@@ -147,38 +151,43 @@ Alternatively, you can <Link href={'/postproject'} className="text-appGreen">Pos
                                             </div>
                                         </div>
                                         <div className="flex">
-                                            <Button onClick={()=>router.push("moredetails/"+item.ProjectId)} theme={customsubmitTheme} color="appsuccess" size="xs">Explore</Button>
+                                            <Button onClick={() => router.push("moredetails/" + item.ProjectId)} theme={customsubmitTheme} color="appsuccess" size="xs">Explore</Button>
                                         </div>
                                     </Card>
                                 ) : null
-                        ):isGettingProjects && (ProjectsError==undefined || ProjectsError==null) ? <LoadingProjects/> : ProjectsError!=undefined || ProjectsError!=null ? <LoadingProjectError/> :null
+                        ) : isGettingProjects && (ProjectsError == undefined || ProjectsError == null) ? <LoadingProjects /> : ProjectsError != undefined || ProjectsError != null ? <LoadingProjectError /> : null
                     }
-
+                    
                 </div>
-                <Button onClick={()=>CheckProjects()} theme={customsubmitTheme} color="appsuccess" size="md">See More Projects</Button>
+                <p id="jobSection"></p>
+                <div className="flex gap-1">
+                <Button onClick={() => CheckProjects()} theme={customsubmitTheme} color="appsuccess" size="md">See More Projects</Button>
+                {UserData[0]?.Id && UserData[0]?.membership?.trim().toLocaleLowerCase()=="homeowner" ? <Button onClick={() => CheckProjects()} theme={customsubmitTheme} color="appsuccess" size="md">Post A Project</Button> : null}
+                
+                </div>
                 {isNotification && <Alert color="warning" rounded>
                     <span className="font-medium">Info alert!</span> We Currently Have no Projects to Show/Advertise.
-                  </Alert>}
-                
+                </Alert>}
+
             </div>
             {/*section 4*/}
-            <div id='inspirations' className="flex flex-col justify-center items-center gap-2 p-6">
+            <div className="flex flex-col justify-center items-center gap-2 p-6">
                 <h1 className="text-4xl">Get Inspired</h1>
                 <p className="text-gray-600 ml-5 mr-5">Find your inspiration and make it a reality</p>
                 <div className="flex-row justify-between m-4 grid gap-3 sm:grid-cols-2 md:grid-cols-2 xm:grid-cols-1 lg:grid-cols-4 xl:grid-cols-4 xs:grid-cols-1 justify-items-center mt-5 bg-slate-50 overflow-hidden p-2 rounded-md">
-                    {inspirations?.map((item) => (
+                    {inspirations?.map((item,index) => (
                         <div
-                             key={item.id} className="max-w-sm relative overflow-hidden rounded-md hover:cursor-pointer"
+                            key={item.id} className="max-w-sm relative overflow-hidden rounded-md hover:cursor-pointer"
                         >
                             {/* <Badge onClick={() =>copylink("https://"+(window?.location?.hostname).toString()+"/inspirations/"+item.sharelink)} theme={customTheme} color={"success"} className="absolute z-10 w-fit top-0 m-1 hover:cursor-pointer" icon={HiShare}>copy link</Badge> */}
                             <Image
-                            onClick={()=>router.push("inspirations/"+item.sharelink)}
+                                onClick={() => router.push("inspirations/" + item.sharelink)}
                                 src={item.imgsr}
                                 alt="inspiration"
                                 className="aspect-[4/3] object-cover"
                             />
                             <div className="flex-wrap absolute z-10 bottom-0 bg-opacity-75 bg-black p-3">
-                                <h5 onClick={()=>router.push("inspirations/"+item.sharelink)} className="text-2xl font-bold tracking-tight text-white dark:text-white hover:text-appGreen">
+                                <h5 id={index==4 ? 'inspirations':''} onClick={() => router.push("inspirations/" + item.sharelink)} className="text-2xl font-bold tracking-tight text-white dark:text-white hover:text-appGreen">
                                     {item.tittle}
                                 </h5>
                                 <p className="font-normal text-stone-100 dark:text-stone-100">
@@ -188,7 +197,6 @@ Alternatively, you can <Link href={'/postproject'} className="text-appGreen">Pos
                             </div>
                         </div>
                     ))}
-
                 </div>
 
             </div>

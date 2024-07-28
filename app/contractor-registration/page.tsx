@@ -15,6 +15,9 @@ import { doc, setDoc } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import moment from 'moment';
 import ReCAPTCHA from 'react-google-recaptcha';
+import { IActualTasks, ITowns } from "../Interfaces/appInterfaces";
+import Select_API from 'react-select';
+import validator from 'validator';
 
 const ContractorRegistration = () => {
     const { ProvinceData, DataError, isLoading } = useFetchProvinces();
@@ -30,7 +33,7 @@ const ContractorRegistration = () => {
     const [companyName, setcompanyName] = useState<string>("");
     const [companyEmail, setcompanyEmail] = useState<string>("");
     const [companypassword, setcompanypassword] = useState<string>("");
-    const [Address, setAddress] = useState<string>("");
+    //const [Address, setAddress] = useState<string>("");
     const [phone, setPhone] = useState<string>("");
     const [tncs, setTnCs] = useState<boolean>(false);
     const [formType, setformType] = useState<boolean>(false);
@@ -89,16 +92,16 @@ const ContractorRegistration = () => {
         fileInputRef.current.click();
     };
 
-    useEffect(() => {
-        if (ProvinceData && ProvinceData.length > 0) {
-            const firstTown = ProvinceData[0]?.Towns[0]?.area;
-            setAddress(firstTown);
-        }
-        if (ServiceData && ServiceData.length > 0) {
-            const firstService = ServiceData[0]?.actualTask[0]?.task;
-            AppendSelectedServices(firstService);
-        }
-    }, [ProvinceData, ServiceData]);
+    // useEffect(() => {
+    //     if (ProvinceData && ProvinceData.length > 0) {
+    //         const firstTown = ProvinceData[0]?.Towns[0]?.area;
+    //         setAddress(firstTown);
+    //     }
+    //     if (ServiceData && ServiceData.length > 0) {
+    //         const firstService = ServiceData[0]?.actualTask[0]?.task;
+    //         AppendSelectedServices(firstService);
+    //     }
+    // }, [ProvinceData, ServiceData]);
 
     const RegisterMember = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -116,7 +119,7 @@ const ContractorRegistration = () => {
 
             } else {
                 Setprocessing(false);
-                failureMessage("Opps... we had an issue while uploading your media files. (Try again)");
+                failureMessage("Please select a image to upload as your profile picture and try again");
             }
         } else if (!formType) {
             await uploadProfileImage();
@@ -132,10 +135,9 @@ const ContractorRegistration = () => {
 
             } else {
                 Setprocessing(false);
-                failureMessage("Opps... we had an issue while uploading your media files. (Try again)");
+                failureMessage("Please make sure you have selected both your profile picture and company certification in pdf format then try again");
             }
         }
-
 
     }
 
@@ -143,7 +145,7 @@ const ContractorRegistration = () => {
         let found: Boolean;
         found = false;
         if (companyName == "" || companyEmail == "" || RegistrationNo == "" || YourName == "" ||
-            phone == "" || Address == "" || image_url == "" || pdf_url == "" || imgfilename == "" || pdffilename == "") {
+            phone == "" || Selectedsubarea == "" || image_url == "" || pdf_url == "" || imgfilename == "" || pdffilename == "") {
             found = true;
             Setprocessing(false);
             failureMessage("Please correct your form entry.");
@@ -164,8 +166,8 @@ const ContractorRegistration = () => {
     const IsErrorSkilled = () => {
         let found: Boolean;
         found = false;
-        if (companyEmail == "" || YourSurName == "" || YourName == "" ||
-            phone == "" || Address == "" || image_url == "" || imgfilename == "" || YourID == "") {
+        if (!validator.isEmail(companyEmail?.trim()) || companyEmail == "" || YourSurName == "" || YourName == "" ||
+        !validator.isMobilePhone(phone?.trim()) || phone == "" || Selectedsubarea == "" || Selectedsubarea=="Select A Sub Service" || image_url == "" || imgfilename == "" || YourID == "") {
             found = true;
             Setprocessing(false);
             failureMessage("Please correct your form entry.");
@@ -193,7 +195,8 @@ const ContractorRegistration = () => {
         setcompanyName("");
         setcompanyEmail("");
         setPhone("");
-        setAddress("");
+        //setAddress("");
+        SetSelectedsubarea("");
         SetYourID("");
         SetYourName("");
         SetYourSurName("");
@@ -227,7 +230,7 @@ const ContractorRegistration = () => {
                         companyName,
                         companyEmail: companyEmail.toLowerCase(),
                         phone,
-                        Address,
+                        Address: Selectedsubarea,
                         YourName,
                         YourSurName,
                         RegistrationNo,
@@ -277,6 +280,66 @@ const ContractorRegistration = () => {
             failureMessage("Error submitting reCAPTCHA token");
         }
     }
+
+    //
+
+    const [Selectedsubarea, SetSelectedsubarea] = useState<string>("");
+    const [subcategory, SetSubcategory] = useState<IActualTasks[]>([]);
+    const [subareas, SetSubareas] = useState<ITowns[]>([]);
+    const [provCategory, setprovCategory] = useState<string | null | undefined>("Select Provice");
+    const [ServiceCategory, setServiceCategory] = useState<string | null | undefined>("Select Service");
+
+    const Services = [
+        { value: "PLUMBING", label: "PLUMBING" },
+        { value: "HANDYMAN", label: "HANDYMAN" },
+        { value: "ELECTRICAL", label: "ELECTRICAL" },
+        { value: "PAINTING", label: "PAINTING" },
+        { value: "CARPENTRY", label: "CARPENTRY" },
+        { value: "GARDEN AND LANDSCAPING", label: "GARDEN AND LANDSCAPING" },
+        { value: "BUILDING AND RENOVATIONS", label: "BUILDING AND RENOVATIONS" },
+        { value: "MORE CATEGORIES", label: "MORE CATEGORIES" },
+    ];
+
+    const provinces = [
+        { value: "Limpopo", label: "Limpopo" },
+        { value: "Gauteng", label: "Gauteng" },
+        { value: "Eastern Cape", label: "Eastern Cape" },
+        { value: "Free State", label: "Free State" },
+        { value: "KwaZulu Natal", label: "KwaZulu Natal" },
+        { value: "Mpumalanga", label: "Mpumalanga" },
+        { value: "North West", label: "North West" },
+        { value: "Northern Cape", label: "Northern Cape" },
+        { value: "Western Cape", label: "Western Cape" }
+
+    ];
+
+    const SetSelectedService = (category: string | null | undefined) => {
+        setServiceCategory(category);
+        if (category !== "" && category !== "Select Service") {
+            ServiceData?.forEach((item) => {
+                if (item?.ServiceType == category?.replace("🛠️", '').trim()) {
+                    SetSubcategory(item?.actualTask);
+                }
+            })
+        } else {
+            SetSubcategory([]);
+        }
+    }
+
+    const SetProvince = (category: string | null | undefined) => {
+        setprovCategory(category);
+        if (category !== "" && category !== "Select Provice") {
+            ProvinceData?.forEach((item) => {
+                if (item?.province == category?.replace("🛠️", '').trim()) {
+                    SetSubareas(item?.Towns);
+                }
+            })
+        } else {
+            SetSubareas([]);
+        }
+    }
+
+    //
 
     const uploadProfileImage = async () => {
         if (Imageupload == null) return;
@@ -489,15 +552,23 @@ const ContractorRegistration = () => {
                                 <Label htmlFor="Town" value={formType ? "Your Address*" : "Compay's Address*"} />
                             </div>
 
-                            <Select id="addrSecltor" onChange={(e) => setAddress(e.target.value)} className="max-w-md" theme={customselectTheme} color={"success"} required>
-                                {ProvinceData?.map((item, index) => (
-                                    <optgroup label={item.province} key={item.Id}>
-                                        {item?.Towns?.map((ars, index) => (
-                                            <option key={index}>{ars.area}</option>
-                                        ))}
-                                    </optgroup>
-                                ))}
-                            </Select>
+                            <Select_API placeholder={"Select Provice"} options={provinces} onChange={(e) => SetProvince(e?.value)} />
+
+                            {
+                                subareas.length > 0 &&
+
+                                <Select
+                                    className="rounded mt-1 mb-1"
+                                    onChange={(e) => SetSelectedsubarea(e?.target.value)}
+                                >
+                                    <option>Select A Sub Area</option>
+                                    {
+                                        subareas?.map((item, index) => (
+                                            <option key={item?.area}>{item?.area}</option>
+                                        ))
+                                    }
+                                </Select>
+                            }
 
                         </div>
                         <div>
@@ -505,15 +576,24 @@ const ContractorRegistration = () => {
                                 <Label htmlFor="Town" value={formType ? "Your Service(s) *" : "Company's Service(s) *"} />
                                 <span className="text-xs text-gray-600 font-light text-wrap"> Limit : 15</span>
                             </div>
-                            <Select onChange={(e) => AppendSelectedServices(e.target.value)} className="max-w-md" id="Service" theme={customselectTheme} color={"success"} required>
-                                {ServiceData?.map((item) => (
-                                    <optgroup label={item.ServiceType} key={item.Id}>
-                                        {item?.actualTask?.map((ars, index) => (
-                                            <option key={index}>{ars.task}</option>
-                                        ))}
-                                    </optgroup>
-                                ))}
-                            </Select>
+
+
+                            <Select_API placeholder={"Select Service"} options={Services} onChange={(e) => SetSelectedService(e?.value)} />
+
+                            {subcategory.length > 0 &&
+
+                                <Select
+                                    className="rounded mt-1 mb-1"
+                                    onChange={(e) => e?.target.value !== "Select A Sub Service" ? AppendSelectedServices(e?.target.value) : null}
+                                >
+                                    <option>Select A Sub Service</option>
+                                    {
+                                        subcategory?.map((item, index) => (
+                                            <option key={item?.task}>{item?.task}</option>
+                                        ))
+                                    }
+                                </Select>
+                            }
                             <div className="grid grid-cols-3  gap-1 pt-2">
                                 {selectedServices?.map((itm, index) => (
                                     <div key={index} className='flex flex-wrap gap-2'>
@@ -535,7 +615,7 @@ const ContractorRegistration = () => {
                         </div>
                         {Visibility ? <Online><Button isProcessing={isprocessing} disabled={isprocessing} theme={customsubmitTheme} type="submit" color="appsuccess">Register</Button></Online>
                             : <Alert color="warning" rounded>
-                                <span className="font-medium">Wellcome!</span> Thank You For Registering With Us.
+                                <span className="font-medium">Welcome!</span> Thank You For Registering With Us.
                             </Alert>}
                         <Offline>
                             <Alert color="warning" icon={HiInformationCircle}>

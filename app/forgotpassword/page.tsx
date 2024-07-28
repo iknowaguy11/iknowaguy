@@ -9,6 +9,7 @@ import { useState } from "react";
 import { sendPasswordResetEmail, getAuth } from "firebase/auth";
 import { failureMessage, successMessage } from "../notifications/successError";
 import { app } from "../DB/firebaseConnection";
+import validator from 'validator';
 
 export default function ForgotPassword() {
 
@@ -16,7 +17,7 @@ export default function ForgotPassword() {
     const [loading, setloading] = useState(false);
     const SendResetLink = () => {
         if (email !== "") {
-
+            if(!validator.isEmail(email?.trim())) return failureMessage(String("Invalid Email format."));
             const auth = getAuth(app);
             setloading(true);
             sendPasswordResetEmail(auth, email.trim()).then(() => {
@@ -36,7 +37,7 @@ export default function ForgotPassword() {
         <div className="w-full h-full mt-20 mb-8 flex items-center justify-center">
             <div>
                 <form className="flex max-w-md flex-col gap-4 w-screen flex-grow border p-7 rounded-md shadow-md">
-                    <h2 className="text-lg font-bold">Reset Your Password</h2>
+                    <h2 className="text-lg font-bold">Send Password Reset</h2>
                     <p className="text-gray-600 font-light">Enter your email address below. We`ll look for your account and send you a password reset email.</p>
                     <div>
                         <div className="mb-2 block">

@@ -9,6 +9,7 @@ import MyProjects from "./MyProjects";
 import { useRouter } from "next/navigation";
 import { useFetchUserProjects } from "../_hooks/useFetch";
 import { updateProfile } from "../Controllers/UpdateProfile";
+import validator from 'validator';
 
 const HomeOwnerProfile = ({UserData}:{UserData:IUser[]}) => {
     const [LastName, setLastName] = useState<string>(UserData[0]?.YourSurName);
@@ -62,11 +63,11 @@ const HomeOwnerProfile = ({UserData}:{UserData:IUser[]}) => {
                                 height={40}
                                 priority
                             />
-                            <p className="text-xs text-gray-500">support@ikag.co.za</p>
+                            <p className="text-xs text-gray-500">support@iknowaguy.co.za</p>
                         </div>
                 <div className="h-full items-center justify-items-center">
                 <Card className='flex max-w-lg flex-grow rounded mt-3'>
-                    <form onSubmit={(e)=>updateProfile(e,router,{YourName:FristName,YourSurName:LastName,phone},UserData[0]?.Id,Imageupload,SetIsprocessing)} className="flex max-w-lg flex-col gap-4 flex-grow">
+                    <form onSubmit={(e)=>updateProfile(e,router,{YourName:FristName,YourSurName:LastName,phone:(validator.isMobilePhone(phone?.trim()) ? phone  : UserData[0]?.phone)},UserData[0]?.Id,Imageupload,SetIsprocessing)} className="flex max-w-lg flex-col gap-4 flex-grow">
                         <div className="mb-2 block">
                             {/* {
                                 UserData[0]?.profileImage &&

@@ -8,9 +8,11 @@ import { customInputBoxTheme, customsubmitTheme, customselectTheme } from '../cu
 import Image from "next/image";
 import Link from "next/link";
 import { HiTrash, HiShoppingCart } from 'react-icons/hi';
-import { IUser } from "../Interfaces/appInterfaces";
+import { IActualTasks, ITowns, IUser } from "../Interfaces/appInterfaces";
 import { useRouter } from "next/navigation";
 import { updateProfile } from "../Controllers/UpdateProfile";
+import Select_API from 'react-select';
+import validator from 'validator';
 
 const ContractorProfile = ({ UserData }: { UserData: IUser[] }) => {
     const { ProvinceData, DataError, isLoading } = useFetchProvinces();
@@ -19,7 +21,7 @@ const ContractorProfile = ({ UserData }: { UserData: IUser[] }) => {
     const { BidCredits } = useFetchBidCredits(UserData[0]?.Id);
 
     const [companyName, setcompanyName] = useState<string>(UserData[0]?.companyName);
-    const [Address, setAddress] = useState<string>(UserData[0]?.Address);
+    //const [Address, setAddress] = useState<string>(UserData[0]?.Address);
     const [Bio, setBio] = useState<string>(UserData[0]?.AdvertisingMsg);
     const [phone, setPhone] = useState<string>(UserData[0]?.phone);
     const router = useRouter();
@@ -86,11 +88,71 @@ const ContractorProfile = ({ UserData }: { UserData: IUser[] }) => {
     const OpenImagePicker = () => {
         fileInputRef.current.click();
     };
+
+    //
+
+    const [Selectedsubarea, SetSelectedsubarea] = useState<string>(UserData[0]?.Address);
+    const [subcategory, SetSubcategory] = useState<IActualTasks[]>([]);
+    const [subareas, SetSubareas] = useState<ITowns[]>([]);
+    const [provCategory, setprovCategory] = useState<string | null | undefined>("Select Provice");
+    const [ServiceCategory, setServiceCategory] = useState<string | null | undefined>("Select Service");
+
+    const Services = [
+        { value: "PLUMBING", label: "PLUMBING" },
+        { value: "HANDYMAN", label: "HANDYMAN" },
+        { value: "ELECTRICAL", label: "ELECTRICAL" },
+        { value: "PAINTING", label: "PAINTING" },
+        { value: "CARPENTRY", label: "CARPENTRY" },
+        { value: "GARDEN AND LANDSCAPING", label: "GARDEN AND LANDSCAPING" },
+        { value: "BUILDING AND RENOVATIONS", label: "BUILDING AND RENOVATIONS" },
+        { value: "MORE CATEGORIES", label: "MORE CATEGORIES" },
+    ];
+
+    const provinces = [
+        { value: "Limpopo", label: "Limpopo" },
+        { value: "Gauteng", label: "Gauteng" },
+        { value: "Eastern Cape", label: "Eastern Cape" },
+        { value: "Free State", label: "Free State" },
+        { value: "KwaZulu Natal", label: "KwaZulu Natal" },
+        { value: "Mpumalanga", label: "Mpumalanga" },
+        { value: "North West", label: "North West" },
+        { value: "Northern Cape", label: "Northern Cape" },
+        { value: "Western Cape", label: "Western Cape" }
+
+    ];
+
+    const SetSelectedService = (category: string | null | undefined) => {
+        setServiceCategory(category);
+        if (category !== "" && category !== "Select Service") {
+            ServiceData?.forEach((item) => {
+                if (item?.ServiceType == category?.replace("🛠️", '').trim()) {
+                    SetSubcategory(item?.actualTask);
+                }
+            })
+        } else {
+            SetSubcategory([]);
+        }
+    }
+
+    const SetProvince = (category: string | null | undefined) => {
+        setprovCategory(category);
+        if (category !== "" && category !== "Select Provice") {
+            ProvinceData?.forEach((item) => {
+                if (item?.province == category?.replace("🛠️", '').trim()) {
+                    SetSubareas(item?.Towns);
+                }
+            })
+        } else {
+            SetSubareas([]);
+        }
+    }
+
+    //
     return (
         <>
             <div className="h-full items-center justify-items-center">
                 <Card className='flex max-w-lg flex-grow rounded mt-3'>
-                    <form onSubmit={(e) => updateProfile(e, router, { Address, phone, AdvertisingMsg: Bio, Services: [...new Set([...selectedServices, ...HistoryServices])] }, UserData[0]?.Id, Imageupload, SetIsprocessing)} className="flex max-w-lg flex-col gap-4 flex-grow">
+                    <form onSubmit={(e) => updateProfile(e, router, { Address: (Selectedsubarea == "Select A Sub Area" || Selectedsubarea == "" ? UserData[0]?.Address : Selectedsubarea), phone:(validator.isMobilePhone(phone?.trim()) ? phone  : UserData[0]?.phone) , AdvertisingMsg: Bio, Services: [...new Set([...selectedServices, ...HistoryServices])] }, UserData[0]?.Id, Imageupload, SetIsprocessing)} className="flex max-w-lg flex-col gap-4 flex-grow">
                         <div className="mb-2 block">
                             {/* {
                                 UserData[0]?.profileImage &&
@@ -157,18 +219,24 @@ const ContractorProfile = ({ UserData }: { UserData: IUser[] }) => {
                                 <Label htmlFor="Town" value="Project's Address *" />
                                 <p className="text-xs text-gray-500">Please choose a valid address, project(s) commonly get rejected due to invalid address</p>
                             </div>
-                            <TextInput theme={customInputBoxTheme} value={Address || UserData[0]?.Address} readOnly color={"focuscolor"} id="addr" disabled type="text" placeholder="The address where the work will be done" required shadow />
+                            <TextInput theme={customInputBoxTheme} value={Selectedsubarea || UserData[0]?.Address} readOnly color={"focuscolor"} id="addr" disabled type="text" placeholder="The address where the work will be done" required shadow />
                         </div>
+
+                        <Select_API placeholder={"Select Provice"} options={provinces} onChange={(e) => SetProvince(e?.value)} />
+
                         {
-                            ProvinceData.length > 0 &&
-                            <Select id="addrSecltor" onChange={(e) => setAddress(e.target.value)} className="max-w-md" theme={customselectTheme} color={"success"} required>
-                                {ProvinceData?.map((item, index) => (
-                                    <optgroup label={item.province} key={item.Id}>
-                                        {item?.Towns?.map((ars, index) => (
-                                            <option key={index}>{ars.area}</option>
-                                        ))}
-                                    </optgroup>
-                                ))}
+                            subareas.length > 0 &&
+
+                            <Select
+                                className="rounded mt-1 mb-1"
+                                onChange={(e) => SetSelectedsubarea(e?.target.value)}
+                            >
+                                <option>Select A Sub Area</option>
+                                {
+                                    subareas?.map((item, index) => (
+                                        <option key={item?.area}>{item?.area}</option>
+                                    ))
+                                }
                             </Select>
                         }
 
@@ -211,17 +279,22 @@ const ContractorProfile = ({ UserData }: { UserData: IUser[] }) => {
                             </div>
                         </div>
 
-                        {ServiceData.length > 0 &&
-                            <Select onChange={(e) => AppendSelectedServices(e.target.value)} className="max-w-md" id="Service" theme={customselectTheme} color={"success"} required>
-                                {ServiceData?.map((item) => (
-                                    <optgroup label={item.ServiceType} key={item.Id}>
-                                        {item?.actualTask?.map((ars, index) => (
-                                            <option key={index}>{ars.task}</option>
-                                        ))}
-                                    </optgroup>
-                                ))}
-                            </Select>
 
+                        <Select_API placeholder={"Select Service"} options={Services} onChange={(e) => SetSelectedService(e?.value)} />
+
+                        {subcategory.length > 0 &&
+
+                            <Select
+                                className="rounded mt-1 mb-1"
+                                onChange={(e) => e?.target.value !== "Select A Sub Service" ? AppendSelectedServices(e?.target.value) : null}
+                            >
+                                <option>Select A Sub Service</option>
+                                {
+                                    subcategory?.map((item, index) => (
+                                        <option key={item?.task}>{item?.task}</option>
+                                    ))
+                                }
+                            </Select>
                         }
                         <div className="grid grid-cols-3  gap-1 pt-2">
                             {selectedServices?.map((itm, index) => (
@@ -250,7 +323,7 @@ const ContractorProfile = ({ UserData }: { UserData: IUser[] }) => {
                                 priority
                             />
                         </div>
-                        <p className="text-xs text-gray-500">support@ikag.co.za</p>
+                        <p className="text-xs text-gray-500">support@iknowaguy.co.za</p>
                         <Button
                             onClick={() => router.push('purchase')}
                             size={"sm"}

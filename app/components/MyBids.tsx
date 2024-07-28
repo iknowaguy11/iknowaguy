@@ -4,6 +4,7 @@ import caponlycrop from '../../public/caponlycrop.png';
 import { HiOutlineBriefcase, HiCollection, HiLocationMarker, HiCash, HiClock } from 'react-icons/hi';
 import Image from "next/image";
 import { IProjects } from "../Interfaces/appInterfaces";
+import ShowContactDetails from "./ShowContactDetails";
 
 const MyBids = ({ item, MyKey }: { item: IProjects, MyKey: string }) => {
     return (
@@ -11,7 +12,8 @@ const MyBids = ({ item, MyKey }: { item: IProjects, MyKey: string }) => {
             <div className="gridCont grid">
                 <div className="imageNownwer">
                     <Image
-                        src={item?.Status == "Closed" && item?.winnerId == MyKey ? item.Profpic : caponlycrop}
+                        //{item?.Status == "Closed" && item?.winnerId == MyKey ? item.Profpic : caponlycrop}
+                        src={item.Profpic}
                         alt="company logo"
                         height={40}
                         width={40}
@@ -34,7 +36,7 @@ const MyBids = ({ item, MyKey }: { item: IProjects, MyKey: string }) => {
             {!item.AllcontactorKeys.includes(MyKey?.trim()) && <Button className="place-self-end" theme={customsubmitTheme} type="button" color="appsuccess">Bid</Button>}
 
             {
-                item?.winnerId == MyKey && item.Status.toLowerCase()=="closed"  ?
+                item?.winnerId == MyKey && item.Status.toLowerCase() == "closed" ?
                     (
                         <div className="w-64 p-3">
                             <div className="mb-2 flex items-center justify-between">
@@ -59,14 +61,14 @@ const MyBids = ({ item, MyKey }: { item: IProjects, MyKey: string }) => {
 
                             <Badge className="w-fit" color="warning">Congratulation 🤝🏽✅</Badge>
                         </div>
-                    ) : null
+                    ) : <ShowContactDetails item={item} /> //was rendering null here before this <ShowContactDetails item={item}/> component to hide contact details for non-won bids
 
             }
 
             {
-                item?.winnerId !== MyKey && item.Status.toLowerCase()=="closed" ? 
-                <Badge className="w-fit mt-1" color="failure">Lost</Badge>
-                : null
+                item?.winnerId !== MyKey && item.Status.toLowerCase() == "closed" ?
+                    <Badge className="w-fit mt-1" color="failure">Lost</Badge>
+                    : null
             }
 
         </div>

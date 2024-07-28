@@ -8,13 +8,13 @@ export const NetworkMessage = "Please toogle or troubleshoot your internet conne
 
 export const Plans: IPlans[] = [
     {
-        id: 0, Package: "Bronze", Offering: "R150.00 for 5 credit(s).", Price: 150.00, bid: 5
+        id: 0, Package: "Bronze", Offering: "Number Of Credits: 5", Price: 150.00, bid: 5
     },
     {
-        id: 1, Package: "Silver", Offering: "R250.00 for 10 credit(s).", Price: 250.00, bid: 10
+        id: 1, Package: "Silver", Offering: "Number Of Credits: 10", Price: 250.00, bid: 10
     },
     {
-        id: 2, Package: "Gold", Offering: "R400.00 for 20 credit(s).", Price: 400.00, bid: 20
+        id: 2, Package: "Gold", Offering: "Number Of Credits: 20", Price: 400.00, bid: 20
     }
 ];
 

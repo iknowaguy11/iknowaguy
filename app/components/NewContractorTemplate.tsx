@@ -1,9 +1,9 @@
 
 'use client';
 
-import { Badge,Tooltip } from 'flowbite-react';
+import { Badge, Tooltip } from 'flowbite-react';
 import Image from 'next/image';
-import { HiPhone, HiHome, HiBriefcase, HiMail,HiShare } from 'react-icons/hi';
+import { HiPhone, HiHome, HiBriefcase, HiMail, HiShare } from 'react-icons/hi';
 import { customTheme, customsubmitTheme } from '../customTheme/appTheme';
 import { Button } from 'flowbite-react';
 import { usePathname, useRouter } from 'next/navigation';
@@ -35,13 +35,15 @@ export function NewContractorTemplate({ contractors, params, isGettingAccount, a
                             <div className="grid lg:grid-cols-3 xl:grid-cols-3 sm:grid-cols-1 md:grid-cols-2 sm:w-fit md:w-fit lg:w-full xl:w-full" >
 
                                 <div><p>{item.AdvertisingMsg}</p>
-                                    <Button.Group outline>
+                                    <Button.Group className='grid gap-1 lg:grid-cols-3 sm:grid-cols-2 md:grid-cols-2 w-fit'>
                                         {
                                             item.Services.map((i, index) => (
-                                                <Button key={index} theme={customsubmitTheme} color='appsuccess' size={"xs"}>
+
+                                                <Button className='mb-1' key={index} theme={customsubmitTheme} color='appsuccess' size={"xs"}>
                                                     <HiBriefcase className="mr-3 h-4 w-4" />
                                                     {i}
                                                 </Button>
+
                                             ))
                                         }
 
@@ -69,18 +71,18 @@ export function NewContractorTemplate({ contractors, params, isGettingAccount, a
                                     >
                                         Ratings & Reviews
                                     </Button>
-                                    <Tooltip content="copy profile">
-                                    <Badge onClick={()=>{
-                                        try {
-                                            navigator.clipboard.writeText('domain/profile/id')
-                                            successMessage("Copied profile");
-                                            
-                                        } catch (error:any) {
-                                            failureMessage(error?.message);
-                                        }
-                                    }} theme={customTheme} color={"success"} icon={HiShare}></Badge>
-                                    </Tooltip>
-                                        
+                                        <Tooltip content="copy profile">
+                                            <Badge onClick={() => {
+                                                try {
+                                                    navigator.clipboard.writeText('https://inkowaguy.vercel.app/profile/' + item?.Id)
+                                                    successMessage("Copied profile");
+
+                                                } catch (error: any) {
+                                                    failureMessage(error?.message);
+                                                }
+                                            }} theme={customTheme} color={"success"} icon={HiShare}></Badge>
+                                        </Tooltip>
+
                                     </div>
                                 </div>
 
@@ -111,7 +113,7 @@ export function NewContractorTemplate({ contractors, params, isGettingAccount, a
                             <div className="grid lg:grid-cols-3 xl:grid-cols-3 sm:grid-cols-1 md:grid-cols-2 sm:w-fit md:w-fit lg:w-full xl:w-full" >
 
                                 <div><p>{item.AdvertisingMsg}</p>
-                                    <Button.Group outline>
+                                    <Button.Group className='grid gap-1 lg:grid-cols-3 sm:grid-cols-2 md:grid-cols-2 w-fit'>
                                         {
                                             item.Services.map((i, index) => (
                                                 <Button key={index} theme={customsubmitTheme} color='appsuccess' size={"xs"}>
@@ -145,18 +147,18 @@ export function NewContractorTemplate({ contractors, params, isGettingAccount, a
                                     >
                                         Ratings & Reviews
                                     </Button>
-                                    <Tooltip content="copy profile">
-                                    <Badge onClick={()=>{
-                                        try {
-                                            navigator.clipboard.writeText('domain/profile/id')
-                                            successMessage("Copied profile");
-                                            
-                                        } catch (error:any) {
-                                            failureMessage(error?.message);
-                                        }
-                                    }} theme={customTheme} color={"success"} icon={HiShare}></Badge>
-                                    </Tooltip>
-                                        
+                                        <Tooltip content="copy profile">
+                                            <Badge onClick={() => {
+                                                try {
+                                                    navigator.clipboard.writeText('https://inkowaguy.vercel.app/profile/' + item?.Id)
+                                                    successMessage("Copied profile");
+
+                                                } catch (error: any) {
+                                                    failureMessage(error?.message);
+                                                }
+                                            }} theme={customTheme} color={"success"} icon={HiShare}></Badge>
+                                        </Tooltip>
+
                                     </div>
                                 </div>
 

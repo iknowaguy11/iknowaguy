@@ -14,6 +14,7 @@ import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import moment from 'moment';
 import ReCAPTCHA from 'react-google-recaptcha';
+import validator from 'validator';
 
 const HomeOwnerRegistration = () => {
 
@@ -74,7 +75,7 @@ const HomeOwnerRegistration = () => {
             AddFirestoreData();
         } else {
             Setprocessing(false);
-            failureMessage("Opps... we had an issue while uploading your media files. (Try again)");
+            failureMessage("Please select a image to upload as your profile picture and try again");
         }
     }
     const uploadProfileImage = async () => {
@@ -152,19 +153,19 @@ const HomeOwnerRegistration = () => {
             setResponseMessage('Error submitting reCAPTCHA token');
             failureMessage("Error submitting reCAPTCHA token");
         }
-
     }
 
     const IsError = () => {
         let found: Boolean;
         found = false;
-        if (HomeownerEmail == "" || HomeOwnerpassword == "" ||
+        if (!validator.isEmail(HomeownerEmail?.trim()) || HomeownerEmail == "" || HomeOwnerpassword == "" ||
             firstName == "" || LastName == "" || ConfirmPassword == "" ||
-            phone == "" || image_url == "" || imgfilename == "") {
+            !validator.isMobilePhone(phone?.trim()) || phone == "" || image_url == "" || imgfilename == "") {
             found = true;
             Setprocessing(false);
             failureMessage("Please correct your form entry.");
         }
+        
         if (!tncs) {
             found = true;
             Setprocessing(false);
@@ -260,7 +261,7 @@ const HomeOwnerRegistration = () => {
                         </div>
                         {Visibility ? <Online><Button disabled={isprocessing ? true : false} isProcessing={isprocessing} theme={customsubmitTheme} type="submit" color="appsuccess">Register</Button></Online>
                             : <Alert color="warning" rounded>
-                                <span className="font-medium">Wellcome!</span> Thank You For Registering With Us.
+                                <span className="font-medium">Welcome!</span> Thank You For Registering With Us.
                             </Alert>}
                         <Offline>
                             <Alert color="warning" icon={HiInformationCircle}>

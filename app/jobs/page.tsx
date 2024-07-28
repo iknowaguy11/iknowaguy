@@ -8,7 +8,7 @@ import { HiSearch } from 'react-icons/hi';
 import Jobtemplate from "../components/JobTemplate";
 import { useFetchUserAccount, useFetchUserProjects } from "../_hooks/useFetch";
 import { useContext, useState } from "react";
-import { HiHome } from "react-icons/hi";
+import { HiCurrencyDollar } from "react-icons/hi";
 import { useRouter } from "next/navigation";
 import { AppContext } from "../Context/appContext";
 
@@ -28,8 +28,8 @@ const Jobs = () => {
 
                 <div className="grid grid-cols-2 absolute z-10 bottom-3 flex-grow bg-opacity-75 bg-black p-3 w-full">
                     <div className="p-2 gap-3">
-                        <h1 className="text-4xl font-bold tracking-tight text-white dark:text-white">GET HIRED TODAY</h1>
-                        <p className="text-sm tracking-tight text-white dark:text-white">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry`s standard dummy text ever since the 1500s,</p>
+                        <h1 className="text-4xl font-bold tracking-tight text-white dark:text-white">FIND PROJECTS IN YOUR AREA AND START WORKING TODAY!</h1>
+                        <p className="text-sm tracking-tight text-white dark:text-white">To view homeowner detail, you will need to buy credits and place a bid on a project.</p>
                     </div>
                     <div className="h-full items-center justify-items-center">
                     
@@ -37,12 +37,12 @@ const Jobs = () => {
                     </div>
                 </div>
             </div>
-            <Button theme={customsubmitTheme} onClick={()=>router.replace("/")} className="m-2" size={"md"} color="light">
-                <HiHome className="-ml-0.5 mr-2 h-4 w-4" />Home</Button>
+            <Button theme={customsubmitTheme} onClick={()=>router.replace("/purchase")} className="m-2" size={"md"} color="light">
+                <HiCurrencyDollar className="-ml-0.5 mr-2 h-4 w-4" />Buy Credits</Button>
            { SearchText=="" ?
-            UserProjects?.map((item)=>(
+            UserProjects?.filter(p=>p.Status.toLocaleLowerCase()!=="closed").map((item)=>(
                 <Jobtemplate item={item} key={item.ProjectId} membership={UserData[0]?.membership} CurrUserKey={UserData[0]?.Id}/>
-            )) : SearchText !== "" && UserProjects.filter((value) => {
+            )) : SearchText !== "" && UserProjects.filter(p=>p.Status.toLocaleLowerCase()!=="closed").filter((value) => {
                 return SearchText.toLocaleLowerCase() === '' ? value : value.task.toLowerCase().includes(SearchText.toLocaleLowerCase());
             }).map((itm)=>(
                 <Jobtemplate item={itm} key={itm.ProjectId} membership={UserData[0]?.membership} CurrUserKey={UserData[0]?.Id}/>

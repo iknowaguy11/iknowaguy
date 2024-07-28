@@ -14,6 +14,9 @@ import { useRouter } from 'next/navigation';
 import { addDoc, collection } from 'firebase/firestore';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { SendMailToContractor } from '../utils/SendEmail';
+import Select_API from 'react-select';
+import { IActualTasks, ITowns } from '../Interfaces/appInterfaces';
+import validator from 'validator';
 
 export default function Recommend() {
     const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
@@ -24,14 +27,73 @@ export default function Recommend() {
     const [CompanyName, SetCompanyName] = useState<string>("");
     const [RecommederName, SetRecommederName] = useState<string>("");
     const [HowdoYouKnowThem, SetHowdoYouKnowThem] = useState<string>("");
-    const [Address, setAddress] = useState<string>("");
+    //const [Address, setAddress] = useState<string>("");
     const [ContractorEmail, SetContractorEmail] = useState<string>("");
     const [selectedServices, SetSelectedServices] = useState<string[]>([]);
     const [tncs, setTnCs] = useState<boolean>(false);
     const [isprocessing, Setprocessing] = useState<boolean>(false);
     const [Visibility, setVisibility] = useState<boolean>(true);
-    let responseMessage:string;
-    const setResponseMessage=(msg:any)=> responseMessage=msg;
+
+    //
+    //const [SelectedSubcategory, SetSelectedSubcategory] = useState<string>("");
+    const [Selectedsubarea, SetSelectedsubarea] = useState<string>("");
+    const [subcategory, SetSubcategory] = useState<IActualTasks[]>([]);
+    const [subareas, SetSubareas] = useState<ITowns[]>([]);
+    const [provCategory, setprovCategory] = useState<string | null | undefined>("Select Provice");
+    const [ServiceCategory, setServiceCategory] = useState<string | null | undefined>("Select Service");
+
+    const Services = [
+        { value: "PLUMBING", label: "PLUMBING" },
+        { value: "HANDYMAN", label: "HANDYMAN" },
+        { value: "ELECTRICAL", label: "ELECTRICAL" },
+        { value: "PAINTING", label: "PAINTING" },
+        { value: "CARPENTRY", label: "CARPENTRY" },
+        { value: "GARDEN AND LANDSCAPING", label: "GARDEN AND LANDSCAPING" },
+        { value: "BUILDING AND RENOVATIONS", label: "BUILDING AND RENOVATIONS" },
+        { value: "MORE CATEGORIES", label: "MORE CATEGORIES" },
+    ];
+
+    const provinces = [
+        { value: "Limpopo", label: "Limpopo" },
+        { value: "Gauteng", label: "Gauteng" },
+        { value: "Eastern Cape", label: "Eastern Cape" },
+        { value: "Free State", label: "Free State" },
+        { value: "KwaZulu Natal", label: "KwaZulu Natal" },
+        { value: "Mpumalanga", label: "Mpumalanga" },
+        { value: "North West", label: "North West" },
+        { value: "Northern Cape", label: "Northern Cape" },
+        { value: "Western Cape", label: "Western Cape" }
+
+    ];
+
+    const SetSelectedService = (category: string | null | undefined) => {
+        setServiceCategory(category);
+        if (category !== "" && category !== "Select Service") {
+            ServiceData?.forEach((item) => {
+                if (item?.ServiceType == category?.replace("🛠️", '').trim()) {
+                    SetSubcategory(item?.actualTask);
+                }
+            })
+        } else {
+            SetSubcategory([]);
+        }
+    }
+
+    const SetProvince = (category: string | null | undefined) => {
+        setprovCategory(category);
+        if (category !== "" && category !== "Select Provice") {
+            ProvinceData?.forEach((item) => {
+                if (item?.province == category?.replace("🛠️", '').trim()) {
+                    SetSubareas(item?.Towns);
+                }
+            })
+        } else {
+            SetSubareas([]);
+        }
+    }
+    //
+    let responseMessage: string;
+    const setResponseMessage = (msg: any) => responseMessage = msg;
     const router = useRouter();
     const AppendSelectedServices = useCallback((value: string) => {
         if (!selectedServices.includes(value) && selectedServices.length < 15) {
@@ -46,17 +108,7 @@ export default function Recommend() {
     const handleRecaptchaChange = (token: string | null) => {
         setRecaptchaToken(token);
     };
-    useEffect(() => {
-        if (ProvinceData && ProvinceData.length > 0) {
-            const firstTown = ProvinceData[0]?.Towns[0]?.area;
-            setAddress(firstTown);
-        }
-        if (ServiceData && ServiceData.length > 0) {
-            const firstService = ServiceData[0]?.actualTask[0]?.task;
-            AppendSelectedServices(firstService);
-        }
-    }, [ProvinceData, ServiceData]);
-
+    
     const VisibileRegisterButton = () => {
         cleanUp();
         setVisibility(true);
@@ -68,7 +120,7 @@ export default function Recommend() {
         SetContractorPhone("");
         SetCompanyName("");
         SetRecommederName("");
-        setAddress("");
+        SetSelectedsubarea("");
         SetContractorEmail("");
         SetSelectedServices([]);
         setTnCs(false);
@@ -85,8 +137,8 @@ export default function Recommend() {
     const IsError = () => {
         let found: Boolean;
         found = false;
-        if ( ContractorEmail == "" ||
-            ContractorName == "" || ContractorPhone == "" || Address == "" || HowdoYouKnowThem=="" || HowdoYouKnowThem=="---"
+        if (!validator.isEmail(ContractorEmail?.trim()) || ContractorEmail == "" ||
+            ContractorName == "" || !validator.isMobilePhone(ContractorPhone?.trim()) || ContractorPhone == "" || Selectedsubarea=="" || HowdoYouKnowThem == "" || HowdoYouKnowThem == "---"
         ) {
             found = true;
             Setprocessing(false);
@@ -117,17 +169,17 @@ export default function Recommend() {
 
             const data = await response.json();
             setResponseMessage(data.message);
-            
+
             if (data.message == "reCAPTCHA verification successful" && data.success == true) {
                 try {
                     const myCollection = collection(db, 'Recommended');
                     const myDocumentData = {
                         ContractorName,
                         ContractorPhone,
-                        CompanyName:CompanyName.trim() !=="" ? CompanyName :"Skilled Individual",
-                        HowdoYouKnowThem:(HowdoYouKnowThem.trim() == "" ? "Preferred not to say" : HowdoYouKnowThem),
+                        CompanyName: CompanyName.trim() !== "" ? CompanyName : "Skilled Individual",
+                        HowdoYouKnowThem: (HowdoYouKnowThem.trim() == "" ? "Preferred not to say" : HowdoYouKnowThem),
                         RecommederName: (RecommederName.trim() == "" ? "Anonymous" : RecommederName),
-                        Address,
+                        Address: Selectedsubarea,
                         ContractorEmail: ContractorEmail.trim().toLocaleLowerCase(),
                         Services: selectedServices,
                         tncs: tncs ? "agreed" : "not agreed but registered"
@@ -136,11 +188,11 @@ export default function Recommend() {
                     if (newDocRef?.id) {
                         Setprocessing(false);
                         successMessage("Sucessfully Recommended A Contractor");
-                        let msg=`You have been recommended by someone to join our Job(Project) Biding platform\n\nDetails of the Person are as follows:\n
+                        let msg = `You have been recommended by someone to join our Job(Project) Biding platform\n\nDetails of the Person are as follows:\n
                         \nName: ${RecommederName.trim() == "" ? "Anonymous" : RecommederName}\n
                         Described Relationship: ${HowdoYouKnowThem.trim() == "" ? "Preferred not to say" : HowdoYouKnowThem}\n
                         Services Recommended For: ${selectedServices}\n`;
-                        SendMailToContractor(ContractorEmail,ContractorName,msg,"I Know A Guy - Recommendation");
+                        SendMailToContractor(ContractorEmail, ContractorName, msg, "I Know A Guy - Recommendation");
                         setVisibility(false);
                         setTimeout(VisibileRegisterButton, 4000);
                     }
@@ -148,7 +200,7 @@ export default function Recommend() {
                     failureMessage(error?.message);
                     Setprocessing(false);
                 }
-            }else{
+            } else {
                 Setprocessing(false);
                 failureMessage(responseMessage);
             }
@@ -159,6 +211,8 @@ export default function Recommend() {
             failureMessage("Error submitting reCAPTCHA token");
         }
     }
+
+
     return (
         <div className='divRecommend flex justify-center items-center'>
             <div className='grid lg:grid-cols-2 xl:lg:grid-cols-2 md:lg:grid-cols-1 sm:lg:grid-cols-1 justify-center'>
@@ -196,16 +250,24 @@ export default function Recommend() {
                             <div className="mb-2 block">
                                 <Label htmlFor="Town" value="Compay's Address *" />
                             </div>
+                            <Select_API placeholder={"Select Provice"} options={provinces} onChange={(e) => SetProvince(e?.value)} />
 
-                            <Select id="addrSecltor" onChange={(e) => setAddress(e.target.value)} className="max-w-md" theme={customselectTheme} color={"success"} required>
-                                {ProvinceData?.map((item, index) => (
-                                    <optgroup label={item.province} key={item.Id}>
-                                        {item?.Towns?.map((ars, index) => (
-                                            <option key={index}>{ars.area}</option>
-                                        ))}
-                                    </optgroup>
-                                ))}
-                            </Select>
+                            {
+                                subareas.length > 0 &&
+
+                                <Select
+                                    className="max-w-md rounded mt-1 mb-1"
+                                    onChange={(e) => SetSelectedsubarea(e?.target.value)}
+                                >
+                                    <option>Select A Sub Area</option>
+                                    {
+                                        subareas?.map((item, index) => (
+                                            <option key={item?.area}>{item?.area}</option>
+                                        ))
+                                    }
+                                </Select>
+                            }
+
                         </div>
 
                         <div>
@@ -213,15 +275,22 @@ export default function Recommend() {
                                 <Label htmlFor="Town" value="Company's Service(s) *" />
                                 <span className="text-xs text-gray-600 font-light text-wrap"> Limit : 15</span>
                             </div>
-                            <Select onChange={(e) => AppendSelectedServices(e.target.value)} className="max-w-md" id="Service" theme={customselectTheme} color={"success"} required>
-                                {ServiceData?.map((item) => (
-                                    <optgroup label={item.ServiceType} key={item.Id}>
-                                        {item?.actualTask?.map((ars, index) => (
-                                            <option key={index}>{ars.task}</option>
-                                        ))}
-                                    </optgroup>
-                                ))}
-                            </Select>
+                            <Select_API placeholder={"Select Service"} options={Services} onChange={(e) => SetSelectedService(e?.value)} />
+
+                            {subcategory.length > 0 &&
+
+                                <Select
+                                    className="max-w-md rounded mt-1 mb-1"
+                                    onChange={(e) => e?.target.value !=="Select A Sub Service" ?  AppendSelectedServices(e?.target.value) : null}
+                                >
+                                    <option>Select A Sub Service</option>
+                                    {
+                                        subcategory?.map((item, index) => (
+                                            <option key={item?.task}>{item?.task}</option>
+                                        ))
+                                    }
+                                </Select>                              
+                            }
                             <div className="grid grid-cols-3  gap-1 pt-2">
                                 {selectedServices?.map((itm, index) => (
                                     <div key={index} className='flex flex-wrap gap-2'>
@@ -230,6 +299,10 @@ export default function Recommend() {
                                 ))}
                             </div>
                         </div>
+
+                        
+
+
                         <div>
                             <div className="mb-2 block">
                                 <Label htmlFor="shareUrName" value="Share your Name " />
@@ -241,11 +314,11 @@ export default function Recommend() {
                                 <Label htmlFor="relation" value="How Do You Know Them *" />
                             </div>
                             <Select onChange={(e) => SetHowdoYouKnowThem(e?.target?.value)} className="max-w-md" id="Service" theme={customselectTheme} color={"success"} required>
-                            <option >---</option>
-                            <option >I&apos;ve hired them</option>
-                            <option >Friend or Family Member</option>
-                            <option >I&apos;m recommending myself/my company</option>
-                            <option >Other</option>
+                                <option >---</option>
+                                <option >I&apos;ve hired them</option>
+                                <option >Friend or Family Member</option>
+                                <option >I&apos;m recommending myself/my company</option>
+                                <option >Other</option>
                             </Select>
                         </div>
                         <div className="flex items-center gap-2">
@@ -268,7 +341,7 @@ export default function Recommend() {
                             </Alert></Offline>
                     </form>
                     <ReCAPTCHA
-                    className='self-center'
+                        className='self-center'
                         sitekey={(process?.env?.NEXT_PUBLIC_SITE_KEY)?.toString() || ""}
                         onChange={(e) => handleRecaptchaChange(e)}
                     />

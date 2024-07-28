@@ -6,7 +6,7 @@ import Link from "next/link";
 import PaymentButton from "../components/PaymentButton";
 
 export default function BidsCredits() {
-    
+
     return (
         <div className="w-full gap-4 bg-slate-50">
             <div className="h-full flex justify-center bg-slate-50">
@@ -20,7 +20,7 @@ export default function BidsCredits() {
                                     <span className="text-5xl font-extrabold tracking-tight">{item?.Price?.toFixed(2)}</span>
                                 </div>
                                 <ul className="my-7 space-y-5">
-                                    <li className="flex space-x-3">
+                                    {/*<li className="flex space-x-3">
                                         <svg
                                             className="h-5 w-5 shrink-0 text-appGreen dark:text-appGreen"
                                             fill="currentColor"
@@ -33,8 +33,8 @@ export default function BidsCredits() {
                                                 clipRule="evenodd"
                                             />
                                         </svg>
-                                        <span className="text-base font-normal leading-tight text-gray-500 dark:text-gray-400">Get Copy of your receipt</span>
-                                    </li>
+                                         <span className="text-base font-normal leading-tight text-gray-500 dark:text-gray-400">Get Copy of your receipt</span> 
+                                    </li>*/}
                                     <li className="flex space-x-3">
                                         <svg
                                             className="h-5 w-5 shrink-0 text-appGreen dark:text-appGreen"
@@ -65,10 +65,10 @@ export default function BidsCredits() {
                                                 clipRule="evenodd"
                                             />
                                         </svg>
-                                        <span className="text-base font-normal leading-tight text-gray-500 dark:text-gray-400">Start bidding instantly</span>
+                                        <span className="text-base font-normal leading-tight text-gray-500 dark:text-gray-400">Price Per Credit: R{(item.Price).toFixed(2)}</span>
                                     </li>
 
-                                    <li className="flex space-x-3">
+                                    {/*<li className="flex space-x-3">
                                         <svg
                                             className="h-5 w-5 shrink-0 text-appGreen dark:text-appGreen"
                                             fill="currentColor"
@@ -81,11 +81,11 @@ export default function BidsCredits() {
                                                 clipRule="evenodd"
                                             />
                                         </svg>
-                                        <span className="text-base font-normal leading-tight text-gray-500 dark:text-gray-400">Refundable</span><Link className="underline" href={"terms-and-conditions"} target="_blank">Read Refund Policy</Link>
-                                    </li>
+                                    <span className="text-base font-normal leading-tight text-gray-500 dark:text-gray-400">Refundable</span><Link className="underline" href={"terms-and-conditions"} target="_blank">Read Refund Policy</Link> 
+                                </li>*/}
                                 </ul>
-                                
-                                <PaymentButton price={item?.Price?.toFixed(2)} Bidpackage={item?.Package}/>
+
+                                <PaymentButton price={item?.Price?.toFixed(2)} Bidpackage={item?.Package} />
 
                             </Card>
                         ))

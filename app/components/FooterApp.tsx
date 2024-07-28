@@ -46,7 +46,10 @@ export function FooterApp() {
             <Footer.Title title="Quick Links" />
             <Footer.LinkGroup col>
               <Footer.Link href="/purchase" as={Link}>Buy Credits</Footer.Link>
-              <Footer.Link href="#inspirations" as={Link}>Get Inspired</Footer.Link>
+              <a onClick={() => {
+            const element = document.getElementById('inspirations');
+            element?.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+          }} >Get Inspired</a>
               <Footer.Link href="/recommend" as={Link}>Recommend A &quot;Guy&quot;</Footer.Link>
               {/* <Footer.Link href="contractors" as={Link}>Contractors</Footer.Link> */}
             </Footer.LinkGroup>

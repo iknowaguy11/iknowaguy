@@ -16,7 +16,7 @@ import ProfileSkeleton from './loading';
 export function AppNavbar() {
   const router = useRouter();
   const { isLoggedIn, setLoggedIn, ukey } = useContext(AppContext);
-  const { UserData, accountError, isGettingAccount } = useFetchUserAccount(ukey);
+  const { UserData } = useFetchUserAccount(ukey);
   const auth = getAuth(app);
   return (
     <header className="bg-white fixed top-0 w-full z-20">
@@ -86,7 +86,7 @@ export function AppNavbar() {
           <Navbar.Link onClick={() => {
             const element = document.getElementById('jobSection');
             element?.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
-          }} >Current Projects</Navbar.Link>
+          }}>Current Projects</Navbar.Link>
           {UserData[0]?.Id && UserData[0]?.membership?.trim().toLocaleLowerCase()=="homeowner" ? <Navbar.Link as={Link} href="/postproject">Post A Project</Navbar.Link> :null }
           
           <Navbar.Link as={Link} href="/recommend">Recommend A &quot;Guy&quot;</Navbar.Link>

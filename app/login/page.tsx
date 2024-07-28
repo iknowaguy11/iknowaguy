@@ -14,6 +14,7 @@ import { failureMessage, successMessage } from "../notifications/successError";
 import { AppContext } from "../Context/appContext";
 import { QuotaExceededError } from "../Interfaces/appInterfaces";
 import { isGrantedAccess } from "../Controllers/isAdminAllowed";
+import validator from 'validator';
 
 export default function Login() {
     const { setLoggedIn } = useContext(AppContext);
@@ -30,6 +31,7 @@ export default function Login() {
     const AttemptLogin = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (username !== "" && password !== "") {
+            if(!validator.isEmail(username?.trim())) return failureMessage(String("Invalid Email format"));
             try {
                 const auth = getAuth(app);
                 setloading(true);

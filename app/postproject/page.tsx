@@ -12,30 +12,89 @@ import { addDoc, collection } from "firebase/firestore";
 import { AppContext } from "../Context/appContext";
 import moment from 'moment';
 import { db } from "../DB/firebaseConnection";
+import { IActualTasks, ITowns } from "../Interfaces/appInterfaces";
+import Select_API from 'react-select';
 
 const Postproject = () => {
     const router = useRouter();
-    useEffect(()=>{
+    useEffect(() => {
         if (window?.sessionStorage?.getItem("ukey") == undefined || window?.sessionStorage?.getItem("ukey") == null || window?.sessionStorage?.getItem("ukey") == "") {
             router.replace('login');
         }
-        
-    },[router]);
+
+    }, [router]);
     const { ProvinceData, DataError, isLoading } = useFetchProvinces();
     const { ServiceData, serviceError, isLoadingservies } = useFetchServices();
     const { ukey } = useContext(AppContext);
     const { UserData, accountError, isGettingAccount } = useFetchUserAccount(ukey);
-    const [Address, setAddress] = useState<string>("");
-    const [selectedServices, SetSelectedServices] = useState<string>("");
+    //const [Address, setAddress] = useState<string>("");
+
     const [isprocessing, Setprocessing] = useState<boolean>(false);
     const [Visibility, setVisibility] = useState<boolean>(true);
     const [budget, SetBudget] = useState("50.00");
     const [Comment, SetComment] = useState("");
     const [tncs, setTnCs] = useState<boolean>(false);
-    if(UserData[0]?.Id && UserData[0]?.membership.trim().toLocaleLowerCase()!=="homeowner"){
+    if (UserData[0]?.Id && UserData[0]?.membership.trim().toLocaleLowerCase() !== "homeowner") {
         router.replace('/');
     }
+    //
+    const [Selectedsubarea, SetSelectedsubarea] = useState<string>("");
+    const [subareas, SetSubareas] = useState<ITowns[]>([]);
+    const [subcategory, SetSubcategory] = useState<IActualTasks[]>([]);
+    const [selectedServices, SetSelectedServices] = useState<string>("");
+    const [provCategory, setprovCategory] = useState<string | null | undefined>("Select Provice");
+    const [ServiceCategory, setServiceCategory] = useState<string | null | undefined>("Select Service");
 
+    const Services = [
+        { value: "PLUMBING", label: "PLUMBING" },
+        { value: "HANDYMAN", label: "HANDYMAN" },
+        { value: "ELECTRICAL", label: "ELECTRICAL" },
+        { value: "PAINTING", label: "PAINTING" },
+        { value: "CARPENTRY", label: "CARPENTRY" },
+        { value: "GARDEN AND LANDSCAPING", label: "GARDEN AND LANDSCAPING" },
+        { value: "BUILDING AND RENOVATIONS", label: "BUILDING AND RENOVATIONS" },
+        { value: "MORE CATEGORIES", label: "MORE CATEGORIES" },
+    ];
+    const provinces = [
+        { value: "Limpopo", label: "Limpopo" },
+        { value: "Gauteng", label: "Gauteng" },
+        { value: "Eastern Cape", label: "Eastern Cape" },
+        { value: "Free State", label: "Free State" },
+        { value: "KwaZulu Natal", label: "KwaZulu Natal" },
+        { value: "Mpumalanga", label: "Mpumalanga" },
+        { value: "North West", label: "North West" },
+        { value: "Northern Cape", label: "Northern Cape" },
+        { value: "Western Cape", label: "Western Cape" }
+
+    ];
+
+    const SetProvince = (category: string | null | undefined) => {
+        setprovCategory(category);
+        if (category !== "" && category !== "Select Provice") {
+            ProvinceData?.forEach((item) => {
+                if (item?.province == category?.replace("🛠️", '').trim()) {
+                    SetSubareas(item?.Towns);
+                }
+            })
+        } else {
+            SetSubareas([]);
+        }
+    }
+
+    const SetSelectedService = (category: string | null | undefined) => {
+        setServiceCategory(category);
+        if (category !== "" && category !== "Select Service") {
+            ServiceData?.forEach((item) => {
+                if (item?.ServiceType == category?.replace("🛠️", '').trim()) {
+                    SetSubcategory(item?.actualTask);
+                }
+            })
+        } else {
+            SetSubcategory([]);
+        }
+    }
+
+    //
     const AddPost = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         Setprocessing(true);
@@ -48,7 +107,8 @@ const Postproject = () => {
         found = false;
         try {
 
-            if (selectedServices == "" || Address == "" ||
+            if (selectedServices == "" || Selectedsubarea == "" ||
+                Selectedsubarea=="Select A Sub Area" || selectedServices=="Select A Sub Area" ||
                 budget == "") {
                 found = true;
                 Setprocessing(false);
@@ -81,7 +141,7 @@ const Postproject = () => {
     }
 
     const cleanUp = () => {
-        setAddress("");
+        SetSelectedsubarea("");
         SetSelectedServices("");
         SetBudget("");
         SetComment("");
@@ -98,9 +158,9 @@ const Postproject = () => {
                 task: selectedServices,
                 email: UserData[0]?.companyEmail,
                 phone: UserData[0]?.phone,
-                addrs: Address,
+                addrs: Selectedsubarea,
                 postTime: moment().format('MMMM Do YYYY, h:mm a'),
-                AllcontactorKeys:[],
+                AllcontactorKeys: [],
                 description: Comment == "" ? "no comment" : Comment,
                 budget: budget,
                 otherOffers: [],
@@ -123,20 +183,20 @@ const Postproject = () => {
             Setprocessing(false);
         }
     }
-    useEffect(() => {
-        if (ProvinceData && ProvinceData.length > 0) {
-            const firstTown = ProvinceData[0]?.Towns[0]?.area;
-            setAddress(firstTown);
-        }
-        if (ServiceData && ServiceData.length > 0) {
-            const firstService = ServiceData[0]?.actualTask[0]?.task;
-            SetSelectedServices(firstService);
-        }
-    }, [ProvinceData, ServiceData]);
+    // useEffect(() => {
+    //     if (ProvinceData && ProvinceData.length > 0) {
+    //         const firstTown = ProvinceData[0]?.Towns[0]?.area;
+    //         setAddress(firstTown);
+    //     }
+    //     if (ServiceData && ServiceData.length > 0) {
+    //         const firstService = ServiceData[0]?.actualTask[0]?.task;
+    //         SetSelectedServices(firstService);
+    //     }
+    // }, [ProvinceData, ServiceData]);
 
     return (
         <div className="w-full gap-4 h-dvh">
-            <div className="relative w-full h-full mt-16 mb-1">
+            <div className="relative w-full h-full mt-32 mb-1">
                 <Image
                     src={Landscape}
                     alt="inspiration"
@@ -144,8 +204,8 @@ const Postproject = () => {
 
                 <div className="grid grid-cols-2 items-center justify-items-center absolute z-10 bottom-3 flex-grow bg-opacity-75 bg-black p-3 w-full">
                     <div className="p-2 gap-3 mt-4">
-                        <h1 className="text-4xl font-bold tracking-tight text-white dark:text-white">HAVE SOMETHING NEEDED TO BE DONE?</h1>
-                        <p className="text-sm tracking-tight text-white dark:text-white">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry`s standard dummy text ever since the 1500s,</p>
+                        <h1 className="text-4xl font-bold tracking-tight text-white dark:text-white">NEEDING SOMETHING DONE IN YOUR HOME?</h1>
+                        <p className="text-sm tracking-tight text-white dark:text-white">Describe what you need done in as much detail as possible and receive up to 5 quotes from trusted contractors in your area to meet your specific needs</p>
                     </div>
                     <div className="h-full items-center justify-items-center">
 
@@ -157,30 +217,47 @@ const Postproject = () => {
                                         <Label htmlFor="addrSecltor" value="Project's Address*" />
                                     </div>
 
-                                    <Select id="addrSecltor" onChange={(e) => setAddress(e.target.value)} className="max-w-md" theme={customselectTheme} color={"success"} required>
-                                        {ProvinceData?.map((item, index) => (
-                                            <optgroup label={item.province} key={item.Id}>
-                                                {item?.Towns?.map((ars, index) => (
-                                                    <option key={index}>{ars.area}</option>
-                                                ))}
-                                            </optgroup>
-                                        ))}
-                                    </Select>
+                                    <Select_API placeholder={"Select Provice"} options={provinces} onChange={(e) => SetProvince(e?.value)} />
+
+                                    {
+                                        subareas.length > 0 &&
+
+                                        <Select
+                                            className="max-w-md rounded mt-1 mb-1"
+                                            onChange={(e) => SetSelectedsubarea(e?.target.value)}
+                                        >
+                                            <option>Select A Sub Area</option>
+                                            {
+                                                subareas?.map((item, index) => (
+                                                    <option key={item?.area}>{item?.area}</option>
+                                                ))
+                                            }
+                                        </Select>
+                                    }
 
                                 </div>
                                 <div>
                                     <div className="mb-2 block">
                                         <Label htmlFor="job" value="Select Job Category *" />
                                     </div>
-                                    <Select onChange={(e) => SetSelectedServices(e.target.value)} className="max-w-md" id="job" theme={customselectTheme} color={"success"} required>
-                                        {ServiceData?.map((item) => (
-                                            <optgroup label={item.ServiceType} key={item.Id}>
-                                                {item?.actualTask?.map((ars, index) => (
-                                                    <option key={index}>{ars.task}</option>
-                                                ))}
-                                            </optgroup>
-                                        ))}
-                                    </Select>
+
+
+                                    <Select_API placeholder={"Select Service"} options={Services} onChange={(e) => SetSelectedService(e?.value)} />
+
+                                    {subcategory.length > 0 &&
+
+                                        <Select
+                                            className="max-w-md rounded mt-1 mb-1"
+                                            onChange={(e) => SetSelectedServices(e?.target.value)}
+                                        >
+                                            <option>Select A Sub Service</option>
+                                            {
+                                                subcategory?.map((item, index) => (
+                                                    <option key={item?.task}>{item?.task}</option>
+                                                ))
+                                            }
+                                        </Select>
+                                    }
                                 </div>
 
                                 <div>
