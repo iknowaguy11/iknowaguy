@@ -142,26 +142,27 @@ export const AcceptBidingModal = ({ openModal, setOpenModal, ProjectIdBid, proje
 
     return (
         <Modal show={openModal} size={"lg"} onClose={() => setOpenModal(false)}>
-            <Modal.Header>Accept Terms of Biding</Modal.Header>
+            <Modal.Header>Project Bidding</Modal.Header>
             <Modal.Body>
                 <div className="space-y-6 p-6">
                     <p className="text-base leading-relaxed text-black dark:text-black font-semibold">
-                        You are about to place a bid on this project. If your happy with the terms below your may type your offer and click &quot;accept&quot;
+                    You are about to place a bid on this project. Your bid is 1 of only 5 that the homeowner will receive for the project. You are welcome to contact the homeowner to obtain all relevant information on the project so that you are able to provide them with an accurate quote. Please note that once you have submitted a price for the project, it will be communicated directly to the homeowner and that you will not be able to revise it.
                     </p>
-                    <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                    {/* <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
                         The European Union’s General Data Protection Regulation (G.D.P.R.) goes into effect on May 25 and is meant
                         to ensure a common set of data rights in the European Union. It requires organizations to notify users as
                         soon as possible of high-risk data breaches that could personally affect them. <Link href="terms-and-conditions" className="text-appGreen hover:underline dark:text-appGreen">
                                     Read more terms and conditions
                                 </Link>
-                    </p>
+                    </p> */}
                 </div>
             </Modal.Body>
             <Modal.Footer className="flex flex-row justify-center items-center">
-                <Button size={"sm"} isProcessing={isProcessing} disabled={isProcessing ? true : false} theme={customsubmitTheme} color="appsuccess" onClick={() => processBid()}>Accept</Button>
-                <Button size={"sm"} color="gray" onClick={() => setOpenModal(false)}>
+                <Button size={"sm"} isProcessing={isProcessing} disabled={isProcessing ? true : false} theme={customsubmitTheme} color="appsuccess" onClick={() => processBid()}>Submit Bid</Button>
+                {/* <Button size={"sm"} color="gray" onClick={() => setOpenModal(false)}>
                     Decline
-                </Button>
+                </Button> */}
+                <p>Bid Price (ZAR)</p>
                 <div>
                     <div className="mb-2 block">
                         

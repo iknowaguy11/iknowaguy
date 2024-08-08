@@ -49,7 +49,7 @@ const AwardedToDetails = ({ contractorId, homeOwnerId, owner, profpic }: { contr
             <Avatar img={UserData[0]?.profileImage} rounded>
                 <div className="space-y-1 font-medium dark:text-white">
                     <div>{UserData[0]?.companyName == "" ? UserData[0]?.YourName : UserData[0]?.companyName}</div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400">{UserData[0]?.membership}</div>
+                    {/* <div className="text-sm text-gray-500 dark:text-gray-400">{UserData[0]?.membership}</div> */}
                 </div>
                 <div className="flex gap-2">
                 <Button onClick={() => setOpenModal(true)} color="success" size={"xs"} pill>
@@ -87,7 +87,7 @@ const AwardedToDetails = ({ contractorId, homeOwnerId, owner, profpic }: { contr
                                     {"Yes, Rate"}
                                 </Button>
                                 <Button color="gray" onClick={() => setOpenModal(false)}>
-                                    No, cancel
+                                    No, Cancel
                                 </Button>
                             </div>
                         </form>

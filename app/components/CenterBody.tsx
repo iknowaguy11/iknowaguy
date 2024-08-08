@@ -96,7 +96,7 @@ const CenterBody = () => {
                 }} className="text-appGreen">Find Contractors</a> by location and type of service you require and select one from our user-generated list.
 
                     Alternatively, you can <Link href={'/postproject'} className="text-appGreen">Post A Project</Link>. When posting a project, you will be required to provide specific information about the work you need done. Once you have done that, a maximum of 5 contractors will then submit quotes to you by email. The more detailed the information you provide about your project, the more accurately the contractors will be able to quote you. When the contractor you appoint has completed the work, you can share your experience with other users on I Know A Guy by rating and reviewing the contractor. </p>
-                    <p></p>
+                <p></p>
             </div>
             {/*section 2*/}
             <div className="flex flex-col justify-center items-center gap-2 p-6">
@@ -121,11 +121,11 @@ const CenterBody = () => {
             </div>
             {/*section 3*/}
             <div className="flex flex-col justify-center items-center gap-2 p-6">
-            {/* <Button onClick={() => router.push("/postproject")} theme={customsubmitTheme} size={"md"} type="submit" color="appsuccess">Post A Project</Button> */}
+                {/* <Button onClick={() => router.push("/postproject")} theme={customsubmitTheme} size={"md"} type="submit" color="appsuccess">Post A Project</Button> */}
                 <h1 className="text-4xl mt-3 mb-2">Current Projects</h1>
                 <div className="flex-row justify-between m-4 grid gap-3 sm:grid-cols-2 md:grid-cols-2 xm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 xs:grid-cols-1 justify-items-center mt-5 bg-slate-50 overflow-hidden p-2 rounded-md">
                     {
-                        isGettingProjects == false && UserProjects?.length > 0 ? UserProjects?.filter(p=>p.Status.toLocaleLowerCase()!=="closed").map((item, index) =>
+                        isGettingProjects == false && UserProjects?.length > 0 ? UserProjects?.filter(p => p.Status.toLocaleLowerCase() !== "closed").map((item, index) =>
                             Number(index) < 4 ?
                                 (
                                     <Card key={item.ProjectId}>
@@ -157,13 +157,13 @@ const CenterBody = () => {
                                 ) : null
                         ) : isGettingProjects && (ProjectsError == undefined || ProjectsError == null) ? <LoadingProjects /> : ProjectsError != undefined || ProjectsError != null ? <LoadingProjectError /> : null
                     }
-                    
+
                 </div>
                 <p id="jobSection"></p>
                 <div className="flex gap-1">
-                <Button onClick={() => CheckProjects()} theme={customsubmitTheme} color="appsuccess" size="md">See More Projects</Button>
-                {UserData[0]?.Id && UserData[0]?.membership?.trim().toLocaleLowerCase()=="homeowner" ? <Button onClick={() => CheckProjects()} theme={customsubmitTheme} color="appsuccess" size="md">Post A Project</Button> : null}
-                
+                    <Button onClick={() => CheckProjects()} theme={customsubmitTheme} color="appsuccess" size="md">See More Projects</Button>
+                    {UserData[0]?.Id && UserData[0]?.membership?.trim().toLocaleLowerCase() == "homeowner" ? <Button onClick={() => router.push('/postproject')} theme={customsubmitTheme} color="appsuccess" size="md">Post A Project</Button> : null}
+
                 </div>
                 {isNotification && <Alert color="warning" rounded>
                     <span className="font-medium">Info alert!</span> We Currently Have no Projects to Show/Advertise.
@@ -175,7 +175,7 @@ const CenterBody = () => {
                 <h1 className="text-4xl">Get Inspired</h1>
                 <p className="text-gray-600 ml-5 mr-5">Find your inspiration and make it a reality</p>
                 <div className="flex-row justify-between m-4 grid gap-3 sm:grid-cols-2 md:grid-cols-2 xm:grid-cols-1 lg:grid-cols-4 xl:grid-cols-4 xs:grid-cols-1 justify-items-center mt-5 bg-slate-50 overflow-hidden p-2 rounded-md">
-                    {inspirations?.map((item,index) => (
+                    {inspirations?.map((item, index) => (
                         <div
                             key={item.id} className="max-w-sm relative overflow-hidden rounded-md hover:cursor-pointer"
                         >
@@ -187,7 +187,7 @@ const CenterBody = () => {
                                 className="aspect-[4/3] object-cover"
                             />
                             <div className="flex-wrap absolute z-10 bottom-0 bg-opacity-75 bg-black p-3">
-                                <h5 id={index==4 ? 'inspirations':''} onClick={() => router.push("inspirations/" + item.sharelink)} className="text-2xl font-bold tracking-tight text-white dark:text-white hover:text-appGreen">
+                                <h5 id={index == 4 ? 'inspirations' : ''} onClick={() => router.push("inspirations/" + item.sharelink)} className="text-2xl font-bold tracking-tight text-white dark:text-white hover:text-appGreen">
                                     {item.tittle}
                                 </h5>
                                 <p className="font-normal text-stone-100 dark:text-stone-100">

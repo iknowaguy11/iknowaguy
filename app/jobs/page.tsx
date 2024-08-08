@@ -29,7 +29,7 @@ const Jobs = () => {
                 <div className="grid grid-cols-2 absolute z-10 bottom-3 flex-grow bg-opacity-75 bg-black p-3 w-full">
                     <div className="p-2 gap-3">
                         <h1 className="text-4xl font-bold tracking-tight text-white dark:text-white">FIND PROJECTS IN YOUR AREA AND START WORKING TODAY!</h1>
-                        <p className="text-sm tracking-tight text-white dark:text-white">To view homeowner detail, you will need to buy credits and place a bid on a project.</p>
+                        <p className="text-sm tracking-tight text-white dark:text-white">To view homeowner details, you will need to buy credits and place a bid on a project.</p>
                     </div>
                     <div className="h-full items-center justify-items-center">
                     
@@ -37,8 +37,12 @@ const Jobs = () => {
                     </div>
                 </div>
             </div>
-            <Button theme={customsubmitTheme} onClick={()=>router.replace("/purchase")} className="m-2" size={"md"} color="light">
-                <HiCurrencyDollar className="-ml-0.5 mr-2 h-4 w-4" />Buy Credits</Button>
+            {
+                UserData[0]?.membership?.trim()?.toLocaleLowerCase()=="contractor" || UserData[0]?.membership?.trim()?.toLocaleLowerCase()=="contractor" ?
+                <Button theme={customsubmitTheme} onClick={()=>router.replace("/purchase")} className="m-2" size={"md"} color="light">
+                <HiCurrencyDollar className="-ml-0.5 mr-2 h-4 w-4" />Buy Credits</Button> : null
+            }
+            
            { SearchText=="" ?
             UserProjects?.filter(p=>p.Status.toLocaleLowerCase()!=="closed").map((item)=>(
                 <Jobtemplate item={item} key={item.ProjectId} membership={UserData[0]?.membership} CurrUserKey={UserData[0]?.Id}/>

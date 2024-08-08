@@ -3,7 +3,7 @@ import Image from "next/image";
 import Landscape from '../../public/Landscape.jpg';
 import { Button, Checkbox, Label, TextInput, Textarea, Card, Select, Alert } from 'flowbite-react';
 import Link from 'next/link';
-import { customCheckboxTheme, customInputBoxTheme, customselectTheme, customsubmitTheme } from '../customTheme/appTheme';
+import { customCheckboxTheme, customInputBoxTheme, customsubmitTheme } from '../customTheme/appTheme';
 import { useFetchProvinces, useFetchServices, useFetchUserAccount } from "../_hooks/useFetch";
 import { FormEvent, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -14,6 +14,7 @@ import moment from 'moment';
 import { db } from "../DB/firebaseConnection";
 import { IActualTasks, ITowns } from "../Interfaces/appInterfaces";
 import Select_API from 'react-select';
+import { HiOutlineExclamationCircle } from 'react-icons/hi';
 
 const Postproject = () => {
     const router = useRouter();
@@ -108,7 +109,7 @@ const Postproject = () => {
         try {
 
             if (selectedServices == "" || Selectedsubarea == "" ||
-                Selectedsubarea=="Select A Sub Area" || selectedServices=="Select A Sub Area" ||
+                Selectedsubarea == "Select A Sub Area" || selectedServices == "Select A Sub Area" ||
                 budget == "") {
                 found = true;
                 Setprocessing(false);
@@ -206,6 +207,9 @@ const Postproject = () => {
                     <div className="p-2 gap-3 mt-4">
                         <h1 className="text-4xl font-bold tracking-tight text-white dark:text-white">NEEDING SOMETHING DONE IN YOUR HOME?</h1>
                         <p className="text-sm tracking-tight text-white dark:text-white">Describe what you need done in as much detail as possible and receive up to 5 quotes from trusted contractors in your area to meet your specific needs</p>
+                        <Alert color="warning" className="mt-2" rounded>
+                            <span className="font-medium"><HiOutlineExclamationCircle /></span> By submitting a project, you agree that service providers who wish to bid on your project may contact you to obtain additional information from you.
+                        </Alert>
                     </div>
                     <div className="h-full items-center justify-items-center">
 

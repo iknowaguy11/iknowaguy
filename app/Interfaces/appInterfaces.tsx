@@ -186,3 +186,14 @@ export const DefaultProjectObject =
     tncs: "",
 }
 
+interface Media{
+    category:string,
+    Filename:string,
+    url:string
+}
+export interface IMedia_Inspirations{
+    documentId:string,
+    category:string,
+    media:Media[]
+}
+

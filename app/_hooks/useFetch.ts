@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { DefaultProjectObject, IBidCredits, IProjects, IProvince, IReviews, IServices, IUser } from "../Interfaces/appInterfaces";
-import { collection,onSnapshot} from "firebase/firestore";
+import { DefaultProjectObject, IBidCredits, IMedia_Inspirations, IProjects, IProvince, IReviews, IServices, IUser } from "../Interfaces/appInterfaces";
+import { collection, getDocs, onSnapshot, query, where } from "firebase/firestore";
 import { db } from "../DB/firebaseConnection";
 
 export const useFetchProvinces = () => {
@@ -69,6 +69,41 @@ export const useFetchServices = () => {
     finally {
         return { ServiceData, serviceError, isLoadingservies };
     }
+}
+
+export const useFetchInspirations = (category: string) => {
+
+    const [InspirationData, SetInspiration] = useState<IMedia_Inspirations[]>([]);
+    const [DataError, SetDataError] = useState<unknown>(null);
+    const [isLoading, SetisLoading] = useState<boolean>(true);
+
+    try {
+        useEffect(() => {
+            const GetImages = async () => {
+                const q = query(collection(db, "Media_Inspirations"), where("category", "==", category.trim()));
+                const querySnapshot = await getDocs(q);
+                var tempData: IMedia_Inspirations[] = [];
+                SetisLoading(true);
+                querySnapshot.forEach((doc) => {
+                    tempData.push({
+                        documentId: doc.id,
+                        category: doc.data()?.category,
+                        media: doc.data()?.media
+                    })
+                    SetInspiration(tempData);
+                });
+                SetisLoading(false);
+            }
+            GetImages();
+        }, [category]);
+    } catch (error) {
+        SetisLoading(false);
+        SetDataError(error);
+    } finally {
+        
+        return { InspirationData, DataError, isLoading };
+    }
+
 }
 
 export const useFetchBidCredits = (Ukey: string) => {
@@ -148,12 +183,12 @@ const getUserData = async (ukey: string | null, SetUserData: Dispatch<SetStateAc
                             membership: doc.data()?.membership,
                             Services: doc.data()?.Services,
                             tncs: doc.data()?.tncs,
-                            YourName:doc.data()?.YourName,
-                            YourSurName:doc.data()?.YourSurName,
-                            RegistrationNo:doc.data()?.RegistrationNo,
-                            YourID:doc.data()?.YourID,
-                            formSubmitted:doc.data()?.formSubmitted,
-                            AdvertisingMsg:doc.data()?.AdvertisingMsg,
+                            YourName: doc.data()?.YourName,
+                            YourSurName: doc.data()?.YourSurName,
+                            RegistrationNo: doc.data()?.RegistrationNo,
+                            YourID: doc.data()?.YourID,
+                            formSubmitted: doc.data()?.formSubmitted,
+                            AdvertisingMsg: doc.data()?.AdvertisingMsg,
                         }
                     );
                 }
@@ -204,7 +239,7 @@ const getUserProject = async (ukey: string | null, SetUserProjects: Dispatch<Set
                             phone: doc.data()?.phone,
                             addrs: doc.data()?.addrs,
                             postTime: doc.data()?.postTime,
-                            AllcontactorKeys:doc.data()?.AllcontactorKeys,
+                            AllcontactorKeys: doc.data()?.AllcontactorKeys,
                             description: doc.data()?.description,
                             budget: doc.data()?.budget,
                             otherOffers: doc.data()?.otherOffers,
@@ -227,7 +262,7 @@ const getUserProject = async (ukey: string | null, SetUserProjects: Dispatch<Set
                             phone: doc.data()?.phone,
                             addrs: doc.data()?.addrs,
                             postTime: doc.data()?.postTime,
-                            AllcontactorKeys:doc.data()?.AllcontactorKeys,
+                            AllcontactorKeys: doc.data()?.AllcontactorKeys,
                             description: doc.data()?.description,
                             budget: doc.data()?.budget,
                             otherOffers: doc.data()?.otherOffers,
@@ -271,7 +306,7 @@ export const useFetchgetContractorProjects = (userKey: string) => {
                                     phone: doc.data()?.phone,
                                     addrs: doc.data()?.addrs,
                                     postTime: doc.data()?.postTime,
-                                    AllcontactorKeys:doc.data()?.AllcontactorKeys,
+                                    AllcontactorKeys: doc.data()?.AllcontactorKeys,
                                     description: doc.data()?.description,
                                     budget: doc.data()?.budget,
                                     otherOffers: doc.data()?.otherOffers,
@@ -323,7 +358,7 @@ export const useFetchSingleProjects = (projectId: string) => {
                                     phone: doc.data()?.phone,
                                     addrs: doc.data()?.addrs,
                                     postTime: doc.data()?.postTime,
-                                    AllcontactorKeys:doc.data()?.AllcontactorKeys,
+                                    AllcontactorKeys: doc.data()?.AllcontactorKeys,
                                     description: doc.data()?.description,
                                     budget: doc.data()?.budget,
                                     otherOffers: doc.data()?.otherOffers,
@@ -379,7 +414,7 @@ const getContractorData = async (Address: string | null, SetUserData: Dispatch<S
             tempData = [];
             snapshot?.docs?.forEach(async (doc) => {
                 if (doc.data()?.Address.trim().toLocaleLowerCase() === await Address?.trim().toLocaleLowerCase()
-                 && doc.data()?.membership==="contractor") {
+                    && doc.data()?.membership === "contractor") {
                     tempData.push(
                         {
                             Id: doc.id,
@@ -397,15 +432,15 @@ const getContractorData = async (Address: string | null, SetUserData: Dispatch<S
                             membership: doc.data()?.membership,
                             Services: doc.data()?.Services,
                             tncs: doc.data()?.tncs,
-                            YourName:doc.data()?.YourName,
-                            YourSurName:doc.data()?.YourSurName,
-                            RegistrationNo:doc.data()?.RegistrationNo,
-                            YourID:doc.data()?.YourID,
-                            formSubmitted:doc.data()?.formSubmitted,
-                            AdvertisingMsg:doc.data()?.AdvertisingMsg,
+                            YourName: doc.data()?.YourName,
+                            YourSurName: doc.data()?.YourSurName,
+                            RegistrationNo: doc.data()?.RegistrationNo,
+                            YourID: doc.data()?.YourID,
+                            formSubmitted: doc.data()?.formSubmitted,
+                            AdvertisingMsg: doc.data()?.AdvertisingMsg,
                         }
                     );
-                }else if(await Address?.trim().toLocaleLowerCase()=="all" && doc.data()?.membership==="contractor"){
+                } else if (await Address?.trim().toLocaleLowerCase() == "all" && doc.data()?.membership === "contractor") {
                     tempData.push(
                         {
                             Id: doc.id,
@@ -423,12 +458,12 @@ const getContractorData = async (Address: string | null, SetUserData: Dispatch<S
                             membership: doc.data()?.membership,
                             Services: doc.data()?.Services,
                             tncs: doc.data()?.tncs,
-                            YourName:doc.data()?.YourName,
-                            YourSurName:doc.data()?.YourSurName,
-                            RegistrationNo:doc.data()?.RegistrationNo,
-                            YourID:doc.data()?.YourID,
-                            formSubmitted:doc.data()?.formSubmitted,
-                            AdvertisingMsg:doc.data()?.AdvertisingMsg,
+                            YourName: doc.data()?.YourName,
+                            YourSurName: doc.data()?.YourSurName,
+                            RegistrationNo: doc.data()?.RegistrationNo,
+                            YourID: doc.data()?.YourID,
+                            formSubmitted: doc.data()?.formSubmitted,
+                            AdvertisingMsg: doc.data()?.AdvertisingMsg,
                         }
                     );
                 }
@@ -440,45 +475,45 @@ const getContractorData = async (Address: string | null, SetUserData: Dispatch<S
     }
 }
 
-export const useFetchReviews=(contractorId:string)=>{
-    
+export const useFetchReviews = (contractorId: string) => {
+
     const [userReviews, SetuserReviews] = useState<IReviews[]>([]);
     const [ReviewsError, SetReviewsError] = useState<unknown>(null);
     const [isGettingReviews, SetisGettingReviews] = useState<boolean>(false);
-        try {
-           
-            useEffect(() => {
-                const colRef = collection(db, "Ratings");
-                
-                const unsubscribe = onSnapshot(colRef, (snapshot) => {
-                    var tempData: IReviews[] = [];
-                    snapshot.forEach((doc) => {
-                        if(doc?.data()?.contractorId==contractorId){
-                            SetisGettingReviews(true);
-                            tempData.push({
-                                Id:doc.id,
-                                comment:doc?.data()?.comment,
-                                contractorId:doc?.data()?.contractorId,
-                                homeOwnerId:doc?.data()?.homeOwnerId,
-                                homeOwnerName:doc?.data()?.homeOwnerName,
-                                stars:doc?.data()?.stars,
-                                dateReviewed:doc?.data()?.dateRated,
-                                profilePicReviewer:doc?.data()?.profilePicReviewer
-                            })
-                        }
-                        
-                    });
-                    SetuserReviews(tempData);
-                    SetisGettingReviews(false);
+    try {
+
+        useEffect(() => {
+            const colRef = collection(db, "Ratings");
+
+            const unsubscribe = onSnapshot(colRef, (snapshot) => {
+                var tempData: IReviews[] = [];
+                snapshot.forEach((doc) => {
+                    if (doc?.data()?.contractorId == contractorId) {
+                        SetisGettingReviews(true);
+                        tempData.push({
+                            Id: doc.id,
+                            comment: doc?.data()?.comment,
+                            contractorId: doc?.data()?.contractorId,
+                            homeOwnerId: doc?.data()?.homeOwnerId,
+                            homeOwnerName: doc?.data()?.homeOwnerName,
+                            stars: doc?.data()?.stars,
+                            dateReviewed: doc?.data()?.dateRated,
+                            profilePicReviewer: doc?.data()?.profilePicReviewer
+                        })
+                    }
+
                 });
-                return () => unsubscribe();
-            },[]);
-        } catch (error:any) {
-            SetuserReviews([]);
-            SetisGettingReviews(false);
-            SetReviewsError(error.message);
-        }finally{
-            return { userReviews, ReviewsError, isGettingReviews };
-        }
-            
+                SetuserReviews(tempData);
+                SetisGettingReviews(false);
+            });
+            return () => unsubscribe();
+        }, []);
+    } catch (error: any) {
+        SetuserReviews([]);
+        SetisGettingReviews(false);
+        SetReviewsError(error.message);
+    } finally {
+        return { userReviews, ReviewsError, isGettingReviews };
+    }
+
 }
