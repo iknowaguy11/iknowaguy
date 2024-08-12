@@ -1,6 +1,5 @@
 import { customsubmitTheme } from "../customTheme/appTheme";
 import { Badge, Button } from "flowbite-react";
-import caponlycrop from '../../public/caponlycrop.png';
 import { HiOutlineBriefcase, HiCollection, HiLocationMarker, HiCash, HiClock } from 'react-icons/hi';
 import Image from "next/image";
 import { IProjects } from "../Interfaces/appInterfaces";

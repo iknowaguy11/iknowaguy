@@ -205,4 +205,9 @@ export interface IRecommendationDetails{
     recomName:string,
     relation:string
 }
+export interface IAwardproject{
+    project:string,
+    homeowmer:string,
+    phoneNum:string
+}
 

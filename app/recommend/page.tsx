@@ -13,7 +13,7 @@ import { failureMessage, successMessage } from '../notifications/successError';
 import { useRouter } from 'next/navigation';
 import { addDoc, collection } from 'firebase/firestore';
 import ReCAPTCHA from 'react-google-recaptcha';
-import { SendMailToContractor } from '../utils/SendEmail';
+import { SendMailToContractor, SendMailToIknowaguy } from '../utils/SendEmail';
 import Select_API from 'react-select';
 import { IActualTasks, IRecommendationDetails, ITowns } from '../Interfaces/appInterfaces';
 import validator from 'validator';
@@ -202,6 +202,7 @@ export default function Recommend() {
                             relation:HowdoYouKnowThem.trim() == "" ? "Preferred not to say" : HowdoYouKnowThem
                         }
                         SendMailToContractor(ContractorEmail, ContractorName,message, "I Know A Guy - Recommendation");
+                        SendMailToIknowaguy("submissions@iknowaguy.co.za", ContractorName,message, "I Know A Guy - Recommendation");
                         setVisibility(false);
                         setTimeout(VisibileRegisterButton, 4000);
                     }

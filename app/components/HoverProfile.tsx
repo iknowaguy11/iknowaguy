@@ -1,5 +1,5 @@
 import { Avatar, Button, Popover } from "flowbite-react";
-import { IOtherOffers, IProjects } from "../Interfaces/appInterfaces";
+import { IAwardproject, IOtherOffers, IProjects } from "../Interfaces/appInterfaces";
 import { SendMailAcceptence } from "../utils/SendEmail";
 import { failureMessage, successMessage } from "../notifications/successError";
 import { doc, setDoc } from "firebase/firestore";
@@ -21,7 +21,11 @@ export default function HoverProfile({ ofrs, project }: { ofrs: IOtherOffers, pr
     setDoc(doc(db, 'Projects', project?.ProjectId?.trim()), upt, { merge: true }).then(() => {
       SetIsprocessing(false);
       successMessage("Projects awarded to a contractor");
-      let msg = "You have been awarded a project to work on, find more details of the project under your profile on I Know A Guy";
+      let msg:IAwardproject ={
+        project:project.task,
+        homeowmer:project.owner,
+        phoneNum:project.phone
+    };
       SendMailAcceptence(ofrs?.companyEmail?.trim(), ofrs?.companyName !== null ? ofrs?.companyName : ofrs.firstName, msg, "Project Offer");
     }).catch((error: any) => {
       SetIsprocessing(false);
