@@ -19,21 +19,21 @@ const Jobs = () => {
     const { UserData} = useFetchUserAccount(ukey);
     const router=useRouter();
     return (
-        <div className="w-full gap-4 mt-16 mb-10">
+        <div className="w-full gap-4 mt-32 mb-10">
             <div className="relative w-full">
                 <Image
                     src={Landscape}
                     alt="inspiration"
                     className="bannerText aspect-[3/4] object-cover w-full" />
 
-                <div className="grid grid-cols-2 absolute z-10 bottom-3 flex-grow bg-opacity-75 bg-black p-3 w-full">
+                <div className="grid xl:grid-cols-2 lg:grid-rows-2 md:grid-rows-2 sm:grid-rows-2 absolute z-10 bottom-3 flex-grow bg-opacity-75 bg-black p-3 w-full">
                     <div className="p-2 gap-3">
                         <h1 className="text-4xl font-bold tracking-tight text-white dark:text-white">FIND PROJECTS IN YOUR AREA AND START WORKING TODAY!</h1>
                         <p className="text-sm tracking-tight text-white dark:text-white">To view homeowner details, you will need to buy credits and place a bid on a project.</p>
                     </div>
                     <div className="h-full items-center justify-items-center">
                     
-                    <TextInput onChange={(e)=>SetSerarchText(e.target.value.trim())} value={SearchText} icon={HiSearch} theme={customInputBoxTheme} color={"focuscolor"} id="Town" type="text" placeholder="search for a project" required shadow />
+                    <TextInput onChange={(e)=>SetSerarchText(e?.target?.value.trim())} value={SearchText} icon={HiSearch} theme={customInputBoxTheme} color={"focuscolor"} id="Town" type="text" placeholder="search for a project" required shadow />
                     </div>
                 </div>
             </div>
