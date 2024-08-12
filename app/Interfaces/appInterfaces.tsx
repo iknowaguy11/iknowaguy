@@ -196,4 +196,13 @@ export interface IMedia_Inspirations{
     category:string,
     media:Media[]
 }
+export interface IRecommendationDetails{
+    contName:string,
+    cmpName:string,
+    cmpPhone:string,
+    cmpAddr:string,
+    cmpService:string[],
+    recomName:string,
+    relation:string
+}
 

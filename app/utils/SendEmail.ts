@@ -1,9 +1,10 @@
-import axios from "axios"
+
+import { IRecommendationDetails } from "../Interfaces/appInterfaces";
 import { failureMessage, successMessage } from "../notifications/successError";
 
-export const SendMailToContractor = async (email: string, name: string, message: string, subject: string) => {
+export const SendMailToContractor = async (email: string, name: string, message: IRecommendationDetails, subject: string) => {
     try {
-        const response = await fetch('https://payfastpaymentvalidator.onrender.com/sendemail', {
+        const response = await fetch('https://payfastpaymentvalidator.onrender.com/sendemailrecommendation', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -15,7 +15,7 @@ import { addDoc, collection } from 'firebase/firestore';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { SendMailToContractor } from '../utils/SendEmail';
 import Select_API from 'react-select';
-import { IActualTasks, ITowns } from '../Interfaces/appInterfaces';
+import { IActualTasks, IRecommendationDetails, ITowns } from '../Interfaces/appInterfaces';
 import validator from 'validator';
 
 export default function Recommend() {
@@ -188,11 +188,20 @@ export default function Recommend() {
                     if (newDocRef?.id) {
                         Setprocessing(false);
                         successMessage("Sucessfully Recommended A Contractor");
-                        let msg = `You have been recommended by someone to join our Job(Project) Biding platform\n\nDetails of the Person are as follows:\n
-                        \nName: ${RecommederName.trim() == "" ? "Anonymous" : RecommederName}\n
-                        Described Relationship: ${HowdoYouKnowThem.trim() == "" ? "Preferred not to say" : HowdoYouKnowThem}\n
-                        Services Recommended For: ${selectedServices}\n`;
-                        SendMailToContractor(ContractorEmail, ContractorName, msg, "I Know A Guy - Recommendation");
+                        // let msg = `You have been recommended by someone to join our Job(Project) Biding platform\n\nDetails of the Person are as follows:\n
+                        // \nName: ${RecommederName.trim() == "" ? "Anonymous" : RecommederName}\n
+                        // Described Relationship: ${HowdoYouKnowThem.trim() == "" ? "Preferred not to say" : HowdoYouKnowThem}\n
+                        // Services Recommended For: ${selectedServices}\n`;
+                        let message:IRecommendationDetails={
+                            contName:ContractorName,
+                            cmpName:CompanyName.trim() !== "" ? CompanyName : "Skilled Individual",
+                            cmpPhone:ContractorPhone,
+                            cmpAddr:Selectedsubarea,
+                            cmpService:selectedServices,
+                            recomName:RecommederName.trim() == "" ? "Anonymous" : RecommederName,
+                            relation:HowdoYouKnowThem.trim() == "" ? "Preferred not to say" : HowdoYouKnowThem
+                        }
+                        SendMailToContractor(ContractorEmail, ContractorName,message, "I Know A Guy - Recommendation");
                         setVisibility(false);
                         setTimeout(VisibileRegisterButton, 4000);
                     }
