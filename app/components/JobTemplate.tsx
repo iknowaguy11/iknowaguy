@@ -13,13 +13,13 @@ const Jobtemplate = ({ item,membership,CurrUserKey }: { item: IProjects,membersh
         <div className="border w-full z-10 ml-2 mr-2 mt-6 mb-3 p-1 rounded-md shadow">
             <div className="gridCont grid">
                 <div className="imageNownwer">
-                    <Image
+                    {/* <Image
                         src={caponlycrop}
                         alt="company logo"
                         height={40}
                         width={40}
                         className="aspect-square rounded border mt-2 mb-2 mr-2"
-                    />
+                    /> */}
                     <div>
                         <h2 className="text-base font-semibold">{item?.owner?.replace(item?.owner?.substring(2,item?.owner?.length-1),"***")}</h2>
 
