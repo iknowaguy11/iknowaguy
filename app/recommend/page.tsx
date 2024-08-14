@@ -202,7 +202,7 @@ export default function Recommend() {
                         let messg:string=`Dear ${ContractorName},\nYou have been recommended for a project on I Know a Guy website\n
                         Recommendation Details\n
                         Contractor's Name : ${ContractorName}\n
-                        Company Name: ${message?.cmpName}\n
+                        Company Name: ${ContractorName}\n
                         Contractor's Phone No. : ${ContractorPhone}\n
                         Compay's Address : ${Selectedsubarea}\n
                         Company's Service(s) : ${selectedServices}\n
