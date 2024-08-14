@@ -199,16 +199,9 @@ export default function Recommend() {
                             recomName:RecommederName.trim() == "" ? "Anonymous" : RecommederName,
                             relation:HowdoYouKnowThem.trim() == "" ? "Preferred not to say" : HowdoYouKnowThem
                         }
-                        let messg=`Dear ${message?.contName},\nYou have been recommended for a project on I Know a Guy website\n
-                        \nRecommendation Details\n
-                        Contractor's Name : ${message?.contName}\n
-                        Company Name: ${message?.cmpName}\n
-                        Contractor's Phone No. : ${message?.cmpPhone}\n
-                        Compay's Address : ${message?.cmpAddr}\n
-                        Company's Service(s) : ${message?.cmpService}\n
-                        Recommending Person's Name : ${message?.recomName}\n
-                        Indicated Relationship : "${message?.relation}\n\n
-                        Kind Regards, IKAG Admin`;
+                        let messg="Dear "+message?.contName+ ",You have been recommended for a project on I Know a Guy website"+ message?.cmpPhone;
+
+                        
                         Sendsmscustomer(messg,ContractorPhone);
                         SendMailToContractor(ContractorEmail, ContractorName,message, "I Know A Guy - Recommendation");
                         //SendMailToIknowaguy("submissions@iknowaguy.co.za", ContractorName,message, "I Know A Guy - Recommendation");
