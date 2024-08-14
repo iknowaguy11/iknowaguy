@@ -185,8 +185,8 @@ export default function Recommend() {
                         Services: selectedServices,
                         tncs: tncs ? "agreed" : "not agreed but registered"
                     };
-                    //const newDocRef = await addDoc(myCollection, myDocumentData);
-                    if (1==1) {
+                    const newDocRef = await addDoc(myCollection, myDocumentData);
+                    if (newDocRef?.id) {
                         Setprocessing(false);
                         successMessage("Sucessfully Recommended A Contractor");
                         
@@ -199,9 +199,8 @@ export default function Recommend() {
                             recomName:RecommederName.trim() == "" ? "Anonymous" : RecommederName,
                             relation:HowdoYouKnowThem.trim() == "" ? "Preferred not to say" : HowdoYouKnowThem
                         }
-                        const messg: string = `Dear ${ContractorName},\nYou have been recommended for a project on I Know a Guy website\n
-                        Recommendation Details\n
-                        Contractor's Name : ${ContractorName}\n
+                        const relationship=HowdoYouKnowThem.trim() == "" ? "Preferred not to say" : HowdoYouKnowThem;
+                        const messg: string = `Dear ${ContractorName},\nYou have been recommended for a project on I Know a Guy website\nRecommendation Details\nContractor's Name : ${ContractorName}\nCompany Name: ${ContractorName}\nContractor's Phone No. : ${ContractorPhone}\nCompany's Address : ${Selectedsubarea}\nCompany's Service(s) : ${selectedServices}\nRecommending Person's Name : ${RecommederName.trim() == "" ? "Anonymous" : RecommederName}\nIndicated Relationship : "${relationship}"\n
                         Kind Regards, IKAG Admin`;
 
                         Sendsmscustomer(messg,ContractorPhone);
