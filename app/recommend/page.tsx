@@ -200,9 +200,9 @@ export default function Recommend() {
                             relation:HowdoYouKnowThem.trim() == "" ? "Preferred not to say" : HowdoYouKnowThem
                         }
                         const relationship=HowdoYouKnowThem.trim() == "" ? "Preferred not to say" : HowdoYouKnowThem;
-                        const messg: string = `Dear ${ContractorName},\n\nYou have been recommended for a project on I Know a Guy website\n\nRecommendation Details\nContractor's Name : ${ContractorName}\nCompany Name: ${ContractorName}\nContractor's Phone No. : ${ContractorPhone}\nCompany's Address : ${Selectedsubarea}\nCompany's Service(s) : ${selectedServices}\nRecommending Person's Name : ${RecommederName.trim() == "" ? "Anonymous" : RecommederName}\nIndicated Relationship : "${relationship}"\n\nKind Regards, IKAG Admin`;
+                        const messg: string = `Dear ${ContractorName},\n\nYou have been recommended for a project on I Know A Guy website.\n\nRecommendation Details\nContractor's Name : ${ContractorName}\nCompany Name: ${ContractorName}\nContractor's Phone No. : ${ContractorPhone}\nCompany's Address : ${Selectedsubarea}\nCompany's Service(s) : ${selectedServices}\nRecommending Person's Name : ${RecommederName.trim() == "" ? "Anonymous" : RecommederName}\nIndicated Relationship : "${relationship}"\n\nKind Regards, IKAG Admin`;
 
-                        Sendsmscustomer(messg,ContractorPhone);
+                        //Sendsmscustomer(messg,ContractorPhone);
                         //SendMailToContractor(ContractorEmail, ContractorName,message, "I Know A Guy - Recommendation");
                         //SendMailToIknowaguy("submissions@iknowaguy.co.za", ContractorName,message, "I Know A Guy - Recommendation");
                         setVisibility(false);
@@ -223,8 +223,6 @@ export default function Recommend() {
             failureMessage("Error submitting reCAPTCHA token");
         }
     }
-
-
     return (
         <div className='divRecommend flex justify-center items-center'>
             <div className='grid lg:grid-cols-2 xl:lg:grid-cols-2 md:lg:grid-cols-1 sm:lg:grid-cols-1 justify-center'>
