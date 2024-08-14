@@ -1,6 +1,6 @@
 import { failureMessage, successMessage } from "../notifications/successError";
 
-export const Sendsmscustomer=async(message:String,phone:string)=>{
+export const Sendsmscustomer=async(message:string,phone:string)=>{
     try {
         const response = await fetch('https://payfastpaymentvalidator.onrender.com/smscustomer', {
             method: 'POST',
