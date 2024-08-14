@@ -30,7 +30,7 @@ const PaymentButton = ({ price, Bidpackage }: { price: string, Bidpackage: strin
   };
 
   useEffect(()=>{
-    if(ukey!=="" && ukey!==null ){
+    if(ukey!=="" && ukey!==null && UserData[0]?.membership?.trim()?.toLocaleLowerCase()!=="homeowner"){
       SetIsLoggedIn(true);
       const myPassphrase = testingMode ? process?.env?.NEXT_PUBLIC_PASSPHRASE : process?.env?.NEXT_PUBLIC_PPASSPHRASE;
       myData["signature"] = generateSignature(myData, myPassphrase);
