@@ -199,7 +199,7 @@ export default function Recommend() {
                             recomName:RecommederName.trim() == "" ? "Anonymous" : RecommederName,
                             relation:HowdoYouKnowThem.trim() == "" ? "Preferred not to say" : HowdoYouKnowThem
                         }
-                        let messg: string = `Dear ${ContractorName},\nYou have been recommended for a project on I Know a Guy website\n
+                        const messg: string = `Dear ${ContractorName},\nYou have been recommended for a project on I Know a Guy website\n
                         Recommendation Details\n
                         Contractor's Name : ${ContractorName}\n
                         Company Name: ${ContractorName}\n
