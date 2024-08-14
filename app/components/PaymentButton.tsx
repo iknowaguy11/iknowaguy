@@ -30,7 +30,7 @@ const PaymentButton = ({ price, Bidpackage }: { price: string, Bidpackage: strin
   };
 
   useEffect(()=>{
-    if(ukey!=="" && ukey!==null && UserData[0]?.membership?.trim()?.toLocaleLowerCase()!=="homeowner"){
+    if(ukey!=="" && ukey!==null){
       SetIsLoggedIn(true);
       const myPassphrase = testingMode ? process?.env?.NEXT_PUBLIC_PASSPHRASE : process?.env?.NEXT_PUBLIC_PPASSPHRASE;
       myData["signature"] = generateSignature(myData, myPassphrase);
@@ -43,14 +43,14 @@ const PaymentButton = ({ price, Bidpackage }: { price: string, Bidpackage: strin
 
   return (
     <form action={`https://${pfHost}/eng/process`} method="post">
-      {IsLoggedIn ?
+      {IsLoggedIn && UserData[0]?.membership?.trim()?.toLocaleLowerCase()!=="homeowner" ?
        Object.keys(myData).map((key) => (
         <input key={key} name={key} type="hidden" value={myData[key]?.trim()} />
       )) :<Alert color="warning" rounded>
-      <span className="font-medium">Info alert!</span> LoggedIn account required to make a purchase.
+      <span className="font-medium">Info alert!</span> LoggedIn account of contractor or skilled individual required to make a purchase.
     </Alert>}
       {
-        IsLoggedIn ?
+        IsLoggedIn && UserData[0]?.membership?.trim()?.toLocaleLowerCase()!=="homeowner" ?
         <Button
         theme={customsubmitTheme}
         color="appsuccess"
