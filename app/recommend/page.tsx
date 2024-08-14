@@ -199,8 +199,7 @@ export default function Recommend() {
                             recomName:RecommederName.trim() == "" ? "Anonymous" : RecommederName,
                             relation:HowdoYouKnowThem.trim() == "" ? "Preferred not to say" : HowdoYouKnowThem
                         }
-                        let messg="Dear "+message?.contName+ ",You have been recommended for a project on I Know a Guy website"+ message?.cmpPhone;
-
+                        let messg:string="Dear ,You have been recommended for a project on I Know a Guy website";
                         
                         Sendsmscustomer(messg,ContractorPhone);
                         SendMailToContractor(ContractorEmail, ContractorName,message, "I Know A Guy - Recommendation");
