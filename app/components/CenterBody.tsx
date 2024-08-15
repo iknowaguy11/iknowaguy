@@ -166,7 +166,7 @@ const CenterBody = () => {
 
                 </div>
                 {isNotification && <Alert color="warning" rounded>
-                    <span className="font-medium">Info alert!</span> We Currently Have no Projects to Show/Advertise.
+                    <span className="font-medium">Info alert!</span> There are no current projects on our system at this time.
                 </Alert>}
 
             </div>

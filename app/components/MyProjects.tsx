@@ -1,6 +1,6 @@
-import { customsubmitTheme } from "../customTheme/appTheme";
-import { Badge, Button, Tooltip } from "flowbite-react";
-import { HiOutlineBriefcase, HiCollection, HiLocationMarker, HiCash, HiClock, HiOutlineTrash, HiOutlineCheckCircle } from 'react-icons/hi';
+
+import { Badge,Tooltip } from "flowbite-react";
+import { HiOutlineBriefcase, HiCollection, HiLocationMarker, HiCash, HiClock, HiOutlineTrash } from 'react-icons/hi';
 import Image from "next/image";
 import { IProjects } from "../Interfaces/appInterfaces";
 import { handlerDelete } from "../Controllers/DeleteDocument";

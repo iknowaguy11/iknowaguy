@@ -203,7 +203,8 @@ export interface IRecommendationDetails{
     cmpAddr:string,
     cmpService:string[],
     recomName:string,
-    relation:string
+    relation:string,
+    dateOfReccomnd:string
 }
 export interface IAwardproject{
     project:string,

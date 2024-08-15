@@ -47,7 +47,7 @@ const PaymentButton = ({ price, Bidpackage }: { price: string, Bidpackage: strin
        Object.keys(myData).map((key) => (
         <input key={key} name={key} type="hidden" value={myData[key]?.trim()} />
       )) :<Alert color="warning" rounded>
-      <span className="font-medium">Info alert!</span> LoggedIn account of contractor or skilled individual required to make a purchase.
+      <span className="font-medium">Info alert!</span> Only registered contractors are able to buy credits.
     </Alert>}
       {
         IsLoggedIn && UserData[0]?.membership?.trim()?.toLocaleLowerCase()!=="homeowner" ?

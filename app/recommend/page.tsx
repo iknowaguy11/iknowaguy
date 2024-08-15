@@ -18,6 +18,7 @@ import Select_API from 'react-select';
 import { IActualTasks, IRecommendationDetails, ITowns } from '../Interfaces/appInterfaces';
 import validator from 'validator';
 import { Sendsmscustomer } from '../utils/Sendsms';
+import moment from 'moment';
 
 export default function Recommend() {
     const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
@@ -183,7 +184,8 @@ export default function Recommend() {
                         Address: Selectedsubarea,
                         ContractorEmail: ContractorEmail.trim().toLocaleLowerCase(),
                         Services: selectedServices,
-                        tncs: tncs ? "agreed" : "not agreed but registered"
+                        tncs: tncs ? "agreed" : "not agreed but registered",
+                        dateOfReccomnd:moment().format('MMMM Do YYYY, h:mm a')
                     };
                     const newDocRef = await addDoc(myCollection, myDocumentData);
                     if (newDocRef?.id) {
@@ -197,7 +199,8 @@ export default function Recommend() {
                             cmpAddr:Selectedsubarea,
                             cmpService:selectedServices,
                             recomName:RecommederName.trim() == "" ? "Anonymous" : RecommederName,
-                            relation:HowdoYouKnowThem.trim() == "" ? "Preferred not to say" : HowdoYouKnowThem
+                            relation:HowdoYouKnowThem.trim() == "" ? "Preferred not to say" : HowdoYouKnowThem,
+                            dateOfReccomnd:moment().format('MMMM Do YYYY, h:mm a')
                         }
                         const relationship=HowdoYouKnowThem.trim() == "" ? "Preferred not to say" : HowdoYouKnowThem;
                         const messg: string = `Dear ${ContractorName},\n\nYou have been recommended for a project on I Know A Guy website.\n\nRecommendation Details\nContractor's Name : ${ContractorName}\nCompany Name: ${ContractorName}\nContractor's Phone No. : ${ContractorPhone}\nCompany's Address : ${Selectedsubarea}\nCompany's Service(s) : ${selectedServices}\nRecommending Person's Name : ${RecommederName.trim() == "" ? "Anonymous" : RecommederName}\nIndicated Relationship : "${relationship}"\n\nKind Regards, IKAG Admin`;
