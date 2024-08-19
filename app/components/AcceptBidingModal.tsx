@@ -10,8 +10,10 @@ import { v4 } from "uuid";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../DB/firebaseConnection";
 import { IOtherOffers } from "../Interfaces/appInterfaces";
-import Link from "next/link";
-export const AcceptBidingModal = ({ openModal, setOpenModal, ProjectIdBid, projectBudget, otherOffers, bestOffer, bstOffrId,AllcontactorKeys }: { openModal: boolean, setOpenModal: Dispatch<SetStateAction<boolean>>, ProjectIdBid: string, projectBudget: string, otherOffers: IOtherOffers[], bestOffer: string, bstOffrId: string,AllcontactorKeys:string[] }) => {
+import { SendSmsToHomeOwner } from "../utils/Sendsms";
+
+export const AcceptBidingModal = ({ openModal, setOpenModal, ProjectIdBid, projectBudget, otherOffers, bestOffer, bstOffrId,AllcontactorKeys,homeownerPhone,task,owner }: 
+    { openModal: boolean, setOpenModal: Dispatch<SetStateAction<boolean>>, ProjectIdBid: string, projectBudget: string, otherOffers: IOtherOffers[], bestOffer: string, bstOffrId: string,AllcontactorKeys:string[],homeownerPhone:string,task:string,owner:string }) => {
     const { ukey } = useContext(AppContext);
     const { UserData} = useFetchUserAccount(ukey);
     const [myOffer, setMyOffer] = useState<string>("0.00");
@@ -108,9 +110,12 @@ export const AcceptBidingModal = ({ openModal, setOpenModal, ProjectIdBid, proje
             
             setDoc(doc(db, 'Projects', ProjectIdBid.trim()), update, { merge: true }).then(async() => {
                 setIsProcessing(false);
-                setOpenModal(false);
-                setMyOffer("0.00");
+                
                 successMessage("Bid placed successful");
+                //send sms to homeowner or project owner
+                SendSmsToHomeOwner({task,owner,offerMade:myOffer,companyName: UserData[0]?.membership == "contractor" ? UserData[0]?.companyName : UserData[0]?.firstName},homeownerPhone);
+                setMyOffer("0.00");
+                setOpenModal(false);
                 await setDoc(doc(db, 'BidCredits', UserData[0]?.Id.trim()), updateBalance, { merge: true });
             });
         } catch (error) {
