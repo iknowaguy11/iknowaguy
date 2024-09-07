@@ -51,6 +51,7 @@ const ContractorRegistration = () => {
     const setResponseMessage = (msg: any) => responseMessage = msg;
     const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
     const [selectedServices, SetSelectedServices] = useState<string[]>([]);
+    const [selectedAddress, SetSelectedAddress] = useState<string[]>([]);//adress
 
     const AppendSelectedServices = useCallback((value: string) => {
         if (!selectedServices.includes(value) && selectedServices.length < 15) {
@@ -65,6 +66,21 @@ const ContractorRegistration = () => {
         const updatedServices = selectedServices.filter((item) => item !== value);
         SetSelectedServices(updatedServices);
     }
+
+    //address
+    const AppendSelectedAddress = useCallback((value: string) => {
+        if (!selectedAddress.includes(value) && selectedAddress.length < 15) {
+            const updatedSelectedAddress = [...selectedAddress, value];
+            SetSelectedAddress(updatedSelectedAddress);
+        }
+    }, [selectedAddress, SetSelectedAddress]);
+    
+    const RemoveAddress = (value: string) => {
+        const updatedAddress = selectedAddress.filter((item) => item !== value);
+        SetSelectedAddress(updatedAddress);
+    }
+
+    //
     const fileInputRef = useRef<any>(null);
 
     const handleImageChange = (e: any) => {
@@ -145,7 +161,7 @@ const ContractorRegistration = () => {
         let found: Boolean;
         found = false;
         if (companyName == "" || companyEmail == "" || RegistrationNo == "" || YourName == "" ||
-            phone == "" || Selectedsubarea == "" || image_url == "" || pdf_url == "" || imgfilename == "" || pdffilename == "") {
+            phone == "" || image_url == "" || pdf_url == "" || imgfilename == "" || pdffilename == "") {
             found = true;
             Setprocessing(false);
             failureMessage("Please correct your form entry.");
@@ -154,6 +170,11 @@ const ContractorRegistration = () => {
             found = true;
             Setprocessing(false);
             failureMessage("Please select at lest one or more service(s).");
+        }
+        if (selectedAddress.length == 0) {
+            found = true;
+            Setprocessing(false);
+            failureMessage("Please select at lest one or more Address.");
         }
         if (!tncs) {
             found = true;
@@ -167,7 +188,7 @@ const ContractorRegistration = () => {
         let found: Boolean;
         found = false;
         if (!validator.isEmail(companyEmail?.trim()) || companyEmail == "" || YourSurName == "" || YourName == "" ||
-        !validator.isMobilePhone(phone?.trim()) || phone == "" || Selectedsubarea == "" || Selectedsubarea=="Select A Sub Service" || image_url == "" || imgfilename == "" || YourID == "") {
+        !validator.isMobilePhone(phone?.trim()) || phone == ""  || image_url == "" || imgfilename == "" || YourID == "") {
             found = true;
             Setprocessing(false);
             failureMessage("Please correct your form entry.");
@@ -176,6 +197,11 @@ const ContractorRegistration = () => {
             found = true;
             Setprocessing(false);
             failureMessage("Please select at lest one or more service(s).");
+        }
+        if (selectedAddress.length == 0) {
+            found = true;
+            Setprocessing(false);
+            failureMessage("Please select at lest one or more Address.");
         }
         if (!tncs) {
             found = true;
@@ -195,8 +221,6 @@ const ContractorRegistration = () => {
         setcompanyName("");
         setcompanyEmail("");
         setPhone("");
-        //setAddress("");
-        SetSelectedsubarea("");
         SetYourID("");
         SetYourName("");
         SetYourSurName("");
@@ -230,7 +254,7 @@ const ContractorRegistration = () => {
                         companyName,
                         companyEmail: companyEmail.toLowerCase(),
                         phone,
-                        Address: Selectedsubarea,
+                        Address: selectedAddress,
                         YourName,
                         YourSurName,
                         RegistrationNo,
@@ -282,8 +306,6 @@ const ContractorRegistration = () => {
     }
 
     //
-
-    const [Selectedsubarea, SetSelectedsubarea] = useState<string>("");
     const [subcategory, SetSubcategory] = useState<IActualTasks[]>([]);
     const [subareas, SetSubareas] = useState<ITowns[]>([]);
     const [provCategory, setprovCategory] = useState<string | null | undefined>("Select Provice");
@@ -550,6 +572,7 @@ const ContractorRegistration = () => {
                         <div>
                             <div className="mb-2 block">
                                 <Label htmlFor="Town" value={formType ? "Your Address*" : "Compay's Address*"} />
+                                <span className="text-xs text-gray-600 font-light text-wrap"> Limit : 15</span>
                             </div>
 
                             <Select_API placeholder={"Select Provice"} options={provinces} onChange={(e) => SetProvince(e?.value)} />
@@ -559,7 +582,7 @@ const ContractorRegistration = () => {
 
                                 <Select
                                     className="rounded mt-1 mb-1"
-                                    onChange={(e) => SetSelectedsubarea(e?.target.value)}
+                                    onChange={(e) => e?.target.value !== "Select A Sub Area" ? AppendSelectedAddress(e?.target.value) : null}
                                 >
                                     <option>Select A Sub Area</option>
                                     {
@@ -569,6 +592,13 @@ const ContractorRegistration = () => {
                                     }
                                 </Select>
                             }
+                            <div className="grid grid-cols-3  gap-1 pt-2">
+                                {selectedAddress?.map((itm, index) => (
+                                    <div key={index} className='flex flex-wrap gap-2'>
+                                        <Badge onClick={() => RemoveAddress(itm)} className="w-fit hover:cursor-pointer bg-appGreen text-white" icon={HiTrash} color="success">{itm}</Badge>
+                                    </div>
+                                ))}
+                            </div>
 
                         </div>
                         <div>
