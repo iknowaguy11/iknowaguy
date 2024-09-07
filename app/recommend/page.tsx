@@ -38,11 +38,12 @@ export default function Recommend() {
 
     //
     //const [SelectedSubcategory, SetSelectedSubcategory] = useState<string>("");
-    const [Selectedsubarea, SetSelectedsubarea] = useState<string>("");
+    //const [Selectedsubarea, SetSelectedsubarea] = useState<string>("");
     const [subcategory, SetSubcategory] = useState<IActualTasks[]>([]);
     const [subareas, SetSubareas] = useState<ITowns[]>([]);
     const [provCategory, setprovCategory] = useState<string | null | undefined>("Select Provice");
     const [ServiceCategory, setServiceCategory] = useState<string | null | undefined>("Select Service");
+    const [selectedAddress, SetSelectedAddress] = useState<string[]>([]);//adress
 
     const Services = [
         { value: "PLUMBING", label: "PLUMBING" },
@@ -107,6 +108,19 @@ export default function Recommend() {
         const updatedServices = selectedServices.filter((item) => item !== value);
         SetSelectedServices(updatedServices);
     }
+     //address
+     const AppendSelectedAddress = useCallback((value: string) => {
+        if (!selectedAddress.includes(value) && selectedAddress.length < 15) {
+            const updatedSelectedAddress = [...selectedAddress, value];
+            SetSelectedAddress(updatedSelectedAddress);
+        }
+    }, [selectedAddress, SetSelectedAddress]);
+    
+    const RemoveAddress = (value: string) => {
+        const updatedAddress = selectedAddress.filter((item) => item !== value);
+        SetSelectedAddress(updatedAddress);
+    }
+    //
     const handleRecaptchaChange = (token: string | null) => {
         setRecaptchaToken(token);
     };
@@ -122,7 +136,6 @@ export default function Recommend() {
         SetContractorPhone("");
         SetCompanyName("");
         SetRecommederName("");
-        SetSelectedsubarea("");
         SetContractorEmail("");
         SetSelectedServices([]);
         setTnCs(false);
@@ -140,7 +153,7 @@ export default function Recommend() {
         let found: Boolean;
         found = false;
         if (!validator.isEmail(ContractorEmail?.trim()) || ContractorEmail == "" ||
-            ContractorName == "" || !validator.isMobilePhone(ContractorPhone?.trim()) || ContractorPhone == "" || Selectedsubarea=="" || HowdoYouKnowThem == "" || HowdoYouKnowThem == "---"
+            ContractorName == "" || !validator.isMobilePhone(ContractorPhone?.trim()) || ContractorPhone == "" || HowdoYouKnowThem == "" || HowdoYouKnowThem == "---"
         ) {
             found = true;
             Setprocessing(false);
@@ -181,7 +194,7 @@ export default function Recommend() {
                         CompanyName: CompanyName.trim() !== "" ? CompanyName : "Skilled Individual",
                         HowdoYouKnowThem: (HowdoYouKnowThem.trim() == "" ? "Preferred not to say" : HowdoYouKnowThem),
                         RecommederName: (RecommederName.trim() == "" ? "Anonymous" : RecommederName),
-                        Address: Selectedsubarea,
+                        Address: selectedAddress,
                         ContractorEmail: ContractorEmail.trim().toLocaleLowerCase(),
                         Services: selectedServices,
                         tncs: tncs ? "agreed" : "not agreed but registered",
@@ -196,14 +209,14 @@ export default function Recommend() {
                             contName:ContractorName,
                             cmpName:CompanyName.trim() !== "" ? CompanyName : "Skilled Individual",
                             cmpPhone:ContractorPhone,
-                            cmpAddr:Selectedsubarea,
+                            cmpAddr:selectedAddress,
                             cmpService:selectedServices,
                             recomName:RecommederName.trim() == "" ? "Anonymous" : RecommederName,
                             relation:HowdoYouKnowThem.trim() == "" ? "Preferred not to say" : HowdoYouKnowThem,
                             dateOfReccomnd:moment().format('MMMM Do YYYY, h:mm a')
                         }
                         const relationship=HowdoYouKnowThem.trim() == "" ? "Preferred not to say" : HowdoYouKnowThem;
-                        const messg: string = `Dear ${ContractorName},\n\nYou have been recommended for a project on I Know A Guy website.\n\nRecommendation Details\nContractor's Name : ${ContractorName}\nCompany Name: ${ContractorName}\nContractor's Phone No. : ${ContractorPhone}\nCompany's Address : ${Selectedsubarea}\nCompany's Service(s) : ${selectedServices}\nRecommending Person's Name : ${RecommederName.trim() == "" ? "Anonymous" : RecommederName}\nIndicated Relationship : "${relationship}"\n\nKind Regards,\n IKAG Admin`;
+                        const messg: string = `Dear ${ContractorName},\n\nYou have been recommended for a project on I Know A Guy website.\n\nRecommendation Details\nContractor's Name : ${ContractorName}\nCompany Name: ${ContractorName}\nContractor's Phone No. : ${ContractorPhone}\nCompany's Address : ${selectedAddress}\nCompany's Service(s) : ${selectedServices}\nRecommending Person's Name : ${RecommederName.trim() == "" ? "Anonymous" : RecommederName}\nIndicated Relationship : "${relationship}"\n\nKind Regards,\n IKAG Admin`;
 
                         Sendsmscustomer(messg,ContractorPhone);
                         SendMailToContractor(ContractorEmail, ContractorName,message, "I Know A Guy - Recommendation");
@@ -262,6 +275,7 @@ export default function Recommend() {
                         <div>
                             <div className="mb-2 block">
                                 <Label htmlFor="Town" value="Compay's Address *" />
+                                <span className="text-xs text-gray-600 font-light text-wrap"> Limit : 15</span>
                             </div>
                             <Select_API placeholder={"Select Provice"} options={provinces} onChange={(e) => SetProvince(e?.value)} />
 
@@ -270,7 +284,7 @@ export default function Recommend() {
 
                                 <Select
                                     className="max-w-md rounded mt-1 mb-1"
-                                    onChange={(e) => SetSelectedsubarea(e?.target.value)}
+                                    onChange={(e) => e?.target.value !== "Select A Sub Area" ? AppendSelectedAddress(e?.target.value) : null}
                                 >
                                     <option>Select A Sub Area</option>
                                     {
@@ -280,6 +294,13 @@ export default function Recommend() {
                                     }
                                 </Select>
                             }
+                            <div className="grid grid-cols-3  gap-1 pt-2">
+                                {selectedAddress?.map((itm, index) => (
+                                    <div key={index} className='flex flex-wrap gap-2'>
+                                        <Badge onClick={() => RemoveAddress(itm)} className="w-fit hover:cursor-pointer bg-appGreen text-white" icon={HiTrash} color="success">{itm}</Badge>
+                                    </div>
+                                ))}
+                            </div>
 
                         </div>
 

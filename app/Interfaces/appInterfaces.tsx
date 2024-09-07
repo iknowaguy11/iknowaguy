@@ -200,7 +200,7 @@ export interface IRecommendationDetails{
     contName:string,
     cmpName:string,
     cmpPhone:string,
-    cmpAddr:string,
+    cmpAddr:string[],
     cmpService:string[],
     recomName:string,
     relation:string,
