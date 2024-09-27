@@ -15,7 +15,7 @@ export interface IOtherOffers{
     LastName: string,
     phone: string,
     profileImage: string,
-    Address: string,
+    Address: string | string[],
     membership: string,
     CompanyKey:string,
     OfferMade:string,
