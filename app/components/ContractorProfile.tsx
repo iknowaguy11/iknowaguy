@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import certificatePng from '../../public/certificate.png';
 import iknown from '../../public/logoinknow.png';
 import MyBids from "../components/MyBids";
-import { customInputBoxTheme, customsubmitTheme, customselectTheme } from '../customTheme/appTheme';
+import { customInputBoxTheme, customsubmitTheme, customTheme } from '../customTheme/appTheme';
 import Image from "next/image";
 import Link from "next/link";
 import { HiTrash, HiShoppingCart } from 'react-icons/hi';
@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { updateProfile } from "../Controllers/UpdateProfile";
 import Select_API from 'react-select';
 import validator from 'validator';
+import { HiPhone, HiHome, HiBriefcase, HiMail, HiShare } from 'react-icons/hi';
 
 const ContractorProfile = ({ UserData }: { UserData: IUser[] }) => {
     const { ProvinceData, DataError, isLoading } = useFetchProvinces();
@@ -91,7 +92,7 @@ const ContractorProfile = ({ UserData }: { UserData: IUser[] }) => {
 
     //
 
-    const [Selectedsubarea, SetSelectedsubarea] = useState<string>(UserData[0]?.Address);
+    const [Selectedsubarea, SetSelectedsubarea] = useState<string | string[]>(UserData[0]?.Address);
     const [subcategory, SetSubcategory] = useState<IActualTasks[]>([]);
     const [subareas, SetSubareas] = useState<ITowns[]>([]);
     const [provCategory, setprovCategory] = useState<string | null | undefined>("Select Provice");
@@ -134,6 +135,7 @@ const ContractorProfile = ({ UserData }: { UserData: IUser[] }) => {
         }
     }
 
+    //dead code... ignore
     const SetProvince = (category: string | null | undefined) => {
         setprovCategory(category);
         if (category !== "" && category !== "Select Provice") {
@@ -152,7 +154,7 @@ const ContractorProfile = ({ UserData }: { UserData: IUser[] }) => {
         <>
             <div className="h-full items-center justify-items-center">
                 <Card className='flex max-w-lg flex-grow rounded mt-3'>
-                    <form onSubmit={(e) => updateProfile(e, router, { Address: (Selectedsubarea == "Select A Sub Area" || Selectedsubarea == "" ? UserData[0]?.Address : Selectedsubarea), phone:(validator.isMobilePhone(phone?.trim()) ? phone  : UserData[0]?.phone) , AdvertisingMsg: Bio, Services: [...new Set([...selectedServices, ...HistoryServices])] }, UserData[0]?.Id, Imageupload, SetIsprocessing)} className="flex max-w-lg flex-col gap-4 flex-grow">
+                    <form onSubmit={(e) => updateProfile(e, router, { Address: (Selectedsubarea == "Select A Sub Area" || Selectedsubarea == "" ? UserData[0]?.Address : Selectedsubarea), phone: (validator.isMobilePhone(phone?.trim()) ? phone : UserData[0]?.phone), AdvertisingMsg: Bio, Services: [...new Set([...selectedServices, ...HistoryServices])] }, UserData[0]?.Id, Imageupload, SetIsprocessing)} className="flex max-w-lg flex-col gap-4 flex-grow">
                         <div className="mb-2 block">
                             {/* {
                                 UserData[0]?.profileImage &&
@@ -199,6 +201,7 @@ const ContractorProfile = ({ UserData }: { UserData: IUser[] }) => {
                         <div>
                             <div className="mb-2 block">
                                 <Label htmlFor="contemail" value="Company Name *" />
+                                <p className="text-xs text-gray-500">{companyName || UserData[0]?.companyName}</p>
                             </div>
                             <Tooltip content="Admin Attention is Requires" style="dark">
                                 <TextInput theme={customInputBoxTheme} color={"focuscolor"} id="contemail" type="text" readOnly value={companyName || UserData[0]?.companyName} disabled placeholder="Company Name" required shadow />
@@ -216,33 +219,33 @@ const ContractorProfile = ({ UserData }: { UserData: IUser[] }) => {
 
                         <div>
                             <div className="mb-2 block">
-                                <Label htmlFor="Town" value="Project's Address *" />
-                                <p className="text-xs text-gray-500">Please choose a valid address, project(s) commonly get rejected due to invalid address</p>
+                                <Label htmlFor="Town" value="Address *" />
+                                <p className="text-xs text-gray-500">Home owners use this Address to search for you</p>
                             </div>
-                            <TextInput theme={customInputBoxTheme} value={Selectedsubarea || UserData[0]?.Address} readOnly color={"focuscolor"} id="addr" disabled type="text" placeholder="The address where the work will be done" required shadow />
+                            {
+                                Array.isArray(UserData[0]?.Address) ?
+                                    <>
+                                        <ul>
+                                            {
+                                                UserData[0]?.Address?.map((adr, index) => (
+                                                    <div key={index} className='flex mb-1 mt-1'>
+                                                        <Badge theme={customTheme} color={"success"} icon={HiHome}></Badge>
+                                                        <li className='text-sm'> {adr}</li>
+                                                    </div>
+                                                ))
+                                            } </ul>
+                                    </> :
+                                    <div className='flex mb-1 mt-1 w-fit'>
+                                        <Badge className="hover:cursor-not-allowed" theme={customTheme} color={"success"} icon={HiHome}></Badge>
+                                        <p className='text-sm'> {UserData[0]?.Address}</p>
+                                    </div>
+
+                            }
                         </div>
-
-                        <Select_API placeholder={"Select Provice"} options={provinces} onChange={(e) => SetProvince(e?.value)} />
-
-                        {
-                            subareas.length > 0 &&
-
-                            <Select
-                                className="rounded mt-1 mb-1"
-                                onChange={(e) => SetSelectedsubarea(e?.target.value)}
-                            >
-                                <option>Select A Sub Area</option>
-                                {
-                                    subareas?.map((item, index) => (
-                                        <option key={item?.area}>{item?.area}</option>
-                                    ))
-                                }
-                            </Select>
-                        }
 
                         <div>
                             <div className="mb-2 block">
-                                <Label htmlFor="phone" value={"Company Phone No as recorded : " + UserData[0]?.phone} />
+                                <Label htmlFor="phone" value={"Company Phone No. as recorded : " + UserData[0]?.phone} />
                             </div>
                             <TextInput theme={customInputBoxTheme} onChange={(e) => setPhone(e.target.value)} value={phone} color={"focuscolor"} id="addr" type="tel" placeholder="The company's phone numbers" maxLength={10} required shadow />
                         </div>
@@ -278,7 +281,6 @@ const ContractorProfile = ({ UserData }: { UserData: IUser[] }) => {
 
                             </div>
                         </div>
-
 
                         <Select_API placeholder={"Select Service"} options={Services} onChange={(e) => SetSelectedService(e?.value)} />
 

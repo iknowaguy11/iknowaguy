@@ -82,7 +82,7 @@ export function Slider() {
         if ((ServiceCategory?.toLocaleLowerCase().trim() != "select service") && (SelectedSubcategory?.toLocaleLowerCase().trim() != "" && SelectedSubcategory?.toLocaleLowerCase().trim() !== "Select A Sub Area" && SelectedSubcategory?.toLocaleLowerCase().trim() !== "Select A Sub Service")
             && (provCategory?.toLocaleLowerCase().trim() != "select your location") && (Selectedsubarea?.toLocaleLowerCase().trim() != "" && SelectedSubcategory?.toLocaleLowerCase().trim() !== "Select A Sub Area" && SelectedSubcategory?.toLocaleLowerCase().trim() !== "Select A Sub Service")) {
             router.push(`/contractors/${ServiceCategory?.toLocaleLowerCase().trim()}/${SelectedSubcategory?.toLocaleLowerCase().trim()}/
-            ${provCategory?.toLocaleLowerCase().trim()}/${Selectedsubarea?.toLocaleLowerCase().trim()}`);
+            ${provCategory?.toLocaleLowerCase().trim()}/${Selectedsubarea?.trim()}`);
         }
     }
     return (

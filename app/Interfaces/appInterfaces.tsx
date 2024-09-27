@@ -112,7 +112,7 @@ export interface IUser {
     firstName: string,
     LastName: string,
     phone: string,
-    Address: string,
+    Address: string[],
     profileImage: string,
     certificate: string,
     imgfilename: string,

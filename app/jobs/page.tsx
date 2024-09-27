@@ -33,7 +33,7 @@ const Jobs = () => {
                     </div>
                     <div className="h-full items-center justify-items-center">
                     
-                    <TextInput onChange={(e)=>SetSerarchText(e?.target?.value.trim())} value={SearchText} icon={HiSearch} theme={customInputBoxTheme} color={"focuscolor"} id="Town" type="text" placeholder="search for a project" required shadow />
+                    <TextInput onChange={(e)=>SetSerarchText(e?.target?.value.trim())} value={SearchText} icon={HiSearch} theme={customInputBoxTheme} color={"focuscolor"} id="Town" type="text" placeholder="search for an area..." required shadow />
                     </div>
                 </div>
             </div>
@@ -47,7 +47,7 @@ const Jobs = () => {
             UserProjects?.filter(p=>p.Status.toLocaleLowerCase()!=="closed").map((item)=>(
                 <Jobtemplate item={item} key={item.ProjectId} membership={UserData[0]?.membership} CurrUserKey={UserData[0]?.Id}/>
             )) : SearchText !== "" && UserProjects.filter(p=>p.Status.toLocaleLowerCase()!=="closed").filter((value) => {
-                return SearchText.toLocaleLowerCase() === '' ? value : value.task.toLowerCase().includes(SearchText.toLocaleLowerCase());
+                return SearchText.toLocaleLowerCase() === '' ? value : value.addrs.toLowerCase().includes(SearchText.toLocaleLowerCase());
             }).map((itm)=>(
                 <Jobtemplate item={itm} key={itm.ProjectId} membership={UserData[0]?.membership} CurrUserKey={UserData[0]?.Id}/>
             ))

@@ -28,7 +28,7 @@ const MoreDetails = ({params}:{params:{slug:string}}) => {
                 <div className="grid grid-cols-2 absolute z-10 bottom-3 flex-grow bg-opacity-75 bg-black p-3 w-full">
                     <div className="p-2 gap-3">
                         <h1 className="text-4xl font-bold tracking-tight text-white dark:text-white">GET HIRED TODAY</h1>
-                        <p className="text-sm tracking-tight text-white dark:text-white">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry`s standard dummy text ever since the 1500s,</p>
+                        <p className="text-sm tracking-tight text-white dark:text-white">To view homeowner details, you will need to buy credits and place a bid on a project.</p>
                     </div>
                     <div className="h-full items-center justify-items-center">
                     

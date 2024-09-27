@@ -50,7 +50,7 @@ export function NewContractorTemplate({ contractors, params, isGettingAccount, a
                                     </Button.Group>
                                 </div>
 
-                                <div className='gap-1'>
+                                <div className='gap-1 ml-2'>
                                     <div className='flex items-center gap-1 m-2'>
                                         <Badge theme={customTheme} color={"success"} icon={HiPhone}></Badge>
                                         <p className='text-sm'>{item.phone}</p>
@@ -59,10 +59,30 @@ export function NewContractorTemplate({ contractors, params, isGettingAccount, a
                                         <Badge theme={customTheme} color={"success"} icon={HiMail}></Badge>
                                         <p className='text-sm'> {item.companyEmail}</p>
                                     </div>
-
+                                    <Badge className='w-fit' theme={customTheme} color={"success"} icon={HiHome}>Address located</Badge>
                                     <div className='flex items-center gap-1 m-1'>
-                                        <Badge theme={customTheme} color={"success"} icon={HiHome}></Badge>
-                                        <p className='text-sm'> {item.Address}</p>
+                                    
+                                        {
+
+                                            Array.isArray(item?.Address) ?
+                                                <>          
+                                                    <ul>
+                                                        {
+                                                            item?.Address?.map((adr,index) => (
+                                                                <div key={index} className='flex mb-1'>
+                                                                <Badge theme={customTheme} color={"success"} icon={HiHome}></Badge>
+                                                                <li className='text-sm'> {adr}</li>
+                                                                </div>
+                                                            ))
+                                                        } </ul>
+                                                </> :
+                                                <>
+                                                    <Badge theme={customTheme} color={"success"} icon={HiHome}></Badge>
+                                                    <p className='text-sm'> {item.Address}</p>
+                                                </>
+
+                                        }
+
                                     </div>
                                     <div className='flex gap-2 mb-2'><Button onClick={() => router?.push('/profile/' + item?.Id)}
                                         size="xs"
@@ -103,7 +123,6 @@ export function NewContractorTemplate({ contractors, params, isGettingAccount, a
             </div>
         );
     } else {
-
         return (
             <div>
                 {
@@ -136,9 +155,31 @@ export function NewContractorTemplate({ contractors, params, isGettingAccount, a
                                         <p className='text-sm'> {item.companyEmail}</p>
                                     </div>
 
+                                    <Badge className='w-fit' theme={customTheme} color={"success"} icon={HiHome}>Address located</Badge>
                                     <div className='flex items-center gap-1 m-1'>
-                                        <Badge theme={customTheme} color={"success"} icon={HiHome}></Badge>
-                                        <p className='text-sm'> {item.Address}</p>
+                                    
+                                        {
+
+                                            Array.isArray(item?.Address) ?
+                                                <>
+                                                    
+                                                    <ul>
+                                                        {
+                                                            item?.Address?.map((adr,index) => (
+                                                                <div key={index} className='flex mb-1'>
+                                                                <Badge theme={customTheme} color={"success"} icon={HiHome}></Badge>
+                                                                <li className='text-sm'> {adr}</li>
+                                                                </div>
+                                                            ))
+                                                        } </ul>
+                                                </> :
+                                                <>
+                                                    <Badge theme={customTheme} color={"success"} icon={HiHome}></Badge>
+                                                    <p className='text-sm'> {item.Address}</p>
+                                                </>
+
+                                        }
+
                                     </div>
                                     <div className='flex gap-2 mb-2'><Button onClick={() => router?.push('/profile/' + item?.Id)}
                                         size="xs"
@@ -169,6 +210,7 @@ export function NewContractorTemplate({ contractors, params, isGettingAccount, a
                                         alt='company'
                                         height={120}
                                         width={100}
+                                        priority
                                     />
                                 </div>
 

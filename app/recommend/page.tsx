@@ -138,6 +138,7 @@ export default function Recommend() {
         SetRecommederName("");
         SetContractorEmail("");
         SetSelectedServices([]);
+        SetSelectedAddress([]);
         setTnCs(false);
         Setprocessing(false);
         setVisibility(true);
@@ -163,6 +164,11 @@ export default function Recommend() {
             found = true;
             Setprocessing(false);
             failureMessage("Please select at lest one or more service(s).");
+        }
+        if (selectedAddress.length == 0) {
+            found = true;
+            Setprocessing(false);
+            failureMessage("Please select at lest one or more Address.");
         }
         if (!tncs) {
             found = true;

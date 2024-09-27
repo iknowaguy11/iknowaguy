@@ -38,9 +38,29 @@ const ProfileContacts = ({ item }: { item: IUser }) => {
                         <p className='text-sm'> {item?.companyEmail}</p>
                     </div>
 
+                    <Badge className='w-fit ml-1' theme={customTheme} color={"success"} icon={HiHome}>Address located</Badge>
                     <div className='flex items-center gap-1 m-1'>
-                        <Badge theme={customTheme} color={"success"} icon={HiHome}></Badge>
-                        <p className='text-sm'> {item?.Address}</p>
+
+                        {
+                            Array.isArray(item?.Address) ?
+                                <>
+                                    <ul>
+                                        {
+                                            item?.Address?.map((adr, index) => (
+                                                <div key={index} className='flex mb-1'>
+                                                    <Badge theme={customTheme} color={"success"} icon={HiHome}></Badge>
+                                                    <li className='text-sm'> {adr}</li>
+                                                </div>
+                                            ))
+                                        } </ul>
+                                </> :
+                                <div className='flex mb-1 mt-1 w-fit'>
+                                    <Badge theme={customTheme} color={"success"} icon={HiHome}></Badge>
+                                    <p className='text-sm'> {item?.Address}</p>
+                                </div>
+
+                        }
+
                     </div>
                     <div className='flex gap-2 mb-2 ml-1'>
                         <Tooltip content="copy profile">

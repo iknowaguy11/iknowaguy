@@ -407,13 +407,44 @@ export const useFetchContractorsAccount = (prov: string | null) => {
 
 const getContractorData = async (Address: string | null, SetUserData: Dispatch<SetStateAction<IUser[]>>, SetaccountError: Dispatch<SetStateAction<unknown>>, SetisGettingAccount: Dispatch<SetStateAction<boolean>>) => {
     if (await Address !== null) {
+        
         const colRef = collection(db, "Users");
         var tempData: IUser[] = [];
         SetisGettingAccount(true);
         const unsubscribe = onSnapshot(colRef, (snapshot) => {
             tempData = [];
             snapshot?.docs?.forEach(async (doc) => {
-                if (doc.data()?.Address.trim().toLocaleLowerCase() === await Address?.trim().toLocaleLowerCase()
+                if(await Address?.trim().toLocaleLowerCase() !== "all" && Array.isArray(doc.data()?.Address)){
+                    if (doc.data()?.Address?.includes(await Address?.trim())
+                        && doc.data()?.membership === "contractor") {
+                        tempData.push(
+                            {
+                                Id: doc.id,
+                                companyName: doc.data()?.companyName,
+                                companyEmail: doc.data()?.companyEmail,
+                                phone: doc.data()?.phone,
+                                LastName: doc.data()?.LastName,
+                                firstName: doc.data()?.firstName,
+                                Address: doc.data()?.Address,
+                                profileImage: doc.data()?.profileImage,
+                                certificate: doc.data()?.certificate,
+                                imgfilename: doc.data()?.imgfilename,
+                                pdffilename: doc.data()?.pdffilename,
+                                isactive: doc.data()?.isactive,
+                                membership: doc.data()?.membership,
+                                Services: doc.data()?.Services,
+                                tncs: doc.data()?.tncs,
+                                YourName: doc.data()?.YourName,
+                                YourSurName: doc.data()?.YourSurName,
+                                RegistrationNo: doc.data()?.RegistrationNo,
+                                YourID: doc.data()?.YourID,
+                                formSubmitted: doc.data()?.formSubmitted,
+                                AdvertisingMsg: doc.data()?.AdvertisingMsg,
+                            }
+                        );
+                    }
+                }else
+                if ( await Address?.trim().toLocaleLowerCase() !== "all" && doc.data()?.Address?.trim().toLocaleLowerCase()===await Address?.trim().toLocaleLowerCase() 
                     && doc.data()?.membership === "contractor") {
                     tempData.push(
                         {
@@ -441,6 +472,7 @@ const getContractorData = async (Address: string | null, SetUserData: Dispatch<S
                         }
                     );
                 } else if (await Address?.trim().toLocaleLowerCase() == "all" && doc.data()?.membership === "contractor") {
+                    
                     tempData.push(
                         {
                             Id: doc.id,

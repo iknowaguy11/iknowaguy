@@ -19,7 +19,6 @@ const contractors: Icontractors[] = [
 ];
 const Contractors = ({ params }: { params: { slug: string[] } }) => {
     const { UserData, accountError, isGettingAccount } = useFetchContractorsAccount(decodeURIComponent(params.slug[3]).trim());
-
     if (params.slug.length == 4) {
         return (
             <div className='flex justify-center items-center mt-28 mb-10 gap-2'>
