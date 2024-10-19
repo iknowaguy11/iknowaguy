@@ -222,7 +222,7 @@ export default function Recommend() {
                             dateOfReccomnd:moment().format('MMMM Do YYYY, h:mm a')
                         }
                         const relationship=HowdoYouKnowThem.trim() == "" ? "Preferred not to say" : HowdoYouKnowThem;
-                        const messg: string = `Dear ${ContractorName},\n\nYou have been recommended on I Know A Guy website.\n\nRecommendation Details\nContractor's Name : ${ContractorName}\nCompany Name: ${ContractorName}\nContractor's Phone No. : ${ContractorPhone}\nCompany's Address : ${"marble hall"}\nCompany's Service(s) : ${selectedServices}\nRecommending Person's Name : ${RecommederName.trim() == "" ? "Anonymous" : RecommederName}\nIndicated Relationship : ${relationship}. Click the link to register on the website : ${"https://inkowaguy.vercel.app/contractor-registration"}\n\nKind Regards,\n IKAG Admin`;
+                        const messg: string = `Dear ${ContractorName},\n\nYou have been recommended on I Know A Guy website.\n\nRecommendation Details\nContractor's Name : ${ContractorName}\nCompany Name: ${ContractorName}\nContractor's Phone No. : ${ContractorPhone}\nCompany's Address : ${"marble hall"}\nCompany's Service(s) : ${"capentry"}\nRecommending Person's Name : ${RecommederName.trim() == "" ? "Anonymous" : RecommederName}\nIndicated Relationship : ${relationship}. Click the link to register on the website : ${"https://inkowaguy.vercel.app/contractor-registration"}\n\nKind Regards,\n IKAG Admin`;
 
                         Sendsmscustomer(messg,ContractorPhone);
                         // SendMailToContractor(ContractorEmail, ContractorName,message, "I Know A Guy - Recommendation");
