@@ -226,8 +226,8 @@ export default function Recommend() {
                         const messg: string = `Dear ${ContractorName},\n\nYou have been recommended on I Know A Guy website.\n\nRecommendation Details\nContractor's Name : ${ContractorName}\nCompany Name: ${ContractorName}\nContractor's Phone No. : ${ContractorPhone}\nCompany's Address : ${"See Details on your email"}\nCompany's Service(s) : ${"See Details on your email"}\nRecommending Person's Name : ${RecommederName.trim() == "" ? "Anonymous" : RecommederName}\nIndicated Relationship : ${relationship}. Click the link to register on the website : ${"https://inkowaguy.vercel.app/contractor-registration"}\n\nKind Regards,\n IKAG Admin`;
 
                         Sendsmscustomer(messg,ContractorPhone);
-                        SendMailToContractor(ContractorEmail, ContractorName,message, "I Know A Guy - Recommendation");
-                        SendMailToIknowaguy("submissions@iknowaguy.co.za", ContractorName,message, "I Know A Guy - Recommendation");
+                        // SendMailToContractor(ContractorEmail, ContractorName,message, "I Know A Guy - Recommendation");
+                        // SendMailToIknowaguy("submissions@iknowaguy.co.za", ContractorName,message, "I Know A Guy - Recommendation");
                         setVisibility(false);
                         setTimeout(VisibileRegisterButton, 4000);
                     }
