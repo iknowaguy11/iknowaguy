@@ -127,24 +127,25 @@ export const AcceptBidingModal = ({ openModal, setOpenModal, ProjectIdBid, proje
 
     const isError = () => {
         let error = false;
-        try {
-            if (parseFloat(myOffer) > parseFloat(projectBudget)) {
-                setErrorMsg("Your offer cannot be bigger than the project budget.");
-                error = true;
-            } if (parseFloat(myOffer) <= parseFloat("0.00")) {
-                setErrorMsg("Your offer cannot be less or equal R0.00.");
-                error = true;
-            }
-            else {
-                setErrorMsg("");
-            }
-        } catch (error: any) {
-            failureMessage(String(error.message));
+        const bidAmount = parseFloat(myOffer);
+        const budgetAmount = parseFloat(projectBudget);
+    
+        if (isNaN(bidAmount)) {
+            setErrorMsg("Please enter a valid number.");
             error = true;
+        } else if (bidAmount > budgetAmount && bidAmount!==budgetAmount) {
+            setErrorMsg("Your offer cannot be bigger than the project budget of R"+budgetAmount);
+            error = true;
+        } else if (bidAmount <= 0) {
+            setErrorMsg("Your offer cannot be less or equal to R0.00.");
+            error = true;
+        } else {
+            setErrorMsg("");
         }
+    
         return error;
     };
-
+    
     return (
         <Modal show={openModal} size={"lg"} onClose={() => setOpenModal(false)}>
             <Modal.Header>Project Bidding</Modal.Header>

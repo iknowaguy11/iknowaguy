@@ -47,10 +47,11 @@ export const SendSmsToHomeOwner=async(message:msgType,phone:string)=>{
         if (parseInt(data.cost)>0) {
             successMessage(`An sms has been shared to ${phone}`);
         } else {
-            failureMessage(`We could not deliver your Recommendation to ${phone}. but we have capture it on our database.`)
+            failureMessage(`We could not deliver sms to ${phone}. but we have capture it on our database.`)
         }
     } catch (error: any) {
         console.log(error);
+        console.log(message,phone);
         failureMessage("Error: " + error?.message);
     }
 }
