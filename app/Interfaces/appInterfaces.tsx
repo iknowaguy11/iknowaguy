@@ -109,8 +109,6 @@ export interface IUser {
     Id: string,
     companyName: string,
     companyEmail: string,
-    firstName: string,
-    LastName: string,
     phone: string,
     Address: string[],
     profileImage: string,

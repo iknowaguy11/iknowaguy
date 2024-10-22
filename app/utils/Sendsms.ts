@@ -51,7 +51,6 @@ export const SendSmsToHomeOwner=async(message:msgType,phone:string)=>{
         }
     } catch (error: any) {
         console.log(error);
-        console.log(message,phone);
         failureMessage("Error: " + error?.message);
     }
 }

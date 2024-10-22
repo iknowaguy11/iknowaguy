@@ -71,7 +71,7 @@ export const AcceptBidingModal = ({ openModal, setOpenModal, ProjectIdBid, proje
             companyName: UserData[0]?.companyName,
             companyEmail: UserData[0]?.companyEmail,
             firstName: UserData[0]?.YourName,
-            LastName: UserData[0]?.membership == "contractor" ? "" : UserData[0]?.LastName,
+            LastName: UserData[0]?.membership == "contractor" ? "" : UserData[0]?.YourSurName,
             phone: UserData[0]?.phone,
             profileImage: UserData[0]?.profileImage,
             Address: UserData[0]?.Address,
@@ -110,10 +110,9 @@ export const AcceptBidingModal = ({ openModal, setOpenModal, ProjectIdBid, proje
             
             setDoc(doc(db, 'Projects', ProjectIdBid.trim()), update, { merge: true }).then(async() => {
                 setIsProcessing(false);
-                
                 successMessage("Bid placed successful");
                 //send sms to homeowner or project owner
-                SendSmsToHomeOwner({task,owner,offerMade:myOffer,companyName: UserData[0]?.membership == "contractor" ? UserData[0]?.companyName : UserData[0]?.firstName},homeownerPhone);
+                SendSmsToHomeOwner({task,owner,offerMade:myOffer,companyName: (UserData[0]?.membership == "contractor" ? UserData[0]?.companyName : UserData[0]?.YourName +" "+ UserData[0]?.YourSurName)},homeownerPhone);
                 setMyOffer("0.00");
                 setOpenModal(false);
                 await setDoc(doc(db, 'BidCredits', UserData[0]?.Id.trim()), updateBalance, { merge: true });
