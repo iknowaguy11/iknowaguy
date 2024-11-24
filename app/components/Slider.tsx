@@ -9,12 +9,13 @@ import gardener from '../../public/4.jpg';
 import construction from '../../public/5.jpg';
 import homegarden from '../../public/homegarden.jpg';
 import Searchresults from './Searchresults';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { HiSearch } from 'react-icons/hi';
 import { useRouter } from 'next/navigation';
 import { useFetchProvinces, useFetchServices } from '../_hooks/useFetch';
 import { IActualTasks, ITowns } from '../Interfaces/appInterfaces';
 import Select_API from 'react-select';
+import { failureMessage } from '../notifications/successError';
 
 export function Slider() {
     const { ProvinceData} = useFetchProvinces();
@@ -28,28 +29,29 @@ export function Slider() {
     const [provCategory, setprovCategory] = useState<string | null | undefined>("Select Your Location");
     const [ServiceCategory, setServiceCategory] = useState<string | null | undefined>("Select Service");
 
-    const provinces = [
-        { value: "Limpopo", label: "Limpopo" },
-        { value: "Gauteng", label: "Gauteng" },
-        { value: "Eastern Cape", label: "Eastern Cape" },
-        { value: "Free State", label: "Free State" },
-        { value: "KwaZulu Natal", label: "KwaZulu Natal" },
-        { value: "Mpumalanga", label: "Mpumalanga" },
-        { value: "North West", label: "North West" },
-        { value: "Northern Cape", label: "Northern Cape" },
-        { value: "Western Cape", label: "Western Cape" }
+    type prv={
+        value:string,
+        label:string
+    }
+    type srv={
+        value:string,
+        label:string
+    }
+    const [provinces,Set_Provinces]=useState<prv[]>([]);
+    const [Services,Set_Services]=useState<prv[]>([]);
+    useEffect(()=>{
+        let provinces_ = ProvinceData?.map((province) => ({
+            value: province.province,
+            label: province.province,
+        }));
+        let Services_ = ServiceData?.map((province) => ({
+            value: province.ServiceType,
+            label: province.ServiceType,
+        }));
+        Set_Services(Services_);
+        Set_Provinces(provinces_);
+    },[ProvinceData || Services]);
 
-    ];
-    const Services = [
-        { value: "PLUMBING", label: "PLUMBING" },
-        { value: "HANDYMAN", label: "HANDYMAN" },
-        { value: "ELECTRICAL", label: "ELECTRICAL" },
-        { value: "PAINTING", label: "PAINTING" },
-        { value: "CARPENTRY", label: "CARPENTRY" },
-        { value: "GARDEN AND LANDSCAPING", label: "GARDEN AND LANDSCAPING" },
-        { value: "BUILDING AND RENOVATIONS", label: "BUILDING AND RENOVATIONS" },
-        { value: "MORE CATEGORIES", label: "MORE CATEGORIES" },
-    ];
     const SetSelectedService = (category: string | null | undefined) => {
         setServiceCategory(category);
         if (category !== "" && category !== "Select Service") {
@@ -78,11 +80,12 @@ export function Slider() {
 
     const router = useRouter();
     const performSeach = () => {
-
         if ((ServiceCategory?.toLocaleLowerCase().trim() != "select service") && (SelectedSubcategory?.toLocaleLowerCase().trim() != "" && SelectedSubcategory?.toLocaleLowerCase().trim() !== "Select A Sub Area" && SelectedSubcategory?.toLocaleLowerCase().trim() !== "Select A Sub Service")
             && (provCategory?.toLocaleLowerCase().trim() != "select your location") && (Selectedsubarea?.toLocaleLowerCase().trim() != "" && SelectedSubcategory?.toLocaleLowerCase().trim() !== "Select A Sub Area" && SelectedSubcategory?.toLocaleLowerCase().trim() !== "Select A Sub Service")) {
             router.push(`/contractors/${ServiceCategory?.toLocaleLowerCase().trim()}/${SelectedSubcategory?.toLocaleLowerCase().trim()}/
             ${provCategory?.toLocaleLowerCase().trim()}/${Selectedsubarea?.trim()}`);
+        }else{
+            failureMessage("Empty search or incomplete search keys cannot be proccessed");
         }
     }
     return (
