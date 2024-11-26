@@ -38,7 +38,7 @@ var KidsRoom: IinspirationsCarosal[] = [];
 
 const Inspirations = ({ params }: { params: { slug: string[] } }) => {
     const router = useRouter();
-    const { InspirationData, DataError, isLoading } = useFetchInspirations(params?.slug[0].replaceAll('-', " "));
+    const { InspirationData, DataError, isLoading } = useFetchInspirations(params?.slug[0].trim());
     const paths_Segments = [
         "Bedroom", "Bathroom", "Kitchen", "Interior-Decor", "Landscape", "Home-Exterior", "Dining-Room", "Kids-Room"
     ]
