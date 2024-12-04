@@ -284,7 +284,7 @@ export default function Recommend() {
                                 <Label htmlFor="Town" value="Compay's Address *" />
                                 <span className="text-xs text-gray-600 font-light text-wrap"> Limit : 15</span>
                             </div>
-                            <Select_API placeholder={"Select Provice"} options={provinces} onChange={(e) => SetProvince(e?.value)} />
+                            <Select_API instanceId={provCategory?.toString()} placeholder={"Select Provice"} options={provinces} onChange={(e) => SetProvince(e?.value)} />
 
                             {
                                 subareas.length > 0 &&
@@ -316,7 +316,7 @@ export default function Recommend() {
                                 <Label htmlFor="Town" value="Company's Service(s) *" />
                                 <span className="text-xs text-gray-600 font-light text-wrap"> Limit : 15</span>
                             </div>
-                            <Select_API placeholder={"Select Service"} options={Services} onChange={(e) => SetSelectedService(e?.value)} />
+                            <Select_API instanceId={ServiceCategory?.toString()} placeholder={"Select Service"} options={Services} onChange={(e) => SetSelectedService(e?.value)} />
 
                             {subcategory.length > 0 &&
 

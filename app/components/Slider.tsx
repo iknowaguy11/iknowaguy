@@ -97,7 +97,7 @@ export function Slider() {
                 <div className='gap-1'>
                     <div className="grid gap-2 lg:grid-cols-2 xl:grid-cols-2 sm:grid-cols-1 md:grid-cols-1">
                         <div className="w-full gap-2">
-                            <Select_API placeholder={"Select Service"} options={Services} onChange={(e) => SetSelectedService(e?.value)} />
+                            <Select_API instanceId={ServiceCategory?.toString()} placeholder={"Select Service"} options={Services} onChange={(e) => SetSelectedService(e?.value)} />
 
                             {subcategory.length > 0 &&
 
@@ -118,7 +118,7 @@ export function Slider() {
 
                         <div className="w-full">
 
-                            <Select_API placeholder={"Select Your Location"} options={provinces} onChange={(e) => SetProvince(e?.value)} />
+                            <Select_API instanceId={provCategory?.toString()} placeholder={"Select Your Location"} options={provinces} onChange={(e) => SetProvince(e?.value)} />
 
                             {
                                 subareas.length > 0 &&

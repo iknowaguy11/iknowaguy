@@ -8,10 +8,10 @@ import { customsubmitTheme } from '../customTheme/appTheme';
 import { useRouter } from 'next/navigation';
 import { Suspense, useContext } from 'react';
 import { AppContext } from '../Context/appContext';
-import { app } from '../DB/firebaseConnection';
 import { getAuth } from 'firebase/auth';
 import { useFetchUserAccount } from '../_hooks/useFetch';
 import ProfileSkeleton from './loading';
+import { app } from '../DB/firebaseConnection';
 
 export function AppNavbar() {
   const router = useRouter();

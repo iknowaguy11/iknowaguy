@@ -221,7 +221,7 @@ const Postproject = () => {
                                         <Label htmlFor="addrSecltor" value="Project's Address*" />
                                     </div>
 
-                                    <Select_API placeholder={"Select Provice"} options={provinces} onChange={(e) => SetProvince(e?.value)} />
+                                    <Select_API instanceId={provCategory?.toString()} placeholder={"Select Provice"} options={provinces} onChange={(e) => SetProvince(e?.value)} />
 
                                     {
                                         subareas.length > 0 &&
@@ -246,7 +246,7 @@ const Postproject = () => {
                                     </div>
 
 
-                                    <Select_API placeholder={"Select Service"} options={Services} onChange={(e) => SetSelectedService(e?.value)} />
+                                    <Select_API instanceId={ServiceCategory?.toString()} placeholder={"Select Service"} options={Services} onChange={(e) => SetSelectedService(e?.value)} />
 
                                     {subcategory.length > 0 &&
 
