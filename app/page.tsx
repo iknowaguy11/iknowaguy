@@ -6,7 +6,9 @@ export default function Home() {
   return (
     <main>
       <Slider/>
-      <CenterBody/>
+      <Suspense fallback={<div>Loading...</div>}>
+        <CenterBody />
+      </Suspense>
     </main>
   );
 }
