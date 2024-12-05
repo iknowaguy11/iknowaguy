@@ -4,6 +4,19 @@ import dns from "dns";
 import moment from "moment";
 import admin from "firebase-admin";
 
+
+    if (!admin.apps.length) {
+        admin.initializeApp({
+            credential: admin.credential.cert({
+                projectId: process.env?.projectId,
+                clientEmail: process.env?.clientEmail,
+                privateKey: process?.env?.privateKey?.toString().replace(/\\n/g, '\n'),
+            }),
+        });
+        
+
+
+    }
 const auth = admin.auth();
 const db_admin = admin.firestore();
 const db = admin.firestore();
