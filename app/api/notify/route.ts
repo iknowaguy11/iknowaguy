@@ -101,8 +101,9 @@ const pfValidSignature = (pfData:any, pfParamString:any, pfPassphrase:any = null
 
   export async function POST(req: Request){
     console.log("post hello");
-    const reqR=await req?.json();
+    const reqR=await req?.body;
     console.log(reqR);
+    console.log(req?.body);
     const res=Response;
     try {
         const testingMode = true;
