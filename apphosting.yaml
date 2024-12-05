@@ -1,0 +1,52 @@
+# Settings for Cloud Run
+runConfig:
+  minInstances: 2
+  maxInstances: 100
+  concurrency: 100
+  cpu: 2
+  memoryMiB: 1024
+
+# Environment variables and secrets
+env:
+
+  - variable: NEXT_PUBLIC_SITE_KEY
+    secret: 6Lc6SdMpAAAAAD5XHKyVRfFFqheA6T5r4QAvSTJI
+    availability:
+        - BUILD
+        - RUNTIME
+
+  - variable: NEXT_PUBLIC_PASSPHRASE
+    secret: jt7NOE43FZPn
+    availability:
+        - BUILD
+        - RUNTIME
+
+  - variable: NEXT_PUBLIC_MERCHANT_ID
+    secret: 10000100
+    availability:
+        - BUILD
+        - RUNTIME
+
+    - variable: NEXT_PUBLIC_MERCHANT_KEY
+      secret: 46f0cd694581a
+      availability:
+          - BUILD
+          - RUNTIME
+
+    - variable: NEXT_PUBLIC_PMERCHANT_ID
+      secret: 10172139
+      availability:
+        - BUILD
+        - RUNTIME
+
+    - variable: NEXT_PUBLIC_PMERCHANT_KEY
+      secret: 9hh5x9y6k1ajs
+      availability:
+        - BUILD
+        - RUNTIME
+
+    - variable: NEXT_PUBLIC_PPASSPHRASE
+      secret: BeProudYouAreARed96
+      availability:
+        - BUILD
+        - RUNTIME
