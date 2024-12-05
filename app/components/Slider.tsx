@@ -116,7 +116,7 @@ export function Slider() {
 
                         </div>
 
-                        <div className="w-full mt-1">
+                        <div className="w-full ">
 
                             <Select_API instanceId={provCategory?.toString()} placeholder={"Select Your Location"} options={provinces} onChange={(e) => SetProvince(e?.value)} />
 
