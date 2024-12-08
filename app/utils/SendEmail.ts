@@ -4,7 +4,7 @@ import { failureMessage, successMessage } from "../notifications/successError";
 //send email to contractor for recommendation
 export const SendMailToContractor = async (email: string, name: string, message: IRecommendationDetails, subject: string) => {
     try {
-        const response = await fetch('https://payfastpaymentvalidator.onrender.com/sendemailrecommendation', {
+        const response = await fetch('https://iknowaguyapi.onrender.com/sendemailrecommendation', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -34,7 +34,7 @@ export const SendMailToContractor = async (email: string, name: string, message:
 //send email recomendation copy to submissions@iknowaguy.co.za
 export const SendMailToIknowaguy = async (email: string="submissions@iknowaguy.co.za", name: string, message: IRecommendationDetails, subject: string) => {
     try {
-        const response = await fetch('https://payfastpaymentvalidator.onrender.com/sendemailAdminRecommendationCopy', {
+        const response = await fetch('https://iknowaguyapi.onrender.com/sendemailAdminRecommendationCopy', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -61,7 +61,7 @@ export const SendMailToIknowaguy = async (email: string="submissions@iknowaguy.c
 //send to Contractor for winning project
 export const SendMailAcceptence = async (email: string, name: string, message: IAwardproject, subject: string) => {
     try {
-        const response = await fetch('https://payfastpaymentvalidator.onrender.com/sendemailawardingproject', {
+        const response = await fetch('https://iknowaguyapi.onrender.com/sendemailawardingproject', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
