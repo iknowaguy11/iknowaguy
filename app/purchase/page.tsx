@@ -65,7 +65,7 @@ export default function BidsCredits() {
                                                 clipRule="evenodd"
                                             />
                                         </svg>
-                                        <span className="text-base font-normal leading-tight text-gray-500 dark:text-gray-400">Price Per Credit: R{(item.Price).toFixed(2)}</span>
+                                        <span className="text-base font-normal leading-tight text-gray-500 dark:text-gray-400">Price Per Credit: R{(item.Price / item.bid).toFixed(2)}</span>
                                     </li>
 
                                     {/*<li className="flex space-x-3">
