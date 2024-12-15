@@ -28,11 +28,11 @@ export function FooterApp() {
           </div>
 
           {/* Company Section */}
-          <div className="flex flex-col items-center md:items-start">
+          <div className="flex flex-col text-center md:text-left items-center md:items-start">
             <Footer.Title title="Company" className="text-gray-100" />
-            <Footer.LinkGroup col>
+            <Footer.LinkGroup col className=''>
               <Footer.Link href="tel:087 012 5690">087 012 5690</Footer.Link>
-              <div className="flex gap-2 items-center mt-1">
+              <div className="flex gap-2 justify-center md:justify-start mt-1">
                 <Footer.Icon
                   href="https://www.facebook.com/iknowaguysouthafrica/"
                   target="_blank"
@@ -52,7 +52,7 @@ export function FooterApp() {
           </div>
 
           {/* Legal Section */}
-          <div className="flex flex-col items-center md:items-start">
+          <div className="flex flex-col text-center md:text-left items-center md:items-start">
             <Footer.Title title="Legal" className="text-gray-100" />
             <Footer.LinkGroup col>
               <Footer.Link
@@ -73,7 +73,7 @@ export function FooterApp() {
           </div>
 
           {/* Quick Links Section */}
-          <div className="flex flex-col items-center md:items-start">
+          <div className="flex flex-col text-center md:text-left items-center md:items-start">
             <Footer.Title title="Quick Links" className="text-gray-100" />
             <Footer.LinkGroup col>
               <Footer.Link href="/purchase" as={Link}>
