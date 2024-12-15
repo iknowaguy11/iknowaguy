@@ -155,7 +155,7 @@ export function NewContractorTemplate({ contractors, params, isGettingAccount, a
                                         <p className='text-sm'> {item.companyEmail}</p>
                                     </div>
 
-                                    <Badge className='w-fit' theme={customTheme} color={"success"} icon={HiHome}>Address located</Badge>
+                                    {/* <Badge className='w-fit' theme={customTheme} color={"success"} icon={HiHome}>Address located</Badge> */}
                                     <div className='flex items-center gap-1 m-1'>
                                     
                                         {

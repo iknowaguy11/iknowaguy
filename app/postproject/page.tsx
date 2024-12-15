@@ -195,109 +195,152 @@ const Postproject = () => {
     //     }
     // }, [ProvinceData, ServiceData]);
 
-    return (
-        <div className="w-full gap-4 h-dvh">
-            <div className="relative w-full h-full mt-32 mb-1">
-                <Image
-                    src={Landscape}
-                    alt="inspiration"
-                    className="aspect-[3/4] h-full w-full" />
+   return (
+    <div className="w-full h-dvh bg-gray-100">
+        <div className="relative w-full h-full mt-32 mb-1">
+            <Image
+                src={Landscape}
+                alt="inspiration"
+                className="aspect-[3/4] h-full w-full object-cover"
+            />
 
-                <div className="grid lg:grid-cols-2 items-center justify-items-center absolute z-10 bottom-3 flex-grow bg-opacity-75 bg-black p-3 w-full">
-                    <div className="p-2 gap-3 mt-4">
-                        <h1 className="text-4xl font-bold tracking-tight text-white dark:text-white">NEEDING SOMETHING DONE IN YOUR HOME?</h1>
-                        <p className="text-sm tracking-tight text-white dark:text-white">Describe what you need done in as much detail as possible and receive up to 5 quotes from trusted contractors in your area to meet your specific needs</p>
-                        <Alert color="warning" className="mt-2" rounded>
-                            <span className="font-medium"><HiOutlineExclamationCircle /></span> By submitting a project, you agree that service providers who wish to bid on your project may contact you to obtain additional information from you.
-                        </Alert>
-                    </div>
-                    <div className="h-full items-center justify-items-center">
+            <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col lg:flex-row items-center justify-between p-4 gap-6">
+                <div className="text-center lg:text-left w-full lg:w-1/2 p-4">
+                    <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tight mb-4">
+                        NEEDING SOMETHING DONE IN YOUR HOME?
+                    </h1>
+                    <p className="text-sm sm:text-base text-gray-300 mb-4">
+                        Describe what you need done in as much detail as possible and receive up to 5 quotes from trusted contractors in your area to meet your specific needs.
+                    </p>
+                    <Alert color="warning" className="mt-2" rounded>
+                        <span className="font-medium">
+                            <HiOutlineExclamationCircle />
+                        </span>
+                        &nbsp; By submitting a project, you agree that service providers who wish to bid on your project may contact you to obtain additional information.
+                    </Alert>
+                </div>
 
-                        <Card className='flex max-w-lg flex-grow rounded'>
-                            <form onSubmit={(e) => AddPost(e)} className="flex max-w-lg flex-col gap-4 flex-grow">
+                <div className="w-full lg:w-1/2 flex justify-center">
+                    <Card className="w-full max-w-lg rounded shadow-lg mb-10 ">
+                        <form onSubmit={(e) => AddPost(e)} className="flex flex-col gap-4 p-4">
+                            <div>
+                                <Label htmlFor="addrSelector" value="Project's Address*" />
+                                <Select_API
+                                    instanceId={provCategory?.toString()}
+                                    placeholder="Select Province"
+                                    options={provinces}
+                                    onChange={(e) => SetProvince(e?.value)}
+                                />
 
-                                <div>
-                                    <div className="mb-2 block">
-                                        <Label htmlFor="addrSecltor" value="Project's Address*" />
-                                    </div>
+                                {subareas.length > 0 && (
+                                    <Select
+                                        className="max-w-md rounded mt-1 mb-1"
+                                        onChange={(e) => SetSelectedsubarea(e?.target.value)}
+                                    >
+                                        <option>Select A Sub Area</option>
+                                        {subareas.map((item) => (
+                                            <option key={item?.area}>{item?.area}</option>
+                                        ))}
+                                    </Select>
+                                )}
+                            </div>
 
-                                    <Select_API instanceId={provCategory?.toString()} placeholder={"Select Provice"} options={provinces} onChange={(e) => SetProvince(e?.value)} />
+                            <div>
+                                <Label htmlFor="job" value="Select Job Category *" />
+                                <Select_API
+                                    instanceId={ServiceCategory?.toString()}
+                                    placeholder="Select Service"
+                                    options={Services}
+                                    onChange={(e) => SetSelectedService(e?.value)}
+                                />
 
-                                    {
-                                        subareas.length > 0 &&
+                                {subcategory.length > 0 && (
+                                    <Select
+                                        className="max-w-md rounded mt-1 mb-1"
+                                        onChange={(e) => SetSelectedServices(e?.target.value)}
+                                    >
+                                        <option>Select A Sub Service</option>
+                                        {subcategory.map((item) => (
+                                            <option key={item?.task}>{item?.task}</option>
+                                        ))}
+                                    </Select>
+                                )}
+                            </div>
 
-                                        <Select
-                                            className="max-w-md rounded mt-1 mb-1"
-                                            onChange={(e) => SetSelectedsubarea(e?.target.value)}
-                                        >
-                                            <option>Select A Sub Area</option>
-                                            {
-                                                subareas?.map((item, index) => (
-                                                    <option key={item?.area}>{item?.area}</option>
-                                                ))
-                                            }
-                                        </Select>
-                                    }
+                            <div>
+                                <Label htmlFor="budget" value="What is your budget *" />
+                                <span className="text-xs text-gray-600 font-light">
+                                    Minimum amount: R50.00
+                                </span>
+                                <TextInput
+                                    theme={customInputBoxTheme}
+                                    color="focuscolor"
+                                    onChange={(e) => SetBudget(e.target.value)}
+                                    value={budget}
+                                    id="budget"
+                                    type="number"
+                                    placeholder="How much are you willing to spend"
+                                    required
+                                    shadow
+                                />
+                            </div>
 
-                                </div>
-                                <div>
-                                    <div className="mb-2 block">
-                                        <Label htmlFor="job" value="Select Job Category *" />
-                                    </div>
+                            <div>
+                                <Label htmlFor="comment" value="Comment (optional)" />
+                                <Textarea
+                                    theme={customInputBoxTheme}
+                                    color="focuscolor"
+                                    onChange={(e) => SetComment(e.target.value)}
+                                    value={Comment}
+                                    id="comment"
+                                    placeholder="Leave a message for your contractor(s)"
+                                    rows={3}
+                                />
+                            </div>
 
+                            <div className="flex items-center gap-2">
+                                <Checkbox
+                                    checked={tncs}
+                                    onChange={() => setTnCs(!tncs)}
+                                    id="agree"
+                                    theme={customCheckboxTheme}
+                                    color="success"
+                                />
+                                <Label htmlFor="agree" className="flex">
+                                    I agree with the&nbsp;
+                                    <Link
+                                        href="terms-and-conditions"
+                                        target="_blank"
+                                        className="text-appGreen hover:underline"
+                                    >
+                                        terms and conditions
+                                    </Link>
+                                </Label>
+                            </div>
 
-                                    <Select_API instanceId={ServiceCategory?.toString()} placeholder={"Select Service"} options={Services} onChange={(e) => SetSelectedService(e?.value)} />
-
-                                    {subcategory.length > 0 &&
-
-                                        <Select
-                                            className="max-w-md rounded mt-1 mb-1"
-                                            onChange={(e) => SetSelectedServices(e?.target.value)}
-                                        >
-                                            <option>Select A Sub Service</option>
-                                            {
-                                                subcategory?.map((item, index) => (
-                                                    <option key={item?.task}>{item?.task}</option>
-                                                ))
-                                            }
-                                        </Select>
-                                    }
-                                </div>
-
-                                <div>
-                                    <div className="mb-2 block">
-                                        <Label htmlFor="budget" value="What is your budget *" />
-                                        <span className="text-xs text-gray-600 font-light text-wrap">minimum amount : R50.00</span>
-                                    </div>
-                                    <TextInput theme={customInputBoxTheme} color={"focuscolor"} onChange={(e) => SetBudget(e.target.value)} value={budget} id="budget" type="number" placeholder="How much are you willing to spend" required shadow />
-                                </div>
-
-                                <div>
-                                    <div className="mb-2 block">
-                                        <Label htmlFor="comment" value="Comment (optional)" />
-                                    </div>
-                                    <Textarea theme={customInputBoxTheme} color={"focuscolor"} onChange={(e) => SetComment(e.target.value)} value={Comment} id="comment" placeholder="Leave a message for your contractor(s)" rows={3} />
-                                </div>
-
-                                <div className="flex items-center gap-2">
-                                    <Checkbox checked={tncs} onChange={() => setTnCs(tncs ? false : true)} id="agree" theme={customCheckboxTheme} color="success" />
-                                    <Label htmlFor="agree" className="flex">
-                                        I agree with the&nbsp;
-                                        <Link href="terms-and-conditions" target="_blank" className="text-appGreen hover:underline dark:text-appGreen">
-                                            terms and conditions
-                                        </Link>
-                                    </Label>
-                                </div>
-                                {Visibility ? <Button isProcessing={isprocessing} disabled={isprocessing} theme={customsubmitTheme} type="submit" color="appsuccess">Post</Button>
-                                    : <Alert color="warning" rounded>
-                                        <span className="font-medium">Hurray!</span> You have succesfully added a project.
-                                    </Alert>}</form>
-                        </Card>
-                    </div>
+                            {Visibility ? (
+                                <Button
+                                    isProcessing={isprocessing}
+                                    disabled={isprocessing}
+                                    theme={customsubmitTheme}
+                                    type="submit"
+                                    color="appsuccess"
+                                >
+                                    Post
+                                </Button>
+                            ) : (
+                                <Alert color="warning" rounded>
+                                    <span className="font-medium">Hurray!</span> You have successfully added a project.
+                                </Alert>
+                            )}
+                        </form>
+                    </Card>
                 </div>
             </div>
         </div>
-    );
+    </div>
+);
+
 }
 
 export default Postproject;

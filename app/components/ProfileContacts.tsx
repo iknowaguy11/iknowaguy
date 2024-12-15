@@ -36,10 +36,10 @@ const ProfileContacts = ({ item }: { item: IUser }) => {
                         <Badge theme={customTheme} color={"success"} icon={HiMail} />
                         <p className='text-sm text-gray-700'>{item?.companyEmail}</p>
                     </div>
-
+{/* 
                     <div className='flex items-center gap-2'>
                         <Badge className='w-fit' theme={customTheme} color={"success"} icon={HiHome}>Address</Badge>
-                    </div>
+                    </div> */}
                     <div>
                         {Array.isArray(item?.Address) ? (
                             <ul className='space-y-2'>
