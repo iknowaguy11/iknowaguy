@@ -90,8 +90,8 @@ export function Slider() {
     }
     return (
         <div id='searchBox' className="relative content-center">
-            <Card className="z-10 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[70%] sm:w-[60%] lg:max-w-fit lg:min-w-fit max-h-fit p-2 " horizontal>
-                <h5 className="capMsg text-center tracking-tight leading-8 text-gray-900  dark:text-white lg:text-nowrap xl:text-nowrap md:text-wrap sm:text-wrap">
+            <Card className="z-10 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[70vw] lg:max-w-fit max-h-fit p-2" horizontal>
+                <h5 className="capMsg text-center tracking-tight leading-8 text-gray-900 dark:text-white lg:text-nowrap xl:text-nowrap md:text-wrap sm:text-wrap">
                     Find Trusted, Reliable Contractors For Your Home
                 </h5>
                 <div className='gap-1'>
@@ -116,7 +116,7 @@ export function Slider() {
 
                         </div>
 
-                        <div className="w-full ">
+                        <div className="w-full">
 
                             <Select_API instanceId={provCategory?.toString()} placeholder={"Select Your Location"} options={provinces} onChange={(e) => SetProvince(e?.value)} />
 
@@ -140,7 +140,7 @@ export function Slider() {
 
 
                     </div>
-                    <Button className='serch mt-4 bg-appGreen text-white' size="md" as="a" color="light"
+                    <Button className='serch mt-3 bg-appGreen text-white' size="md" as="a" color="light"
                         onClick={() => performSeach()}>
                         <HiSearch className="mr-2 h-5 w-5" />
                         Search</Button>
@@ -150,12 +150,12 @@ export function Slider() {
                 <Searchresults typedValue={typedValue} SetFilter={SetFilter} />
 
             </Card>
-            <Carousel className="h-[100dvh] w-full" pauseOnHover>
-                <Image className="sliderimages" src={construction} priority alt="Construction" />
-                <Image className="sliderimages" src={electrican} priority alt="Electrician" />
-                <Image className="sliderimages" src={gardener} priority alt="Gardener" />
-                <Image className="sliderimages" src={plumber} priority alt="Plumber" />
-                <Image className="sliderimages" src={homegarden} priority alt="Home Garden" />
+            <Carousel className='h-[100dvh] w-[100dvw]' pauseOnHover>
+                <Image className='sliderimages' src={construction} priority alt="..." />
+                <Image className='sliderimages' src={electrican} priority alt="..." />
+                <Image className='sliderimages' src={gardener} priority alt="..." />
+                <Image className='sliderimages' src={plumber} priority alt="..." />
+                <Image className='sliderimages' src={homegarden} priority alt="..." />
             </Carousel>
         </div>
     );

@@ -19,15 +19,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={ `${inter.className} !scroll-smooth`}>
-        <AppProvider>
-          <div className="min-h-screen flex flex-col bg-gray-100">
-            <AppNavbar />
-            <div className="flex-1 flex justify-center items-center py-4 px-4">{children}</div>
-            <FooterApp />
-          </div>
+      <body className={`${inter.className} !scroll-smooth`}>
+      <AppProvider>
+        <AppNavbar/>
+        {children}
+        <FooterApp/>
         </AppProvider>
-      </body>
+        </body>
     </html>
   );
 }

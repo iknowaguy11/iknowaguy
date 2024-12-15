@@ -17,12 +17,12 @@ import caponlycrop from '../../public/caponlycrop.png';
 import { IhowItwors, Iinspirations } from "../Interfaces/appInterfaces";
 import { customsubmitTheme } from "../customTheme/appTheme";
 import { HiMail } from 'react-icons/hi';
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useFetchUserAccount, useFetchUserProjects } from "../_hooks/useFetch";
 import LoadingProjects from "./LoadingProjects";
 import LoadingProjectError from "./LoadingProjectError";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { failureMessage, successMessage } from "../notifications/successError";
 import { AppContext } from "../Context/appContext";
 
@@ -64,34 +64,6 @@ const CenterBody = () => {
     const { ukey } = useContext(AppContext);
     const { UserData } = useFetchUserAccount(ukey);
     const { UserProjects, ProjectsError, isGettingProjects } = useFetchUserProjects("");
-
-    const searchParams = useSearchParams();
-    const [currentSection, setCurrentSection] = useState<string | null>(null);
-
-    useEffect(() => {
-        const sectionId = searchParams.get('section');
-        if (sectionId) {
-            const section = document.getElementById(sectionId);
-            if (section) {
-                const navbarHeight = document.querySelector('header')?.offsetHeight || 0;
-                const sectionRect = section.getBoundingClientRect();
-                const offsetTop = sectionRect.top + window.pageYOffset;
-
-                // Check if we are already at the target section
-                if (currentSection === sectionId) return;
-
-                const centerScrollPosition = offsetTop - (window.innerHeight / 2) + (section.offsetHeight / 2) - navbarHeight;
-
-                window.scrollTo({
-                    top: centerScrollPosition,
-                    behavior: 'smooth',
-                });
-
-                setCurrentSection(sectionId);
-            }
-        }
-    }, [searchParams, currentSection]);
-
     const CheckProjects = () => {
         if (UserProjects?.length > 0) {
             router.push("/jobs");
@@ -99,12 +71,11 @@ const CenterBody = () => {
             setNotification(true);
             setTimeout(HideNotification, 5000);
         }
-    };
+    }
 
     const HideNotification = () => {
         setNotification(false);
-    };
-
+    }
     const copylink = (link: string) => {
         try {
             navigator.clipboard.writeText(link);
@@ -112,11 +83,11 @@ const CenterBody = () => {
         } catch (error: any) {
             failureMessage(String(error?.message));
         }
-    };
+    }
     return (
         <main>
             {/*section 1*/}
-            <div id="whatIsIkg"  className="flex flex-col justify-center items-center gap-2 p-6">
+            <div className="flex flex-col justify-center items-center gap-2 p-6">
                 <h1 className="text-4xl">What is IKAG</h1>
                 <p className="text-gray-600 ml-5 mr-5 text-center">I Know A Guy is a user-driven platform on which home-owners can find trusted, reliable home care contractors. Whether you are looking for a handyman for small jobs around the house or a builder for a big renovation project, you will find them on I Know A Guy. Unlike other business directories, the listings on I Know A Guy are Recommended by people who have interacted with those contractors, people who have used their services and can vouch that you will receive good service from them.</p>
                 <p className="text-gray-600 ml-5 mr-5 mt-6 text-center">There are two ways in which you can use I Know A Guy to find contractors. Firstly, you can <a onClick={() => {
@@ -128,7 +99,7 @@ const CenterBody = () => {
                 <p></p>
             </div>
             {/*section 2*/}
-            <div id="HowItWorks" className="flex flex-col justify-center items-center gap-2 p-6">
+            <div className="flex flex-col justify-center items-center gap-2 p-6">
                 <h1 className="text-4xl">How It Works</h1>
 
                 <div className="flex-row justify-evenly m-4 grid gap-3 sm:grid-cols-4 md:grid-cols-4 xm:grid-cols-1 xs:grid-cols-1 justify-items-center mt-5 bg-slate-50 overflow-hidden p-2 rounded-md">
@@ -149,7 +120,7 @@ const CenterBody = () => {
 
             </div>
             {/*section 3*/}
-            <div id="jobSection"  className="flex flex-col justify-center items-center gap-2 p-6">
+            <div className="flex flex-col justify-center items-center gap-2 p-6">
                 {/* <Button onClick={() => router.push("/postproject")} theme={customsubmitTheme} size={"md"} type="submit" color="appsuccess">Post A Project</Button> */}
                 <h1 className="text-4xl mt-3 mb-2">Current Projects</h1>
                 <div className="flex-row justify-between m-4 grid gap-3 sm:grid-cols-2 md:grid-cols-2 xm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 xs:grid-cols-1 justify-items-center mt-5 bg-slate-50 overflow-hidden p-2 rounded-md">
@@ -188,6 +159,7 @@ const CenterBody = () => {
                     }
 
                 </div>
+                <p id="jobSection"></p>
                 <div className="flex gap-1">
                     <Button onClick={() => CheckProjects()} theme={customsubmitTheme} color="appsuccess" size="md">See More Projects</Button>
                     {UserData[0]?.Id && UserData[0]?.membership?.trim().toLocaleLowerCase() == "homeowner" ? <Button onClick={() => router.push('/postproject')} theme={customsubmitTheme} color="appsuccess" size="md">Post A Project</Button> : null}
@@ -199,7 +171,7 @@ const CenterBody = () => {
 
             </div>
             {/*section 4*/}
-            <div id="inspirations" className="flex flex-col justify-center items-center gap-2 p-6">
+            <div className="flex flex-col justify-center items-center gap-2 p-6">
                 <h1 className="text-4xl">Get Inspired</h1>
                 <p className="text-gray-600 ml-5 mr-5">Find your inspiration and make it a reality</p>
                 <div className="flex-row justify-between m-4 grid gap-3 sm:grid-cols-2 md:grid-cols-2 xm:grid-cols-1 lg:grid-cols-4 xl:grid-cols-4 xs:grid-cols-1 justify-items-center mt-5 bg-slate-50 overflow-hidden p-2 rounded-md">

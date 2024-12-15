@@ -11,13 +11,13 @@ const PaymentButton = ({ price, Bidpackage }: { price: string, Bidpackage: strin
   const { ukey } = useContext(AppContext);
   const { UserData } = useFetchUserAccount(ukey);
   const [IsLoggedIn,SetIsLoggedIn]=useState(false);
-  const testingMode = true;
+  const testingMode = false;
   const myData: any = {
     "merchant_id": testingMode ? process?.env?.NEXT_PUBLIC_MERCHANT_ID : process?.env?.NEXT_PUBLIC_PMERCHANT_ID,
     "merchant_key":testingMode ? process?.env?.NEXT_PUBLIC_MERCHANT_KEY : process?.env?.NEXT_PUBLIC_PMERCHANT_KEY,
-    "return_url": "https://inkowaguy.vercel.app/success",
-    "cancel_url": "https://inkowaguy.vercel.app/cancel",
-    "notify_url": "https://payfastpaymentvalidator.onrender.com/notify",
+    "return_url": "https://iknowaguy.co.za/success",
+    "cancel_url": "https://iknowaguy.co.za/cancel",
+    "notify_url": "https://iknowaguyapi.onrender.com/notify",
     "name_first":  UserData[0]?.YourName?.trim(),
     "name_last": UserData[0]?.YourSurName?.trim(),
     "email_address": UserData[0]?.companyEmail?.trim(),

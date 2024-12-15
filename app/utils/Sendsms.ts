@@ -2,7 +2,7 @@ import { failureMessage, successMessage } from "../notifications/successError";
 
 export const Sendsmscustomer=async(message:string,phone:string)=>{
     try {
-        const response = await fetch('https://payfastpaymentvalidator.onrender.com/smscustomer', {
+        const response = await fetch('https://iknowaguyapi.onrender.com/smscustomer', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -32,7 +32,7 @@ type msgType={
 }
 export const SendSmsToHomeOwner=async(message:msgType,phone:string)=>{
     try {
-        const response = await fetch('https://payfastpaymentvalidator.onrender.com/smshomeowner', {
+        const response = await fetch('https://iknowaguyapi.onrender.com/smshomeowner', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

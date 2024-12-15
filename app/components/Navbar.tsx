@@ -1,12 +1,11 @@
-
 'use client';
 import logoApp from '../../public/logoinknow.png';
-import Image from 'next/image'
+import Image from 'next/image';
 import { Avatar, Button, Dropdown, Navbar } from 'flowbite-react';
 import Link from 'next/link';
 import { customsubmitTheme } from '../customTheme/appTheme';
 import { useRouter } from 'next/navigation';
-import { Suspense, useContext } from 'react';
+import { Suspense, useContext, useEffect, useState } from 'react';
 import { AppContext } from '../Context/appContext';
 import { getAuth } from 'firebase/auth';
 import { useFetchUserAccount } from '../_hooks/useFetch';
@@ -18,113 +17,158 @@ export function AppNavbar() {
   const { isLoggedIn, setLoggedIn, ukey } = useContext(AppContext);
   const { UserData } = useFetchUserAccount(ukey);
   const auth = getAuth(app);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
 
-  const handleViewProfile = () => {
-    router.push('/profile');
-  };
+ 
+
   return (
-    <header className="bg-white fixed top-0 w-full z-20">
-      <Navbar fluid rounded>
+    <header className="bg-white fixed top-0 w-full z-20 shadow-md">
+      {(menuOpen || profileDropdownOpen) && (
+        <div
+          className={`fixed inset-0 bg-black ${profileDropdownOpen ? 'bg-opacity-30' : 'bg-opacity-50'
+            } z-10`}
+          onClick={() => {
+            setMenuOpen(false);
+            setProfileDropdownOpen(false);
+          }}
+        />
+      )}
+
+      <Navbar fluid rounded className="relative z-20">
         <Navbar.Brand href="/" as={Link}>
           <Image
             src={logoApp}
-            alt="Picture of the author"
+            alt="App Logo"
             className="mr-3 w-auto sm:h-9"
             width={176}
             height={40}
             priority
           />
-
         </Navbar.Brand>
         <div className="flex md:order-2 gap-2">
-
-          {isLoggedIn ?
+          {isLoggedIn ? (
             <Suspense fallback={<ProfileSkeleton />}>
-              <Dropdown
+              <Dropdown className='mt-1 border rounded-md'
                 arrowIcon={false}
                 inline
                 label={
                   <Avatar
-                    className='object-contain aspect-square w-12 h-12'
+                    className="object-contain aspect-square"
                     alt="User Profile"
-                    img={UserData[0]?.profileImage || "/default-profile.jpg"} 
-                    placeholderInitials={UserData[0]?.companyName ? UserData[0]?.companyName[0].toUpperCase() : UserData[0]?.YourName[0].toUpperCase()}
+                    img={UserData[0]?.profileImage}
+                    placeholderInitials={UserData[0]?.companyName?.substring(0, 1).toUpperCase()}
                     rounded
+                    onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
                   />
                 }
               >
-                <Dropdown.Header className="p-4 text-center">
-                  <span className="block text-sm font-semibold text-gray-800">
-                    {UserData[0]?.membership === "contractor" && UserData[0]?.companyName !== "" ?
-                      UserData[0]?.companyName :
-                      UserData[0]?.membership === "homeowner" ? UserData[0]?.YourName :
-                        (UserData[0]?.membership === "contractor" && UserData[0]?.companyName === "") ? UserData[0]?.YourName :
-                          null
-                    }
+                <Dropdown.Header>
+                  <span className="block text-sm">
+                    <Link href="/profile">
+                      {UserData[0]?.membership === 'contractor' && UserData[0]?.companyName
+                        ? UserData[0]?.companyName
+                        : UserData[0]?.YourName}
+                    </Link>
                   </span>
-                  <span className="block text-sm text-gray-500">{UserData[0]?.companyEmail}</span>
+                  <span className="block truncate text-sm font-medium">
+                    {UserData[0]?.companyEmail}
+                  </span>
                 </Dropdown.Header>
-
-                {/* New Section: View Profile */}
-                <Dropdown.Item onClick={handleViewProfile} className="text-sm flex justify-center  text-green-600 hover:bg-gray-200">
-                  View Profile
-                </Dropdown.Item>
-
-                {/* Sign out button */}
-                <Dropdown.Item onClick={() => {
-                  try {
-                    auth.signOut();
-                    window?.sessionStorage.setItem("ukey", "");
-                    setLoggedIn(false);
-                    window?.sessionStorage.clear();
-                    router.replace("/");
-                  } catch (error: any) {
-                    console.log(error);
-                  }
-                }} className="text-sm text-red-800 flex justify-center hover:bg-gray-200">
+                <Dropdown.Item
+                  onClick={() => {
+                    try {
+                      auth.signOut();
+                      window?.sessionStorage.setItem('ukey', '');
+                      setLoggedIn(false);
+                      window?.sessionStorage.clear();
+                      router.push('/');
+                    } catch (error) {
+                      console.error(error);
+                    }
+                  }}
+                >
                   Sign out
                 </Dropdown.Item>
               </Dropdown>
             </Suspense>
-            :
-            <div className='btns flex flex-row gap-1'>
-              <Button onClick={() => router.push('/login')} theme={customsubmitTheme} size={'xs'} color='appsuccess'>Login</Button>
-              <Button onClick={() => router.push("/register")} theme={customsubmitTheme} size={'xs'} color='appsuccess'>Sign Up</Button>
+          ) : (
+            <div className="hidden md:flex flex-row gap-1">
+              <Button
+                onClick={() => router.push('/login')}
+                theme={customsubmitTheme}
+                size="xs"
+                color="appsuccess"
+              >
+                Login
+              </Button>
+              <Button
+                onClick={() => router.push('/register')}
+                theme={customsubmitTheme}
+                size="xs"
+                color="appsuccess"
+              >
+                Sign Up
+              </Button>
             </div>
-          }
-          <Navbar.Toggle />
-
+          )}
+          <Navbar.Toggle
+            onClick={() => setMenuOpen(!menuOpen)}
+            className={menuOpen ? 'open' : ''}
+          />
         </div>
-        <Navbar.Collapse>
-          <Navbar.Link onClick={() => router.push('/?section=whatIsIkg')}>
+
+        <Navbar.Collapse className={`flex flex-col lg:flex-row  items-start lg:items-center ${menuOpen ? 'block' : 'hidden'}`}>
+          <Navbar.Link onClick={() => document.getElementById('whatIsIkg')?.scrollIntoView({ behavior: 'smooth' })}>
             What Is IKAG
           </Navbar.Link>
-          <Navbar.Link onClick={() => router.push('/?section=HowItWorks')}>
+          <Navbar.Link onClick={() => document.getElementById('HowItWorks')?.scrollIntoView({ behavior: 'smooth' })}>
             How It Works
           </Navbar.Link>
-          <Navbar.Link onClick={() => router.push('/?section=jobSection')}>
+          <Navbar.Link onClick={() => document.getElementById('jobSection')?.scrollIntoView({ behavior: 'smooth' })}>
             Current Projects
           </Navbar.Link>
-          {UserData[0]?.Id && UserData[0]?.membership?.trim().toLowerCase() === "homeowner" ? (
-            <Navbar.Link as={Link} href="/postproject">Post A Project</Navbar.Link>
-          ) : null}
-          <Navbar.Link as={Link} href="/recommend">Recommend A &quot;Guy&quot;</Navbar.Link>
-          <Navbar.Link onClick={() => router.push('/?section=inspirations')}>
+          {UserData[0]?.Id && UserData[0]?.membership?.trim().toLowerCase() === 'homeowner' && (
+            <Navbar.Link as={Link} href="/postproject">
+              Post A Project
+            </Navbar.Link>
+          )}
+          <Navbar.Link as={Link} href="/recommend">
+            Recommend A &quot;Guy&quot;
+          </Navbar.Link>
+          <Navbar.Link onClick={() => document.getElementById('inspirations')?.scrollIntoView({ behavior: 'smooth' })}>
             Get Inspired
           </Navbar.Link>
-          <Navbar.Link onClick={() => router.push('/?section=bottom')}>
+          <Navbar.Link onClick={() => document.getElementById('bottom')?.scrollIntoView({ behavior: 'smooth' })}>
             Contact
           </Navbar.Link>
 
-          {
-            isLoggedIn ?
-              null
-              : <div className='logSign'>
-              <Button className='m-2' onClick={() => router.push('/login')} theme={customsubmitTheme} size={"xs"} color='appsuccess'>Login</Button>
-              <Button className='m-2' onClick={() => router.push("/register")} theme={customsubmitTheme} size={"xs"} color='appsuccess'>Sign Up</Button>
+          {!isLoggedIn && (
+            <div className="flex flex-row justify-center items-center mb-2 gap-2 mt-4 md:hidden">
+              <Button
+                onClick={() => {
+                  setMenuOpen(false);
+                  router.push('/login');
+                }}
+                theme={customsubmitTheme}
+                size="md"
+                color="appsuccess"
+              >
+                Login
+              </Button>
+              <Button
+                onClick={() => {
+                  setMenuOpen(false);
+                  router.push('/register');
+                }}
+                theme={customsubmitTheme}
+                size="md"
+                color="appsuccess"
+              >
+                Sign Up
+              </Button>
             </div>
-          }
-
+          )}
         </Navbar.Collapse>
       </Navbar>
     </header>

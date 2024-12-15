@@ -38,8 +38,8 @@ export default function HoverProfile({ ofrs, project }: { ofrs: IOtherOffers, pr
     <Popover placement="left" trigger="hover"
       aria-labelledby="profile-popover"
       content={
-        <div className="w-64 p-3 ">
-          <div className="mb-2 flex items-center  justify-between">
+        <div className="w-64 p-3">
+          <div className="mb-2 flex items-center justify-between">
             <a href="#">
               <img
                 className="h-10 w-10 rounded-full"

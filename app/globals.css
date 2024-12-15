@@ -6,12 +6,6 @@
   @apply hover:text-red-200
 }
 
-html, body {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 a:hover {
   @apply hover:text-appGreen cursor-pointer
 }

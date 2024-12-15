@@ -38,7 +38,7 @@ const Reviews = ({ params }: { params: { slug: string[] } }) => {
     }
     return (
         <div className="bg-slate-50 w-full gap-4 pt-28">
-            <div className='h-full flex flex-col justify-center items-center bg-slate-50'>
+            <div className='h-full flex flex-col justify-center items-center '>
                 <ProfileContacts item={UserData[0]} />
                 {
                     ukey !== null && ukey !== "" && ukey !== undefined && membership == "homeowner" ? (

@@ -10,81 +10,80 @@ import { IUser } from '../Interfaces/appInterfaces';
 
 const ProfileContacts = ({ item }: { item: IUser }) => {
     return (
-        <div className='bg-slate-100 border z-10 rounded-md p-2 shadow-md m-5'>
-            <h2 className='text-lg text-black font-bold'>{item?.companyName || item?.YourName}</h2>
-            <div className="grid lg:grid-cols-3 xl:grid-cols-3 sm:grid-cols-1 md:grid-cols-2 sm:w-fit md:w-fit lg:w-full xl:w-full" >
+        <div className='bg-white border rounded-md p-5 shadow-lg max-w-4xl mx-auto my-6'>
+            <h2 className='text-2xl font-semibold text-gray-800 mb-4'>{item?.companyName || item?.YourName}</h2>
 
-                <div><p>{item?.AdvertisingMsg}</p>
-                    <Button.Group className='grid gap-1 lg:grid-cols-3 sm:grid-cols-2 md:grid-cols-2 w-fit'>
-                        {
-                            item?.Services.map((i, index) => (
-                                <Button key={index} theme={customsubmitTheme} color='appsuccess' size={"xs"}>
-                                    <HiBriefcase className="mr-3 h-4 w-4" />
-                                    {i}
-                                </Button>
-                            ))
-                        }
+            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-6">
 
+                <div className="space-y-4">
+                    <p className='text-gray-600'>{item?.AdvertisingMsg}</p>
+                    <Button.Group className='grid gap-2'>
+                        {item?.Services.map((service, index) => (
+                            <Button key={index} theme={customsubmitTheme} color='appsuccess' size="sm" className='flex items-center justify-start'>
+                                <HiBriefcase className="mr-2 h-4 w-4" />
+                                {service}
+                            </Button>
+                        ))}
                     </Button.Group>
                 </div>
 
-                <div className='gap-1'>
-                    <div className='flex items-center gap-1 m-2'>
-                        <Badge theme={customTheme} color={"success"} icon={HiPhone}></Badge>
-                        <p className='text-sm'>{item?.phone}</p>
+                <div className="space-y-4">
+                    <div className='flex items-center gap-2'>
+                        <Badge theme={customTheme} color={"success"} icon={HiPhone} />
+                        <p className='text-sm text-gray-700'>{item?.phone}</p>
                     </div>
-                    <div className='flex items-center gap-1 m-1'>
-                        <Badge theme={customTheme} color={"success"} icon={HiMail}></Badge>
-                        <p className='text-sm'> {item?.companyEmail}</p>
+                    <div className='flex items-center gap-2'>
+                        <Badge theme={customTheme} color={"success"} icon={HiMail} />
+                        <p className='text-sm text-gray-700'>{item?.companyEmail}</p>
                     </div>
 
-                    <Badge className='w-fit ml-1' theme={customTheme} color={"success"} icon={HiHome}>Address located</Badge>
-                    <div className='flex items-center gap-1 m-1'>
-
-                        {
-                            Array.isArray(item?.Address) ?
-                                <>
-                                    <ul>
-                                        {
-                                            item?.Address?.map((adr, index) => (
-                                                <div key={index} className='flex mb-1'>
-                                                    <Badge theme={customTheme} color={"success"} icon={HiHome}></Badge>
-                                                    <li className='text-sm'> {adr}</li>
-                                                </div>
-                                            ))
-                                        } </ul>
-                                </> :
-                                <div className='flex mb-1 mt-1 w-fit'>
-                                    <Badge theme={customTheme} color={"success"} icon={HiHome}></Badge>
-                                    <p className='text-sm'> {item?.Address}</p>
-                                </div>
-
-                        }
-
+                    <div className='flex items-center gap-2'>
+                        <Badge className='w-fit' theme={customTheme} color={"success"} icon={HiHome}>Address</Badge>
                     </div>
-                    <div className='flex gap-2 mb-2 ml-1'>
-                        <Tooltip content="copy profile">
-                            <Badge onClick={() => {
-                                try {
-                                    navigator.clipboard.writeText('https://inkowaguy.vercel.app/profile/' + item?.Id)
-                                    successMessage("Copied profile");
+                    <div>
+                        {Array.isArray(item?.Address) ? (
+                            <ul className='space-y-2'>
+                                {item?.Address.map((adr, index) => (
+                                    <li key={index} className='flex items-center gap-2'>
+                                        <Badge theme={customTheme} color={"success"} icon={HiHome} />
+                                        <p className='text-sm text-gray-700'>{adr}</p>
+                                    </li>
+                                ))}
+                            </ul>
+                        ) : (
+                            <div className='flex items-center gap-2'>
+                                <Badge theme={customTheme} color={"success"} icon={HiHome} />
+                                <p className='text-sm text-gray-700'>{item?.Address}</p>
+                            </div>
+                        )}
+                    </div>
 
-                                } catch (error: any) {
-                                    failureMessage(error?.message);
-                                }
-                            }} theme={customTheme} color={"success"} icon={HiShare}></Badge>
+                    <div className='flex gap-2 mt-4'>
+                        <Tooltip content="Copy profile link">
+                            <Badge
+                                onClick={() => {
+                                    try {
+                                        navigator.clipboard.writeText('https://inkowaguy.vercel.app/profile/' + item?.Id)
+                                        successMessage("Profile link copied!");
+                                    } catch (error: any) {
+                                        failureMessage(error?.message);
+                                    }
+                                }}
+                                theme={customTheme}
+                                color={"success"}
+                                icon={HiShare}
+                            />
                         </Tooltip>
-
                     </div>
                 </div>
 
-                <div>
+                <div className="flex justify-center items-center">
                     <Image
-                        className='object-[3/4] object-contain bg-white rounded-md w-auto'
+                        className='object-cover rounded-lg shadow-md'
                         src={item?.profileImage}
-                        alt='company'
-                        height={120}
-                        width={100}
+                        alt="Company Profile"
+                        height={150}
+                        width={120}
                     />
                 </div>
 

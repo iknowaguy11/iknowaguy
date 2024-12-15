@@ -69,64 +69,39 @@ export default function Login() {
         }
     }
     return (
-        <div className="flex flex-1 h-screen lg:h-0 items-center justify-center">
-            <form
-                onSubmit={(e) => AttemptLogin(e)}
-                className="flex flex-col gap-4 w-[90%] max-w-sm border p-4 rounded-md shadow-md bg-white"
-            >
-                <h2 className="text-lg text-center">Log Into Your Account</h2>
-                <div>
-                    <div className="mb-2 block">
-                        <Label htmlFor="email1" value="Your Email" />
+        <div className="w-full h-full mt-20 mb-8 flex items-center justify-center">
+            <div>
+                <form onSubmit={(e) => AttemptLogin(e)} className="flex max-w-md flex-col gap-4 w-screen flex-grow border p-7 rounded-md shadow-md">
+                    <h2 className="text-lg">Log Into Your Account</h2>
+                    <div>
+                        <div className="mb-2 block">
+                            <Label htmlFor="email1" value="Your Email" />
+                        </div>
+                        <TextInput onChange={(e) => SetUserName(e.target.value)} value={username} theme={customInputBoxTheme} color={"focuscolor"} icon={HiMail} id="email1" type="email" placeholder="name@mailprovider.com" required />
                     </div>
-                    <TextInput
-                        onChange={(e) => SetUserName(e.target.value)}
-                        value={username}
-                        theme={customInputBoxTheme}
-                        color={"focuscolor"}
-                        icon={HiMail}
-                        id="email1"
-                        type="email"
-                        placeholder="name@mailprovider.com"
-                        required
-                    />
-                </div>
-                <div>
-                    <div className="mb-2 block">
-                        <Label htmlFor="password1" value="Your password" />
+                    <div>
+                        <div className="mb-2 block">
+                            <Label htmlFor="password1" value="Your password" />
+                        </div>
+                        <TextInput onChange={(e) => setPassword(e.target.value)} value={password} theme={customInputBoxTheme} color={"focuscolor"} id="password1" type="password" required />
                     </div>
-                    <TextInput
-                        onChange={(e) => setPassword(e.target.value)}
-                        value={password}
-                        theme={customInputBoxTheme}
-                        color={"focuscolor"}
-                        id="password1"
-                        type="password"
-                        required
-                    />
-                </div>
-                <Online>
-                    <Button
-                        isProcessing={loading}
-                        disabled={loading}
-                        theme={customsubmitTheme}
-                        type="submit"
-                        color="appsuccess"
-                    >
-                        Log In
-                    </Button>
-                </Online>
-                <Offline>
-                    <Alert color="warning" icon={HiInformationCircle}>
-                        <span className="font-medium">Info alert!</span> {NetworkTitle}
-                        <p className="text-xs text-gray-500">{NetworkMessage}</p>
-                    </Alert>
-                </Offline>
-                <div className="flex justify-between text-sm text-gray-500">
-                    <Link href={"/register"}>Not yet registered?</Link>
-                    <Link href={"/forgotpassword"}>Forgot password?</Link>
-                </div>
-            </form>
+                    <Online>
+                        <Button isProcessing={loading} disabled={loading} theme={customsubmitTheme} type="submit" color="appsuccess">Log In</Button>
+                    </Online>
+                    <Offline>
+                        <Alert color="warning" icon={HiInformationCircle}>
+                            <span className="font-medium">Info alert!</span> {NetworkTitle}
+                            <p className="text-xs text-gray-500">{NetworkMessage}</p>
+                        </Alert></Offline>
+                    <FooterDivider></FooterDivider>
+                    <div className="flex justify-between">
+                        <Link href={"/register"}>Not yet register?</Link>
+                        <Link href={"/forgotpassword"}>Forgot password?</Link>
+                    </div>
+
+                </form>
+            </div>
         </div>
+
     );
 }

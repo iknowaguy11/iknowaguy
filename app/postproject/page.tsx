@@ -196,8 +196,8 @@ const Postproject = () => {
     // }, [ProvinceData, ServiceData]);
 
     return (
-        <div className="w-full gap-4 flex ">
-            <div className="relative w-full h-dvh mt-10 mb-10">
+        <div className="w-full gap-4 h-dvh">
+            <div className="relative w-full h-full mt-32 mb-1">
                 <Image
                     src={Landscape}
                     alt="inspiration"

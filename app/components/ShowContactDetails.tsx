@@ -1,7 +1,7 @@
 
 const ShowContactDetails = ({ item }: any) => {
     return (
-        <div className="w-64 p-3 ">
+        <div className="w-64 p-3">
             <div className="mb-2 flex items-center justify-between">
                 <a href="#">
                     <img
@@ -18,7 +18,7 @@ const ShowContactDetails = ({ item }: any) => {
             <p id="profile-popover" className="text-base font-semibold leading-none text-gray-900 dark:text-white">
                 <p>{item?.owner}</p>
             </p>
-            <p className="mb-3 text-sm font-normal ">
+            <p className="mb-3 text-sm font-normal">
                 {item?.email}
             </p>
         </div>

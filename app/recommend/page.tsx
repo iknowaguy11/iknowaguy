@@ -179,7 +179,7 @@ export default function Recommend() {
 
     const AddFirestoreData = async () => {
         try {
-            const response = await fetch('https://payfastpaymentvalidator.onrender.com/verify-recaptcha/', {
+            const response = await fetch('https://iknowaguyapi.onrender.com/verify-recaptcha/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -253,7 +253,7 @@ export default function Recommend() {
                     <h2 className='text-4xl text-white'>Recommend A &quot;Guy&quot;</h2>
                     <p className='text-lg text-white text-wrap'>Do you know of a good, reliable tradesman or home care professional who does great work? Please tell us about him/her so that others can also benefit from the great service they provide.</p>
                 </div>
-                <Card className='flex max-w-md gap-4 flex-grow mt-28 mb-10 ml-2'>
+                <Card className='flex max-w-md gap-4 m-5 flex-grow  lg:mt-28 lg:mb-10 '>
                     <form onSubmit={(e) => RecomentContractor(e)} className="flex max-w-md flex-col gap-4 flex-grow">
                         <div>
                             <div className="mb-2 block">
