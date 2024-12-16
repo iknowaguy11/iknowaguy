@@ -1,4 +1,3 @@
-
 'use client';
 
 import { Badge, Tooltip } from 'flowbite-react';
@@ -25,200 +24,115 @@ export function NewContractorTemplate({ contractors, params, isGettingAccount, a
         SetTempContractor(filteredContractors);
     }, [contractors, params]);
 
-    if (pathname.trim() == "/contractors") {
-        return (
-            <div>
-                {
-                    contractors.length > 0 ? contractors?.map((item) => (
-                        <div key={item.Id} className='bg-slate-100 border z-10  rounded-md p-2 shadow-md m-5'>
-                            <h2 className='text-lg text-black font-bold'>{item?.companyName || item?.YourName}</h2>
-                            <div className="grid lg:grid-cols-3 xl:grid-cols-3 sm:grid-cols-1 md:grid-cols-2 sm:w-fit md:w-fit lg:w-full xl:w-full" >
+    const renderContractorCard = (item: IUser) => (
+        <div key={item.Id} className="border z-10 rounded-md p-4 shadow-md m-4 bg-white">
+            <h2 className="text-lg text-black font-bold mb-2">{item?.companyName || item?.YourName}</h2>
+            <div className="grid gap-4 md:grid-cols-3 sm:grid-row-3">
+                {/* Column 1: Services */}
+                <div>
+                    <p className="mb-2">{item.AdvertisingMsg}</p>
+                    <ul className="space-y-2">
+                        {item.Services.map((service, index) => (
+                            <li
+                                key={index}
+                                className="flex items-center p-2 border border-gray-200 rounded-md bg-[#65a55b] text-white hover:bg-[#5a9d50]"
+                            >
+                                <HiBriefcase className="text-white w-5 h-5 mr-2" />
+                                <span className="text-sm font-medium">{service}</span>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
 
-                                <div><p>{item.AdvertisingMsg}</p>
-                                    <Button.Group className='grid gap-1 lg:grid-cols-3 sm:grid-cols-2 md:grid-cols-2 w-fit'>
-                                        {
-                                            item.Services.map((i, index) => (
 
-                                                <Button className='mb-1' key={index} theme={customsubmitTheme} color='appsuccess' size={"xs"}>
-                                                    <HiBriefcase className="mr-3 h-4 w-4" />
-                                                    {i}
-                                                </Button>
-
-                                            ))
-                                        }
-
-                                    </Button.Group>
-                                </div>
-
-                                <div className='gap-1 ml-2'>
-                                    <div className='flex items-center gap-1 m-2'>
-                                        <Badge theme={customTheme} color={"success"} icon={HiPhone}></Badge>
-                                        <p className='text-sm'>{item.phone}</p>
+                {/* Column 2: Contact Information */}
+                <div>
+                    <div className="flex items-center gap-2 mb-2">
+                        <Badge theme={customTheme} color="success" icon={HiPhone} />
+                        <p className="text-sm">{item.phone}</p>
+                    </div>
+                    <div className="flex items-center gap-2 mb-2">
+                        <Badge theme={customTheme} color="success" icon={HiMail} />
+                        <p className="text-sm">{item.companyEmail}</p>
+                    </div>
+                    <div className="mb-2">
+                        {Array.isArray(item?.Address) ? (
+                            <ul>
+                                {item.Address.map((adr, index) => (
+                                    <div key={index} className="flex items-center gap-2 mb-1">
+                                        <Badge theme={customTheme} color="success" icon={HiHome} />
+                                        <li className="text-sm">{adr}</li>
                                     </div>
-                                    <div className='flex items-center gap-1 m-1'>
-                                        <Badge theme={customTheme} color={"success"} icon={HiMail}></Badge>
-                                        <p className='text-sm'> {item.companyEmail}</p>
-                                    </div>
-                                    <Badge className='w-fit' theme={customTheme} color={"success"} icon={HiHome}>Address located</Badge>
-                                    <div className='flex items-center gap-1 m-1'>
-                                    
-                                        {
-
-                                            Array.isArray(item?.Address) ?
-                                                <>          
-                                                    <ul>
-                                                        {
-                                                            item?.Address?.map((adr,index) => (
-                                                                <div key={index} className='flex mb-1'>
-                                                                <Badge theme={customTheme} color={"success"} icon={HiHome}></Badge>
-                                                                <li className='text-sm'> {adr}</li>
-                                                                </div>
-                                                            ))
-                                                        } </ul>
-                                                </> :
-                                                <>
-                                                    <Badge theme={customTheme} color={"success"} icon={HiHome}></Badge>
-                                                    <p className='text-sm'> {item.Address}</p>
-                                                </>
-
-                                        }
-
-                                    </div>
-                                    <div className='flex gap-2 mb-2'><Button onClick={() => router?.push('/profile/' + item?.Id)}
-                                        size="xs"
-                                        type="button"
-                                        className="rounded-lg bg-blue-700 text-xs text-nowrap ml-1 text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                                    >
-                                        Ratings & Reviews
-                                    </Button>
-                                        <Tooltip content="copy profile">
-                                            <Badge onClick={() => {
-                                                try {
-                                                    navigator.clipboard.writeText('https://inkowaguy.vercel.app/profile/' + item?.Id)
-                                                    successMessage("Copied profile");
-
-                                                } catch (error: any) {
-                                                    failureMessage(error?.message);
-                                                }
-                                            }} theme={customTheme} color={"success"} icon={HiShare}></Badge>
-                                        </Tooltip>
-
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <Image
-                                        className='object-[3/4] object-contain bg-white rounded-md w-auto'
-                                        src={item.profileImage}
-                                        alt='company'
-                                        height={120}
-                                        width={100}
-                                    />
-                                </div>
-
+                                ))}
+                            </ul>
+                        ) : (
+                            <div className="flex items-center gap-2">
+                                <Badge theme={customTheme} color="success" icon={HiHome} />
+                                <p className="text-sm">{item.Address}</p>
                             </div>
-                        </div>
-                    )) : isGettingAccount && (accountError == undefined || accountError == null) ? <LoadingProjects /> : accountError != undefined || accountError != null ? <LoadingProjectError /> : null
-                }
+                        )}
+                    </div>
+                    <div className="flex gap-2">
+                        <Button
+                            onClick={() => router.push('/profile/' + item.Id)}
+                            size="xs"
+                            type="button"
+                            className="rounded-lg bg-blue-700 text-xs text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300"
+                        >
+                            Ratings & Reviews
+                        </Button>
+                        <Tooltip content="Copy profile">
+                            <Badge
+                                onClick={() => {
+                                    try {
+                                        navigator.clipboard.writeText('https://inkowaguy.vercel.app/profile/' + item.Id);
+                                        successMessage("Copied profile");
+                                    } catch (error: any) {
+                                        failureMessage(error.message);
+                                    }
+                                }}
+                                theme={customTheme} color="success" icon={HiShare}
+                            />
+                        </Tooltip>
+                    </div>
+                </div>
+
+                {/* Column 3: Profile Image */}
+                <div className="flex justify-center items-center">
+                    <Image
+                        className="object-contain bg-white rounded-md"
+                        src={item.profileImage}
+                        alt="company"
+                        height={120}
+                        width={100}
+                        priority
+                    />
+                </div>
             </div>
-        );
-    } else {
-        return (
-            <div>
-                {
-                    TempContractor.length > 0 ? TempContractor?.map((item) => (
-                        <div key={item.Id} className='bg-slate-100 border z-10 rounded-md p-2 shadow-md m-5'>
-                            <h2 className='text-lg text-black font-bold'>{item.companyName}</h2>
-                            <div className="grid lg:grid-cols-3 xl:grid-cols-3 sm:grid-cols-1 md:grid-cols-2 sm:w-fit md:w-fit lg:w-full xl:w-full" >
+        </div>
+    );
 
-                                <div><p>{item.AdvertisingMsg}</p>
-                                    <Button.Group className='grid gap-1 lg:grid-cols-3 sm:grid-cols-2 md:grid-cols-2 w-fit'>
-                                        {
-                                            item.Services.map((i, index) => (
-                                                <Button key={index} theme={customsubmitTheme} color='appsuccess' size={"xs"}>
-                                                    <HiBriefcase className="mr-3 h-4 w-4" />
-                                                    {i}
-                                                </Button>
-                                            ))
-                                        }
-
-                                    </Button.Group>
-                                </div>
-
-                                <div className='gap-1'>
-                                    <div className='flex items-center gap-1 m-1'>
-                                        <Badge theme={customTheme} color={"success"} icon={HiPhone}></Badge>
-                                        <p className='text-sm'>{item.phone}</p>
-                                    </div>
-                                    <div className='flex items-center gap-1 m-1'>
-                                        <Badge theme={customTheme} color={"success"} icon={HiMail}></Badge>
-                                        <p className='text-sm'> {item.companyEmail}</p>
-                                    </div>
-
-                                    {/* <Badge className='w-fit' theme={customTheme} color={"success"} icon={HiHome}>Address located</Badge> */}
-                                    <div className='flex items-center gap-1 m-1'>
-                                    
-                                        {
-
-                                            Array.isArray(item?.Address) ?
-                                                <>
-                                                    
-                                                    <ul>
-                                                        {
-                                                            item?.Address?.map((adr,index) => (
-                                                                <div key={index} className='flex mb-1'>
-                                                                <Badge theme={customTheme} color={"success"} icon={HiHome}></Badge>
-                                                                <li className='text-sm'> {adr}</li>
-                                                                </div>
-                                                            ))
-                                                        } </ul>
-                                                </> :
-                                                <>
-                                                    <Badge theme={customTheme} color={"success"} icon={HiHome}></Badge>
-                                                    <p className='text-sm'> {item.Address}</p>
-                                                </>
-
-                                        }
-
-                                    </div>
-                                    <div className='flex gap-2 mb-2'><Button onClick={() => router?.push('/profile/' + item?.Id)}
-                                        size="xs"
-                                        type="button"
-                                        className="rounded-lg bg-blue-700 text-xs text-nowrap ml-1 text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                                    >
-                                        Ratings & Reviews
-                                    </Button>
-                                        <Tooltip content="copy profile">
-                                            <Badge onClick={() => {
-                                                try {
-                                                    navigator.clipboard.writeText('https://inkowaguy.vercel.app/profile/' + item?.Id)
-                                                    successMessage("Copied profile");
-
-                                                } catch (error: any) {
-                                                    failureMessage(error?.message);
-                                                }
-                                            }} theme={customTheme} color={"success"} icon={HiShare}></Badge>
-                                        </Tooltip>
-
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <Image
-                                        className='object-[3/4] object-contain rounded-md w-auto'
-                                        src={item.profileImage}
-                                        alt='company'
-                                        height={120}
-                                        width={100}
-                                        priority
-                                    />
-                                </div>
-
-                            </div>
-                        </div>
-                    )) : isGettingAccount && (accountError == undefined || accountError == null) ? <LoadingProjects /> : accountError != undefined || accountError != null ? <LoadingProjectError /> : <p>No Result(s) found</p>
-                }
-            </div>
-        )
-    }
+    return (
+        <div className="p-4">
+            {pathname.trim() === "/contractors" ? (
+                contractors.length > 0 ? (
+                    contractors.map(renderContractorCard)
+                ) : isGettingAccount && !accountError ? (
+                    <LoadingProjects />
+                ) : accountError ? (
+                    <LoadingProjectError />
+                ) : null
+            ) : (
+                TempContractor.length > 0 ? (
+                    TempContractor.map(renderContractorCard)
+                ) : isGettingAccount && !accountError ? (
+                    <LoadingProjects />
+                ) : accountError ? (
+                    <LoadingProjectError />
+                ) : (
+                    <p>No Result(s) found</p>
+                )
+            )}
+        </div>
+    );
 }
