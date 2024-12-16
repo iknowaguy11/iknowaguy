@@ -31,7 +31,7 @@ export function NewContractorTemplate({ contractors, params, isGettingAccount, a
                 {/* Column 1: Services */}
                 <div>
                     <p className="mb-2">{item.AdvertisingMsg}</p>
-                    <ul className="space-y-2">
+                    <ul className="grid grid-cols-3 gap-2">
                         {item.Services.map((service, index) => (
                             <li
                                 key={index}
@@ -55,24 +55,24 @@ export function NewContractorTemplate({ contractors, params, isGettingAccount, a
                         <Badge theme={customTheme} color="success" icon={HiMail} />
                         <p className="text-sm">{item.companyEmail}</p>
                     </div>
-                    <div className="mb-2">
+                    <div>
                         {Array.isArray(item?.Address) ? (
-                            <ul>
+                            <ul className="grid grid-cols-3 gap-2">
                                 {item.Address.map((adr, index) => (
-                                    <div key={index} className="flex items-center gap-2 mb-1">
-                                        <Badge theme={customTheme} color="success" icon={HiHome} />
-                                        <li className="text-sm">{adr}</li>
-                                    </div>
+                                    <li key={index} className="flex items-center gap-2 p-2 border border-gray-200 rounded-md bg-gray-50">
+                                        <HiHome className="text-green-600 w-5 h-5" />
+                                        <span className="text-sm">{adr}</span>
+                                    </li>
                                 ))}
                             </ul>
                         ) : (
-                            <div className="flex items-center gap-2">
-                                <Badge theme={customTheme} color="success" icon={HiHome} />
-                                <p className="text-sm">{item.Address}</p>
+                            <div className="flex items-center gap-2 p-2 border border-gray-200 rounded-md bg-gray-50">
+                                <HiHome className="text-green-600 w-5 h-5" />
+                                <span className="text-sm">{item.Address}</span>
                             </div>
                         )}
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 mt-2">
                         <Button
                             onClick={() => router.push('/profile/' + item.Id)}
                             size="xs"
