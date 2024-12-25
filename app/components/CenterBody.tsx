@@ -25,6 +25,7 @@ import LoadingProjectError from "./LoadingProjectError";
 import { useContext, useState } from "react";
 import { failureMessage, successMessage } from "../notifications/successError";
 import { AppContext } from "../Context/appContext";
+import AdBanner from "./AdBanner";
 
 
 let howitworks: IhowItwors[] = [{
@@ -86,6 +87,9 @@ const CenterBody = () => {
     }
     return (
         <main>
+            <div className=" bg-slate-300 mt-10   ">
+                <AdBanner dataAdSlot="4503374913" dataAdFormat="auto" dataFullWidthResponsive="true" />
+           </div>
             {/*section 1*/}
             <div className="flex flex-col justify-center items-center gap-2 p-6">
                 <h1 className="text-4xl">What is IKAG</h1>
@@ -120,7 +124,7 @@ const CenterBody = () => {
 
             </div>
             {/*section 3*/}
-            <div className="flex flex-col justify-center items-center gap-2 p-6">
+            <div className="flex flex-col justify-center items-center gap-2 p-6 ">
                 {/* <Button onClick={() => router.push("/postproject")} theme={customsubmitTheme} size={"md"} type="submit" color="appsuccess">Post A Project</Button> */}
                 <h1 className="text-4xl mt-3 mb-2">Current Projects</h1>
                 <div className="flex-row justify-between m-4 grid gap-3 sm:grid-cols-2 md:grid-cols-2 xm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 xs:grid-cols-1 justify-items-center mt-5 bg-slate-50 overflow-hidden p-2 rounded-md">

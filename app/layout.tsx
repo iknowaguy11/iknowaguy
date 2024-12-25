@@ -4,6 +4,7 @@ import "./globals.css";
 import { AppNavbar } from "./components/Navbar";
 import { FooterApp } from "./components/FooterApp";
 import { AppProvider } from "./Context/appContext";
+import AdSense from "./components/AdSense";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,6 +20,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <AdSense pid="ca-pub-4988989011774509" />
+      </head>
       <body className={`${inter.className} !scroll-smooth`}>
       <AppProvider>
         <AppNavbar/>
