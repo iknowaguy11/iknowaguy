@@ -58,7 +58,7 @@ export function NewContractorTemplate({ contractors, params, isGettingAccount, a
                             key={index}
                             className="h-18 flex flex-col items-center justify-center p-2 border border-gray-200 rounded-md bg-[#65a55b] text-white hover:bg-[#5a9d50] text-center"
                         >
-                            <HiBriefcase className="text-white w-6 h-6 mb-1" />
+                            
                             <span className="text-sm sm:text-base font-medium leading-snug line-clamp-2">
                                 {service}
                             </span>
@@ -73,7 +73,6 @@ export function NewContractorTemplate({ contractors, params, isGettingAccount, a
                     <ul className="grid grid-cols-3 gap-2">
                         {item.Address.map((adr, index) => (
                             <li key={index} className="flex items-center gap-2 p-2 border border-gray-200 rounded-md bg-gray-50">
-                                <HiHome className="text-green-600 w-5 h-5" />
                                 <span className="text-sm">{adr}</span>
                             </li>
                         ))}
