@@ -99,7 +99,7 @@ export function NewContractorTemplate({ contractors, params, isGettingAccount, a
                     <Badge
                         onClick={() => {
                             try {
-                                navigator.clipboard.writeText('https://inkowaguy.vercel.app/profile/' + item.Id);
+                                navigator.clipboard.writeText('https://www.iknowaguy.co.za/profile/' + item.Id);
                                 successMessage("Copied profile");
                             } catch (error: any) {
                                 failureMessage(error.message);

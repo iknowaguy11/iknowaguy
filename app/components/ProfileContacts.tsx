@@ -63,7 +63,7 @@ const ProfileContacts = ({ item }: { item: IUser }) => {
                             <Badge
                                 onClick={() => {
                                     try {
-                                        navigator.clipboard.writeText('https://inkowaguy.vercel.app/profile/' + item?.Id)
+                                        navigator.clipboard.writeText('https://www.iknowaguy.co.za/profile/' + item?.Id)
                                         successMessage("Profile link copied!");
                                     } catch (error: any) {
                                         failureMessage(error?.message);
